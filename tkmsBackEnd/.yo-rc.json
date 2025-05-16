@@ -1,0 +1,31 @@
+{
+  "generator-jhipster": {
+    "applicationType": "monolith",
+    "authenticationType": "jwt",
+    "baseName": "tkmsBackEnd",
+    "buildTool": "gradle",
+    "cacheProvider": "redis",
+    "creationTimestamp": 1740720284759,
+    "databaseType": "sql",
+    "devDatabaseType": "postgresql",
+    "enableGradleEnterprise": false,
+    "enableHibernateCache": false,
+    "enableSwaggerCodegen": true,
+    "enableTranslation": true,
+    "entities": [],
+    "feignClient": null,
+    "gradleEnterpriseHost": null,
+    "jhipsterVersion": "8.9.0",
+    "jwtSecretKey": "YzJkYjA3NjM3MDc3MGE5YTA3ZGZhZGM4Y2U0YjFiMDhiYzBlMDhjMGZmNTA4OWFhMTQ5ODkzNzEyZGQxOTdmMjQ5YzQ2MTgxOWY4NDUxNmEwYjU3NDY5NGQ4NTliZTI3MGM0YzA5MzYwYzcxNzY5MGU1NmMzZmYwZTk0NmFkYWM=",
+    "languages": ["ja", "zh-cn", "en"],
+    "nativeLanguage": "ja",
+    "packageName": "com.daitoj.tkms",
+    "prodDatabaseType": "postgresql",
+    "reactive": false,
+    "serverPort": null,
+    "serviceDiscoveryType": null,
+    "skipClient": true,
+    "syncUserWithIdp": null,
+    "testFrameworks": ["gatling"]
+  }
+}

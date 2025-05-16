@@ -1,0 +1,406 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+  <changeSet id="create" author="tkms_user">
+    <!--ログイン情報-->
+    <createTable tableName="LOGIN_INFO" ifNotExists="true">
+      <column name="LOGIN_ID" type="VARCHAR(255)" autoIncrement="false">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="PASSWORD" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="DELETE_FLG" type="VARCHAR(1)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="ACCOUNT_KUBUN" type="VARCHAR(2)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="RIYOU_START_YMD" type="DATE">
+        <constraints nullable="false"/>
+      </column>
+      <column name="RIYOU_END_YMD" type="DATE">
+        <constraints nullable="false"/>
+      </column>
+      <column name="SAKUSEISYA_CODE" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="SAKUSEI_NICHIJI" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+        <constraints nullable="false"/>
+      </column>
+      <column name="KOUSHINSYA_CODE" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="KOUSHIN_NICHIJI" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+    <!--案件情報ヘッダ-->
+    <createTable tableName="ANKENINFO_HEADER" ifNotExists="true">
+      <column name="ANKEN_CODE" type="VARCHAR(255)">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="ANKEN_EDA_CODE" type="VARCHAR(255)">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="ANKEN_NAME" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="ANKEN_KANA_NAME" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="DELETE_FLG" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="JYUCYUUJ_YOUTAI_CODE" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="KOKYAKU_CODE" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="SOUTEI_KINGAKU" type="DECIMAL(12,3)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="YUUBIN_NUMBER" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="GENBA_JYUUSYO1" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="GENBA_JYUUSYO2" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="JYCYUU_MIKOMI_YMD" type="DATE">
+        <constraints nullable="false"/>
+      </column>
+      <column name="CYAKKOU_KIBOU_YMD" type="DATE">
+        <constraints nullable="false"/>
+      </column>
+      <column name="EIGYOU_BUMON_TKS_YMD" type="DATE">
+        <constraints nullable="false"/>
+      </column>
+      <column name="EIGYOU_BUMON_CODE" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="EIGYOU_KANRISYOKU_CODE" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="EIGYOU_TANTOUSYA_CODE" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="SHINCYOKUDO_CODE" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="SAKUSEISYA_CODE" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="SAKUSEI_NICHIJI" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+        <constraints nullable="false"/>
+      </column>
+      <column name="KOUSHINSYA_CODE" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="KOUSHIN_NICHIJI" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+    <!--顧客情報ヘッダ-->
+    <createTable tableName="KOKYAKU_INFO_HEADER" ifNotExists="true">
+      <column name="KOKYAKU_CODE" type="VARCHAR(255)">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="KOKYAKU_NAME" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="KOKYAKU_RYAKUSYOU" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="KOKYAKU_KANA_NAME" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="DELETE_FLG" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="KOKYAKU_TANTOUSYA_NAME" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="KOKYAKU_TANTOUSYA_KANA_NAME" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="TORIHIKI_KUBUN" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="YUUBIN_NUMBER" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="KOKYAKU_JYUUSYO" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="KOKYAKU_TEL_NUMBER" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="KOKYAKU_TANTOUSYA_TEL_NUMBER" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="KOKYAKU_FAX_NUMBER" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="SAKUSEISYA_CODE" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="SAKUSEI_NICHIJI" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+        <constraints nullable="false"/>
+      </column>
+      <column name="KOUSHINSYA_CODE" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="KOUSHIN_NICHIJI" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+    <!--組織情報-->
+    <createTable tableName="SOSHIKI_INFO" ifNotExists="true">
+      <column name="TEKIYOU_STRAT_YMD" type="DATE">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="BUSYO_CODE" type="VARCHAR(255)">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="BUSYO_NAME" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="DELETE_FLG" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="HONSYA_KUBUN" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="KAISOU" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="KAISOU_CODE" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="SAKUSEISYA_CODE" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="SAKUSEI_NICHIJI" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+        <constraints nullable="false"/>
+      </column>
+      <column name="KOUSHINSYA_CODE" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="KOUSHIN_NICHIJI" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+    <!--役職情報-->
+    <createTable tableName="YAKUSYOKU_INFO" ifNotExists="true">
+      <column name="YAKUSYOKU_CODE" type="VARCHAR(255)">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="TAKUSYOKU_NAME" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="DELETE_FLG" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="SYOKI_DATA_KUBUN" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="SYOUNIN_KENGEN" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="DELETE_KENGEN" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="HENSYUU_KENGEN" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="SANSYOU_KENGEN" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="SAKUSEISYA_CODE" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="SAKUSEI_NICHIJI" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+        <constraints nullable="false"/>
+      </column>
+      <column name="KOUSHINSYA_CODE" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="KOUSHIN_NICHIJI" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+    <!--進捗度情報-->
+    <createTable tableName="SHINCYOKUDO_INFO" ifNotExists="true">
+      <column name="SHINCYOKUDO_CODE" type="VARCHAR(255)">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="SHINCYOKUDO" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="DELETE_FLG" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="HYOUJIJYUN" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="SAKUSEISYA_CODE" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="SAKUSEI_NICHIJI" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+        <constraints nullable="false"/>
+      </column>
+      <column name="KOUSHINSYA_CODE" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="KOUSHIN_NICHIJI" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+    <!--従業員情報-->
+    <createTable tableName="JYUUGYOUIN_INFO" ifNotExists="true">
+      <column name="JYUUGYOUIN_CODE" type="VARCHAR(255)">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="JYUUGYOUIN_SHI" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="JYUUGYOUIN_MEI" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="JYUUGYOUIN_SHIMEI" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="LOGIN_ID" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="MAIL_ADDRESS" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="SYOZOKU_JIGYOUSYO_CODE" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="NYUUSYA_YMD" type="DATE">
+        <constraints nullable="false"/>
+      </column>
+      <column name="TAISYOKU_YMD" type="DATE">
+        <constraints nullable="false"/>
+      </column>
+      <column name="SAKUSEISYA_CODE" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="SAKUSEI_NICHIJI" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+        <constraints nullable="false"/>
+      </column>
+      <column name="KOUSHINSYA_CODE" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="KOUSHIN_NICHIJI" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+    <!--項目リスト設定-->
+    <createTable tableName="M_ITEM_LIST_SETTING" ifNotExists="true">
+      <column name="ITEM_CLASS_CD" type="VARCHAR(5)">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="EFFECTIVE_START_DT" type="VARCHAR(8)">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="ITEM_CD" type="VARCHAR(10)">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="ITEM_VALUE" type="TEXT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="DISPLAY_ORDER" type="INTEGER">
+        <constraints nullable="false"/>
+      </column>
+      <column name="ITEM_DESC" type="TEXT">
+        <constraints nullable="true"/>
+      </column>
+      <column name="DEL_FLG" type="CHAR(1)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="REG_DT" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+        <constraints nullable="false"/>
+      </column>
+      <column name="REG_USER_ID" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="REG_PG_ID" type="VARCHAR(50)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="UPD_DT" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+        <constraints nullable="false"/>
+      </column>
+      <column name="UPD_USER_ID" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="UPD_PG_ID" type="VARCHAR(50)">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+    <createTable tableName="GAISAN_HDR" ifNotExists="true">
+      <column name="GAISAN_HID" type="BIGSERIAL">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="ROUGH_EST_CD" type="VARCHAR(12)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="GAISAN_YMD" type="TEXT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="PROJECT_CD" type="VARCHAR(9)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="CUSTOMER_CD" type="VARCHAR(6)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="EST_NO" type="VARCHAR(13)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="GAISAN_TOTAL_AMT" type="TEXT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="GAISAN_BUMON_CD" type="VARCHAR">
+        <constraints nullable="false"/>
+      </column>
+      <column name="GAISAN_TANTOUSYA_CD" type="VARCHAR">
+        <constraints nullable="false"/>
+      </column>
+      <column name="AREA" type="TEXT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="DEL_FLG" type="CHAR(1)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="REG_DT" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+        <constraints nullable="false"/>
+      </column>
+      <column name="REG_USER_ID" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="REG_PG_ID" type="VARCHAR(50)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="UPD_DT" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+        <constraints nullable="false"/>
+      </column>
+      <column name="UPD_USER_ID" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="UPD_PG_ID" type="VARCHAR(50)">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+  </changeSet>
+</databaseChangeLog>

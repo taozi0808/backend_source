@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<fontFamilies>
+	<fontFamily name="ＭＳ ゴシック">
+		<normal>fonts/MS Gothic.ttf</normal>
+		<bold>fonts/MS Gothic.ttf</bold>
+		<italic>fonts/MS Gothic.ttf</italic>
+		<boldItalic>fonts/MS Gothic.ttf</boldItalic>
+		<pdfEncoding>Identity-H</pdfEncoding>
+		<pdfEmbedded>true</pdfEmbedded>
+	</fontFamily>
+
+</fontFamilies>

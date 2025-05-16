@@ -1,0 +1,6 @@
+
+[[#{webA0020.reset.text1}]]
+
+[[${PASSWORD}]]
+
+[[#{webA0020.reset.text2}]]

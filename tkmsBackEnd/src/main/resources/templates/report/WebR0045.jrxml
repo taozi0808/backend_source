@@ -1,0 +1,425 @@
+<!-- Created with Jaspersoft Studio version 7.0.2.final using JasperReports Library version 7.0.2-31532122640f516c6d17238ae0e41a08113d5ac0  -->
+<jasperReport name="WebR0045" language="java" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="531f66c4-8f01-4873-90b7-b6336393df04">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<style name="tableHeader" mode="Opaque" backcolor="#E0E0E0" hTextAlign="Center" vTextAlign="Middle" fontName="ＭＳ ゴシック">
+		<box>
+			<topPen lineWidth="0.75"/>
+			<leftPen lineWidth="0.75"/>
+			<bottomPen lineWidth="0.75"/>
+			<rightPen lineWidth="0.75"/>
+		</box>
+	</style>
+	<style name="tableFieldLeft" hTextAlign="Left" vTextAlign="Middle" fontName="ＭＳ ゴシック">
+		<box leftPadding="2">
+			<topPen lineWidth="0.75"/>
+			<leftPen lineWidth="0.75"/>
+			<bottomPen lineWidth="0.75"/>
+			<rightPen lineWidth="0.75"/>
+		</box>
+	</style>
+	<style name="tableFieldRight" hTextAlign="Right" vTextAlign="Middle" fontName="ＭＳ ゴシック">
+		<box rightPadding="2">
+			<topPen lineWidth="0.75"/>
+			<leftPen lineWidth="0.75"/>
+			<bottomPen lineWidth="0.75"/>
+			<rightPen lineWidth="0.75"/>
+		</box>
+	</style>
+	<style name="tableFieldCenter" hTextAlign="Center" vTextAlign="Middle" fontName="ＭＳ ゴシック">
+		<box rightPadding="2">
+			<topPen lineWidth="0.75"/>
+			<leftPen lineWidth="0.75"/>
+			<bottomPen lineWidth="0.75"/>
+			<rightPen lineWidth="0.75"/>
+		</box>
+	</style>
+	<parameter name="sysDate" class="java.lang.String"/>
+	<parameter name="empCd" class="java.lang.String"/>
+	<parameter name="empNm" class="java.lang.String"/>
+	<parameter name="empJobTypeName" class="java.lang.String"/>
+	<parameter name="birthDate" class="java.lang.String"/>
+	<parameter name="sexName" class="java.lang.String"/>
+	<parameter name="employmentYmd" class="java.lang.String"/>
+	<parameter name="terminationYmd" class="java.lang.String"/>
+	<parameter name="compPhoneNo" class="java.lang.String"/>
+	<parameter name="mailAddress" class="java.lang.String"/>
+	<parameter name="positionNm1" class="java.lang.String"/>
+	<parameter name="startDate" class="java.lang.String"/>
+	<parameter name="positionNm2" class="java.lang.String"/>
+	<parameter name="loginId" class="java.lang.String"/>
+	<parameter name="password" class="java.lang.String"/>
+	<parameter name="photoUrl1" class="java.lang.String"/>
+	<parameter name="photoUrl2" class="java.lang.String"/>
+	<parameter name="photoUrl3" class="java.lang.String"/>
+	<parameter name="empCertField1" class="java.lang.String"/>
+	<parameter name="empCertField2" class="java.lang.String"/>
+	<parameter name="empCertField3" class="java.lang.String"/>
+	<parameter name="empCertField4" class="java.lang.String"/>
+	<parameter name="empCertField5" class="java.lang.String"/>
+	<parameter name="empCertField6" class="java.lang.String"/>
+	<parameter name="empCertField7" class="java.lang.String"/>
+	<parameter name="empCertField8" class="java.lang.String"/>
+	<parameter name="empCertField9" class="java.lang.String"/>
+	<parameter name="empCertField10" class="java.lang.String"/>
+	<group name="PageGroup" startNewPage="true">
+		<expression><![CDATA[(($V{REPORT_COUNT} - 1) / 9)  ]]></expression>
+	</group>
+	<background splitType="Stretch"/>
+	<pageHeader height="50" splitType="Stretch">
+		<element kind="staticText" uuid="64d933d6-e482-413c-a439-ebee866e8cc8" x="0" y="0" width="150" height="42" fontName="ＭＳ ゴシック" fontSize="24.0" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[社員台帳]]></text>
+			<property name="com.jaspersoft.studio.unit.x" value="px"/>
+			<box>
+				<topPen lineWidth="1.0"/>
+				<leftPen lineWidth="1.0"/>
+				<bottomPen lineWidth="1.0"/>
+				<rightPen lineWidth="1.0"/>
+			</box>
+		</element>
+		<element kind="textField" uuid="43dce101-37d7-4664-8a85-d89ba580cfa3" x="390" y="30" width="165" height="15" backcolor="#FFFFFF" fontName="ＭＳ ゴシック" fontSize="10.0" hTextAlign="Right" vTextAlign="Bottom" style="tableHeader">
+			<expression><![CDATA["印刷日付：" + $P{sysDate}]]></expression>
+			<property name="com.jaspersoft.studio.unit.width" value="px"/>
+			<box rightPadding="2" style="tableHeader">
+				<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+			</box>
+		</element>
+		<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+	</pageHeader>
+	<detail>
+		<band height="736">
+			<element kind="staticText" uuid="58a1c1fc-9539-483f-bc9f-c446fc66d31d" mode="Opaque" x="0" y="0" width="78" height="20" fontName="ＭＳ ゴシック" fontSize="10.0" style="tableHeader">
+				<text><![CDATA[社員コード]]></text>
+				<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				<property name="com.jaspersoft.studio.unit.width" value="px"/>
+			</element>
+			<element kind="staticText" uuid="72530813-c942-4600-9305-5e27db204765" mode="Opaque" x="185" y="0" width="63" height="20" fontName="ＭＳ ゴシック" fontSize="10.0" style="tableHeader">
+				<text><![CDATA[氏名]]></text>
+			</element>
+			<element kind="staticText" uuid="a34833a3-6db1-4f89-9ed9-c692ea43ed01" mode="Opaque" x="358" y="0" width="80" height="20" fontName="ＭＳ ゴシック" fontSize="10.0" style="tableHeader">
+				<text><![CDATA[職種]]></text>
+			</element>
+			<element kind="staticText" uuid="af7666a3-d497-4c6f-98e7-e9d02b685da5" mode="Opaque" x="248" y="20" width="87" height="20" fontName="ＭＳ ゴシック" fontSize="10.0" style="tableHeader">
+				<text><![CDATA[性別]]></text>
+			</element>
+			<element kind="textField" uuid="a8817a36-7eeb-419e-9b0c-3b0ac9e27bcd" x="78" y="0" width="107" height="20" fontName="ＭＳ ゴシック" fontSize="10.0" blankWhenNull="true" printRepeatedValues="false" style="tableFieldLeft">
+				<expression><![CDATA[$P{empCd}]]></expression>
+				<property name="com.jaspersoft.studio.unit.y" value="px"/>
+			</element>
+			<element kind="textField" uuid="c03d5b97-abe6-4f6b-b7e5-3c760d34c6ff" x="248" y="0" width="110" height="20" fontName="ＭＳ ゴシック" fontSize="10.0" blankWhenNull="true" printRepeatedValues="false" style="tableFieldLeft">
+				<expression><![CDATA[$P{empNm}]]></expression>
+				<property name="com.jaspersoft.studio.unit.y" value="px"/>
+			</element>
+			<element kind="textField" uuid="f72e5822-76f9-4379-93ad-cf9aeecd6fae" x="438" y="0" width="117" height="20" fontName="ＭＳ ゴシック" fontSize="10.0" blankWhenNull="true" printRepeatedValues="false" style="tableFieldLeft">
+				<expression><![CDATA[$P{empJobTypeName}]]></expression>
+				<property name="com.jaspersoft.studio.unit.y" value="px"/>
+			</element>
+			<element kind="staticText" uuid="0f3c4efc-5e45-4a85-9c2d-16d8f5c7d07a" mode="Opaque" x="0" y="20" width="98" height="20" fontName="ＭＳ ゴシック" fontSize="10.0" style="tableHeader">
+				<text><![CDATA[生年月日]]></text>
+			</element>
+			<element kind="textField" uuid="a400dc05-1cef-43d3-bfc8-7a0a0377249b" x="98" y="20" width="150" height="20" fontName="ＭＳ ゴシック" fontSize="10.0" blankWhenNull="true" printRepeatedValues="false" style="tableFieldLeft">
+				<expression><![CDATA[new java.text.SimpleDateFormat("yyyy年MM月dd日").format(
+ new java.text.SimpleDateFormat("yyyyMMdd").parse($P{birthDate}))]]></expression>
+				<property name="com.jaspersoft.studio.unit.y" value="px"/>
+			</element>
+			<element kind="textField" uuid="85e7cf90-96c9-4a77-a9b7-f037cf49b1cf" x="335" y="20" width="133" height="20" fontName="ＭＳ ゴシック" fontSize="10.0" blankWhenNull="true" printRepeatedValues="false" style="tableFieldLeft">
+				<expression><![CDATA[$P{sexName}]]></expression>
+				<property name="com.jaspersoft.studio.unit.y" value="px"/>
+			</element>
+			<element kind="textField" uuid="18b051e0-ead9-4c7e-b04a-f69e3160a09c" x="98" y="40" width="150" height="20" fontName="ＭＳ ゴシック" fontSize="10.0" blankWhenNull="true" printRepeatedValues="false" style="tableFieldLeft">
+				<expression><![CDATA[new java.text.SimpleDateFormat("yyyy年MM月dd日").format(
+ new java.text.SimpleDateFormat("yyyyMMdd").parse($P{employmentYmd}))]]></expression>
+				<property name="com.jaspersoft.studio.unit.y" value="px"/>
+			</element>
+			<element kind="textField" uuid="87996a90-5866-4200-bb48-0664f92daa4f" x="335" y="40" width="133" height="20" fontName="ＭＳ ゴシック" fontSize="10.0" blankWhenNull="true" printRepeatedValues="false" style="tableFieldLeft">
+				<expression><![CDATA[new java.text.SimpleDateFormat("yyyy年MM月dd日").format(
+ new java.text.SimpleDateFormat("yyyyMMdd").parse($P{terminationYmd}))]]></expression>
+				<property name="com.jaspersoft.studio.unit.y" value="px"/>
+			</element>
+			<element kind="staticText" uuid="2e07f425-d08d-4245-a7ec-04af0fbb7ac1" mode="Opaque" x="0" y="40" width="98" height="20" fontName="ＭＳ ゴシック" fontSize="10.0" style="tableHeader">
+				<text><![CDATA[入社年月日]]></text>
+			</element>
+			<element kind="staticText" uuid="d6db0a2a-0840-46fd-b7c9-b35073c5b8f3" mode="Opaque" x="248" y="40" width="87" height="20" fontName="ＭＳ ゴシック" fontSize="10.0" style="tableHeader">
+				<text><![CDATA[退職年月日]]></text>
+			</element>
+			<element kind="staticText" uuid="7b434585-bff1-4b30-a99c-824e05220b9d" mode="Opaque" x="0" y="65" width="98" height="20" fontName="ＭＳ ゴシック" fontSize="10.0" vTextAlign="Middle" style="tableHeader">
+				<text><![CDATA[取得資格]]></text>
+				<property name="com.jaspersoft.studio.unit.x" value="px"/>
+			</element>
+			<element kind="staticText" uuid="55596715-eb80-4559-95a9-82152c7dab8d" mode="Opaque" x="0" y="90" width="178" height="20" fontName="ＭＳ ゴシック" fontSize="10.0" style="tableHeader">
+				<text><![CDATA[資格名]]></text>
+				<property name="com.jaspersoft.studio.unit.x" value="px"/>
+			</element>
+			<element kind="staticText" uuid="9ab88160-3c0a-4850-8901-4dae504b78e4" mode="Opaque" x="178" y="90" width="178" height="20" fontName="ＭＳ ゴシック" fontSize="10.0" removeLineWhenBlank="true" style="tableHeader">
+				<text><![CDATA[有効期限]]></text>
+				<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				<property name="com.jaspersoft.studio.unit.width" value="px"/>
+			</element>
+			<element kind="textField" uuid="d34b7e70-b77a-4f08-af0f-0e21164ff7dc" x="98" y="215" width="130" height="20" fontName="ＭＳ ゴシック" fontSize="10.0" blankWhenNull="true" printRepeatedValues="false" style="tableFieldLeft">
+				<expression><![CDATA[$P{compPhoneNo}]]></expression>
+				<property name="com.jaspersoft.studio.unit.y" value="px"/>
+			</element>
+			<element kind="textField" uuid="9cfe62ac-af6a-4c2f-985f-2c9bc4ae4334" x="315" y="215" width="152" height="20" fontName="ＭＳ ゴシック" fontSize="10.0" blankWhenNull="true" printRepeatedValues="false" style="tableFieldLeft">
+				<expression><![CDATA[$P{mailAddress}]]></expression>
+				<property name="com.jaspersoft.studio.unit.y" value="px"/>
+			</element>
+			<element kind="staticText" uuid="90132318-ece1-40c2-afc3-65eeb516b422" mode="Opaque" x="0" y="215" width="98" height="20" fontName="ＭＳ ゴシック" fontSize="10.0" style="tableHeader">
+				<text><![CDATA[会社携帯番号]]></text>
+			</element>
+			<element kind="staticText" uuid="81856f40-a003-4ea9-9135-d04a5ec4f0cc" mode="Opaque" x="228" y="215" width="87" height="20" fontName="ＭＳ ゴシック" fontSize="10.0" style="tableHeader">
+				<text><![CDATA[メールアドレス]]></text>
+			</element>
+			<element kind="staticText" uuid="5426b9c8-e0c0-4c9e-b50c-9a7ea4928cdc" mode="Opaque" x="0" y="240" width="98" height="20" fontName="ＭＳ ゴシック" fontSize="10.0" style="tableHeader">
+				<text><![CDATA[所属部署]]></text>
+				<property name="com.jaspersoft.studio.unit.x" value="px"/>
+			</element>
+			<element kind="textField" uuid="bb40ba7c-8a30-4d66-893b-51bfc7faef71" x="178" y="240" width="137" height="20" fontName="ＭＳ ゴシック" fontSize="10.0" blankWhenNull="true" printRepeatedValues="false" style="tableFieldLeft">
+				<expression><![CDATA[$P{positionNm1}]]></expression>
+				<property name="com.jaspersoft.studio.unit.y" value="px"/>
+			</element>
+			<element kind="staticText" uuid="4463fc60-ad29-4d89-bd1e-43470fc717b9" mode="Opaque" x="108" y="240" width="70" height="20" fontName="ＭＳ ゴシック" fontSize="10.0" style="tableHeader">
+				<text><![CDATA[役職]]></text>
+			</element>
+			<element kind="textField" uuid="0c6d906a-ee60-43b9-b0f8-4db0666b9711" x="0" y="285" width="178" height="20" fontName="ＭＳ ゴシック" fontSize="10.0" blankWhenNull="true" printRepeatedValues="false" style="tableFieldLeft">
+				<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				<property name="com.jaspersoft.studio.unit.x" value="px"/>
+			</element>
+			<element kind="textField" uuid="63c42dfd-ee6a-4099-a96f-e39072cc34e2" x="178" y="365" width="178" height="20" fontName="ＭＳ ゴシック" fontSize="10.0" blankWhenNull="true" printRepeatedValues="false" style="tableFieldLeft">
+				<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				<property name="com.jaspersoft.studio.unit.width" value="px"/>
+			</element>
+			<element kind="textField" uuid="bc808033-ffb6-4a2f-bd90-5cc3f890e647" x="0" y="305" width="178" height="20" fontName="ＭＳ ゴシック" fontSize="10.0" blankWhenNull="true" printRepeatedValues="false" style="tableFieldLeft">
+				<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				<property name="com.jaspersoft.studio.unit.x" value="px"/>
+			</element>
+			<element kind="textField" uuid="06edfcc3-e90c-4ea2-97e7-5b121077210e" x="0" y="345" width="178" height="20" fontName="ＭＳ ゴシック" fontSize="10.0" blankWhenNull="true" printRepeatedValues="false" style="tableFieldLeft">
+				<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				<property name="com.jaspersoft.studio.unit.x" value="px"/>
+			</element>
+			<element kind="textField" uuid="4d731516-4328-4e61-b24e-5a066d267879" x="0" y="325" width="178" height="20" fontName="ＭＳ ゴシック" fontSize="10.0" blankWhenNull="true" printRepeatedValues="false" style="tableFieldLeft">
+				<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				<property name="com.jaspersoft.studio.unit.x" value="px"/>
+			</element>
+			<element kind="textField" uuid="f44a40e6-3e5d-4cfb-9fa5-2e05a176ed58" x="0" y="365" width="178" height="20" fontName="ＭＳ ゴシック" fontSize="10.0" blankWhenNull="true" printRepeatedValues="false" style="tableFieldLeft">
+				<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				<property name="com.jaspersoft.studio.unit.x" value="px"/>
+			</element>
+			<element kind="textField" uuid="5860c462-142d-431a-ba8e-ad2cda926427" x="178" y="345" width="178" height="20" fontName="ＭＳ ゴシック" fontSize="10.0" blankWhenNull="true" printRepeatedValues="false" style="tableFieldLeft">
+				<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				<property name="com.jaspersoft.studio.unit.width" value="px"/>
+			</element>
+			<element kind="textField" uuid="6af19004-c8ac-45b1-8e83-39c2f046d4e6" x="178" y="285" width="178" height="20" fontName="ＭＳ ゴシック" fontSize="10.0" blankWhenNull="true" printRepeatedValues="false" style="tableFieldLeft">
+				<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				<property name="com.jaspersoft.studio.unit.width" value="px"/>
+			</element>
+			<element kind="staticText" uuid="d000395a-8943-43bd-9cf7-964486764507" mode="Opaque" x="0" y="265" width="178" height="20" fontName="ＭＳ ゴシック" fontSize="10.0" style="tableHeader">
+				<text><![CDATA[所属部署（部）]]></text>
+				<property name="com.jaspersoft.studio.unit.x" value="px"/>
+			</element>
+			<element kind="textField" uuid="6a0a7763-d77d-4eb9-a272-be7c3493ff08" x="178" y="325" width="178" height="20" fontName="ＭＳ ゴシック" fontSize="10.0" blankWhenNull="true" printRepeatedValues="false" style="tableFieldLeft">
+				<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				<property name="com.jaspersoft.studio.unit.width" value="px"/>
+			</element>
+			<element kind="staticText" uuid="344c2f56-5330-4e87-9334-0d2e6e4e763e" mode="Opaque" x="178" y="265" width="178" height="20" fontName="ＭＳ ゴシック" fontSize="10.0" style="tableHeader">
+				<text><![CDATA[所属部署（課）]]></text>
+				<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+				<property name="com.jaspersoft.studio.unit.width" value="px"/>
+			</element>
+			<element kind="textField" uuid="3917009d-ba17-42a0-83f3-78c7c6fcf472" x="178" y="305" width="178" height="20" fontName="ＭＳ ゴシック" fontSize="10.0" blankWhenNull="true" printRepeatedValues="false" style="tableFieldLeft">
+				<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				<property name="com.jaspersoft.studio.unit.width" value="px"/>
+			</element>
+			<element kind="staticText" uuid="3d777552-cffe-478b-b0ec-825657274525" mode="Opaque" x="0" y="390" width="98" height="20" fontName="ＭＳ ゴシック" fontSize="10.0" style="tableHeader">
+				<text><![CDATA[部署異動設定]]></text>
+				<property name="com.jaspersoft.studio.unit.x" value="px"/>
+			</element>
+			<element kind="staticText" uuid="a0871a7f-e9a6-45a9-9d4b-d76684d98824" mode="Opaque" x="288" y="390" width="70" height="20" fontName="ＭＳ ゴシック" fontSize="10.0" style="tableHeader">
+				<text><![CDATA[役職]]></text>
+				<property name="com.jaspersoft.studio.unit.width" value="px"/>
+			</element>
+			<element kind="textField" uuid="e2d25da1-6fd2-4e80-822d-bd5c4ef499d1" x="358" y="390" width="110" height="20" fontName="ＭＳ ゴシック" fontSize="10.0" blankWhenNull="true" printRepeatedValues="false" style="tableFieldLeft">
+				<expression><![CDATA[$P{positionNm2}]]></expression>
+				<property name="com.jaspersoft.studio.unit.y" value="px"/>
+			</element>
+			<element kind="staticText" uuid="34aeb8f6-a876-4ae3-96a7-9e2f101b1fc7" mode="Opaque" x="108" y="390" width="70" height="20" fontName="ＭＳ ゴシック" fontSize="10.0" style="tableHeader">
+				<text><![CDATA[適用開始日付]]></text>
+			</element>
+			<element kind="textField" uuid="07155961-21ca-4235-88bc-da6e071764fe" x="178" y="390" width="100" height="20" fontName="ＭＳ ゴシック" fontSize="10.0" blankWhenNull="true" printRepeatedValues="false" style="tableFieldLeft">
+				<expression><![CDATA[new java.text.SimpleDateFormat("yyyy年MM月dd日").format(
+ new java.text.SimpleDateFormat("yyyyMMdd").parse($P{startDate}))]]></expression>
+				<property name="com.jaspersoft.studio.unit.y" value="px"/>
+			</element>
+			<element kind="textField" uuid="46e4b7c2-98b2-40ec-9cae-d48ecdfee607" x="178" y="455" width="178" height="20" fontName="ＭＳ ゴシック" fontSize="10.0" blankWhenNull="true" printRepeatedValues="false" style="tableFieldLeft">
+				<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				<property name="com.jaspersoft.studio.unit.width" value="px"/>
+			</element>
+			<element kind="staticText" uuid="eb6ea7fa-95cb-4d3c-b9c9-233bf4c63dea" mode="Opaque" x="0" y="415" width="178" height="20" fontName="ＭＳ ゴシック" fontSize="10.0" style="tableHeader">
+				<text><![CDATA[部署異動設定（部）]]></text>
+				<property name="com.jaspersoft.studio.unit.x" value="px"/>
+			</element>
+			<element kind="textField" uuid="ea73be04-5dbe-495d-b0d0-81a2d76803f4" x="0" y="495" width="178" height="20" fontName="ＭＳ ゴシック" fontSize="10.0" blankWhenNull="true" printRepeatedValues="false" style="tableFieldLeft">
+				<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				<property name="com.jaspersoft.studio.unit.x" value="px"/>
+			</element>
+			<element kind="textField" uuid="9ec8a768-88fc-4abf-bc40-890b5b43851e" x="178" y="515" width="178" height="20" fontName="ＭＳ ゴシック" fontSize="10.0" blankWhenNull="true" printRepeatedValues="false" style="tableFieldLeft">
+				<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				<property name="com.jaspersoft.studio.unit.width" value="px"/>
+			</element>
+			<element kind="staticText" uuid="47defb36-42c8-4c86-9591-d20a47bbb0d5" mode="Opaque" x="178" y="415" width="178" height="20" fontName="ＭＳ ゴシック" fontSize="10.0" style="tableHeader">
+				<text><![CDATA[部署異動設定（課）]]></text>
+				<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+				<property name="com.jaspersoft.studio.unit.width" value="px"/>
+			</element>
+			<element kind="textField" uuid="41cd989c-a3dc-4560-b13e-3561bf06853e" x="0" y="515" width="178" height="20" fontName="ＭＳ ゴシック" fontSize="10.0" blankWhenNull="true" printRepeatedValues="false" style="tableFieldLeft">
+				<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				<property name="com.jaspersoft.studio.unit.x" value="px"/>
+			</element>
+			<element kind="textField" uuid="d20b7e24-ebfd-4dd9-9b70-44a147d2e17d" x="178" y="495" width="178" height="20" fontName="ＭＳ ゴシック" fontSize="10.0" blankWhenNull="true" printRepeatedValues="false" style="tableFieldLeft">
+				<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				<property name="com.jaspersoft.studio.unit.width" value="px"/>
+			</element>
+			<element kind="textField" uuid="96269272-0a26-4eef-9ae5-8478bf531e52" x="0" y="455" width="178" height="20" fontName="ＭＳ ゴシック" fontSize="10.0" blankWhenNull="true" printRepeatedValues="false" style="tableFieldLeft">
+				<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				<property name="com.jaspersoft.studio.unit.x" value="px"/>
+			</element>
+			<element kind="textField" uuid="dd4fab5b-913a-488b-84bf-77ce1e914d7d" x="178" y="475" width="178" height="20" fontName="ＭＳ ゴシック" fontSize="10.0" blankWhenNull="true" printRepeatedValues="false" style="tableFieldLeft">
+				<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				<property name="com.jaspersoft.studio.unit.width" value="px"/>
+			</element>
+			<element kind="textField" uuid="9e12a95d-b6bf-473a-8164-ca1ae546a2f5" x="0" y="435" width="178" height="20" fontName="ＭＳ ゴシック" fontSize="10.0" blankWhenNull="true" printRepeatedValues="false" style="tableFieldLeft">
+				<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				<property name="com.jaspersoft.studio.unit.x" value="px"/>
+			</element>
+			<element kind="textField" uuid="ad97cb1d-1084-4d14-ac7c-9fb7b678069d" x="0" y="475" width="178" height="20" fontName="ＭＳ ゴシック" fontSize="10.0" evaluationTime="Report" blankWhenNull="true" printRepeatedValues="false" style="tableFieldLeft">
+				<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				<property name="com.jaspersoft.studio.unit.x" value="px"/>
+			</element>
+			<element kind="textField" uuid="c125822e-73e8-4be9-bc60-a25c870e8400" x="178" y="435" width="178" height="20" fontName="ＭＳ ゴシック" fontSize="10.0" blankWhenNull="true" printRepeatedValues="false" style="tableFieldLeft">
+				<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				<property name="com.jaspersoft.studio.unit.width" value="px"/>
+			</element>
+			<element kind="textField" uuid="8a74b50f-40ec-4723-af31-1b092348f774" x="98" y="540" width="130" height="20" fontName="ＭＳ ゴシック" fontSize="10.0" blankWhenNull="true" printRepeatedValues="false" style="tableFieldLeft">
+				<expression><![CDATA[$P{loginId}]]></expression>
+				<property name="com.jaspersoft.studio.unit.y" value="px"/>
+			</element>
+			<element kind="staticText" uuid="6861f06f-72a8-41c4-a031-f53e8d826eed" mode="Opaque" x="0" y="540" width="98" height="20" fontName="ＭＳ ゴシック" fontSize="10.0" style="tableHeader">
+				<text><![CDATA[ログインID]]></text>
+			</element>
+			<element kind="staticText" uuid="31cea091-6049-4f0f-b177-8c04f0055a20" mode="Opaque" x="0" y="565" width="98" height="20" fontName="ＭＳ ゴシック" fontSize="10.0" style="tableHeader">
+				<text><![CDATA[顔認証用写真]]></text>
+				<property name="com.jaspersoft.studio.unit.x" value="px"/>
+			</element>
+			<element kind="image" uuid="f60d9aa8-8f6f-4e20-968c-e4f4590373d3" x="0" y="590" width="146" height="146" scaleImage="FillFrame">
+				<expression><![CDATA[$P{photoUrl1}.equals("")?"":new java.net.URL($P{photoUrl1})]]></expression>
+				<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+			</element>
+			<element kind="image" uuid="eeb57155-9bee-4741-b63c-749aef6c4413" x="180" y="590" width="146" height="146" scaleImage="FillFrame">
+				<expression><![CDATA[$P{photoUrl2}.equals("")?"":new java.net.URL($P{photoUrl2})]]></expression>
+				<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+			</element>
+			<element kind="image" uuid="5d65d9f7-5f7a-4301-99c7-07033cde40e1" x="358" y="590" width="146" height="146" scaleImage="FillFrame">
+				<expression><![CDATA[$P{photoUrl3}.equals("")?"":new java.net.URL($P{photoUrl3})]]></expression>
+				<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+			</element>
+			<element kind="textField" uuid="04453249-f226-4257-ba20-8526f20eff36" x="0" y="110" width="178" height="20" fontName="ＭＳ ゴシック" fontSize="10.0" blankWhenNull="true" printRepeatedValues="false" style="tableFieldCenter">
+				<expression><![CDATA[$P{empCertField1}]]></expression>
+				<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				<property name="com.jaspersoft.studio.unit.x" value="px"/>
+			</element>
+			<element kind="textField" uuid="2912d198-01c9-4af2-a576-c9e0cd0a6b87" x="178" y="110" width="178" height="20" fontName="ＭＳ ゴシック" fontSize="10.0" blankWhenNull="true" printRepeatedValues="false" style="tableFieldCenter">
+				<expression><![CDATA[$P{empCertField2}.equals("")?"":new java.text.SimpleDateFormat("yyyy年MM月dd日").format(
+ new java.text.SimpleDateFormat("yyyyMMdd").parse($P{empCertField2}))]]></expression>
+				<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				<property name="com.jaspersoft.studio.unit.width" value="px"/>
+			</element>
+			<element kind="textField" uuid="d98925bf-7c70-4478-b5af-7851d7beb4f1" x="0" y="130" width="178" height="20" fontName="ＭＳ ゴシック" fontSize="10.0" blankWhenNull="true" printRepeatedValues="false" style="tableFieldCenter">
+				<expression><![CDATA[$P{empCertField3}]]></expression>
+				<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				<property name="com.jaspersoft.studio.unit.x" value="px"/>
+			</element>
+			<element kind="textField" uuid="921d7a97-1845-4001-af71-2f93a98cd28d" x="178" y="130" width="178" height="20" fontName="ＭＳ ゴシック" fontSize="10.0" blankWhenNull="true" printRepeatedValues="false" style="tableFieldCenter">
+				<expression><![CDATA[$P{empCertField4}.equals("")?"":new java.text.SimpleDateFormat("yyyy年MM月dd日").format(
+ new java.text.SimpleDateFormat("yyyyMMdd").parse($P{empCertField4}))]]></expression>
+				<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				<property name="com.jaspersoft.studio.unit.width" value="px"/>
+			</element>
+			<element kind="textField" uuid="ac3d6e18-ea15-4eea-8bda-463768d61060" x="0" y="150" width="178" height="20" fontName="ＭＳ ゴシック" fontSize="10.0" blankWhenNull="true" printRepeatedValues="false" style="tableFieldCenter">
+				<expression><![CDATA[$P{empCertField5}]]></expression>
+				<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				<property name="com.jaspersoft.studio.unit.x" value="px"/>
+			</element>
+			<element kind="textField" uuid="a2df309d-cd0b-4074-b7c8-2a9dead5527f" x="178" y="150" width="178" height="20" fontName="ＭＳ ゴシック" fontSize="10.0" blankWhenNull="true" printRepeatedValues="false" style="tableFieldCenter">
+				<expression><![CDATA[$P{empCertField6}.equals("")?"":new java.text.SimpleDateFormat("yyyy年MM月dd日").format(
+ new java.text.SimpleDateFormat("yyyyMMdd").parse($P{empCertField6}))]]></expression>
+				<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				<property name="com.jaspersoft.studio.unit.width" value="px"/>
+			</element>
+			<element kind="textField" uuid="b4aacbc7-a8d8-43d0-831d-3395b141053a" x="0" y="170" width="178" height="20" fontName="ＭＳ ゴシック" fontSize="10.0" blankWhenNull="true" printRepeatedValues="false" style="tableFieldCenter">
+				<expression><![CDATA[$P{empCertField7}]]></expression>
+				<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				<property name="com.jaspersoft.studio.unit.x" value="px"/>
+			</element>
+			<element kind="textField" uuid="1fb5b809-dd93-475a-a0ee-14b250e9d7ed" x="178" y="170" width="178" height="20" fontName="ＭＳ ゴシック" fontSize="10.0" blankWhenNull="true" printRepeatedValues="false" style="tableFieldCenter">
+				<expression><![CDATA[$P{empCertField8}.equals("")?"":new java.text.SimpleDateFormat("yyyy年MM月dd日").format(
+ new java.text.SimpleDateFormat("yyyyMMdd").parse($P{empCertField8}))]]></expression>
+				<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				<property name="com.jaspersoft.studio.unit.width" value="px"/>
+			</element>
+			<element kind="textField" uuid="c364711a-c694-4ba3-b20a-eff0997ed589" x="0" y="190" width="178" height="20" fontName="ＭＳ ゴシック" fontSize="10.0" blankWhenNull="true" printRepeatedValues="false" style="tableFieldCenter">
+				<expression><![CDATA[$P{empCertField9}]]></expression>
+				<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				<property name="com.jaspersoft.studio.unit.x" value="px"/>
+			</element>
+			<element kind="textField" uuid="0fd53ccb-d87e-4fc0-986a-937555b59fec" x="178" y="190" width="178" height="20" fontName="ＭＳ ゴシック" fontSize="10.0" blankWhenNull="true" printRepeatedValues="false" style="tableFieldCenter">
+				<expression><![CDATA[$P{empCertField10}.equals("")?"":new java.text.SimpleDateFormat("yyyy年MM月dd日").format(
+ new java.text.SimpleDateFormat("yyyyMMdd").parse($P{empCertField10}))]]></expression>
+				<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				<property name="com.jaspersoft.studio.unit.width" value="px"/>
+			</element>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</band>
+	</detail>
+	<pageFooter height="16" splitType="Stretch">
+		<property name="com.jaspersoft.studio.unit.height" value="px"/>
+	</pageFooter>
+</jasperReport>
