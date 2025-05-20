@@ -45,4 +45,8 @@ public class MEmpOrg extends BaseEntity {
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
   @JoinColumn(name = "org_id", nullable = false)
   private MOrg org;
+
+  @NotNull
+  @Column(name = "org_k", nullable = false, length = Integer.MAX_VALUE)
+  private String orgK;
 }

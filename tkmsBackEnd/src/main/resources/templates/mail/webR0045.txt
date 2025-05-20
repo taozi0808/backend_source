@@ -1,0 +1,7 @@
+
+[[#{webR0045.mail.text1}]]
+
+Login ID: [[${LOGIN_ID}]]
+Password: [[${PASSWORD}]]
+
+[[#{webR0045.mail.text2}]]

@@ -25,12 +25,21 @@ public class MEmpTransferDtl extends BaseEntity {
   @Column(name = "emp_transfer_did", nullable = false)
   private Long id;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "emp_transfer_hid")
+  @NotNull
+  @ManyToOne(fetch = FetchType.LAZY, optional = false)
+  @JoinColumn(name = "emp_transfer_hid", nullable = false)
   private MEmpTransferHdr empTransferHid;
+
+  @NotNull
+  @Column(name = "seq_no", nullable = false)
+  private Integer seqNo;
 
   @NotNull
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
   @JoinColumn(name = "org_id", nullable = false)
   private MOrg org;
+
+  @NotNull
+  @Column(name = "org_k", nullable = false, length = Integer.MAX_VALUE)
+  private String orgK;
 }

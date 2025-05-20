@@ -13,7 +13,7 @@ public class MOrgMenuItemId implements java.io.Serializable {
   private static final long serialVersionUID = 1L;
 
   @NotNull
-  @Column(name = "m_org_id", nullable = false)
+  @Column(name = "org_id", nullable = false)
   private Long mOrgId;
 
   @NotNull

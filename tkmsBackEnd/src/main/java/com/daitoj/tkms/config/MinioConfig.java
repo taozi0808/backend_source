@@ -7,24 +7,28 @@ import org.springframework.context.annotation.Configuration;
 
 /** Minio設定 */
 @Configuration
+@lombok.Getter
+@lombok.Setter
 public class MinioConfig {
 
-  @Value("${fileStorage.endpoint}")
+  /** エンドポイント */
+  @Value("${cloud.region.static}")
   private String endpoint;
 
-  @Value("${fileStorage.accessKey}")
+  /** アクセスキー */
+  @Value("${cloud.credentials.accessKey}")
   private String accessKey;
 
-  @Value("${fileStorage.secretKey}")
+  /** secretキー */
+  @Value("${cloud.credentials.secretKey}")
   private String secretKey;
 
-  @Value("${fileStorage.bucketName}")
+  /** bucket名 */
+  @Value("${cloud.s3.bucket}")
   private String bucketName;
 
-  @Value("${fileStorage.accessPath}")
-  private String accessPath;
-
-  @Value("${fileStorage.expiration}")
+  /** Url期限 */
+  @Value("${cloud.url.expiration}")
   private Integer expiration;
 
   /**
@@ -35,83 +39,5 @@ public class MinioConfig {
   @Bean
   public MinioClient minioClient() {
     return MinioClient.builder().endpoint(endpoint).credentials(accessKey, secretKey).build();
-  }
-
-  /**
-   * エンドポイント
-   *
-   * @return endpoint
-   */
-  public String getEndpoint() {
-    return endpoint;
-  }
-
-  public void setEndpoint(String endpoint) {
-    this.endpoint = endpoint;
-  }
-
-  /**
-   * アクセスキー
-   *
-   * @return accessKey
-   */
-  public String getAccessKey() {
-    return accessKey;
-  }
-
-  public void setAccessKey(String accessKey) {
-    this.accessKey = accessKey;
-  }
-
-  /**
-   * secretキー
-   *
-   * @return secretKey
-   */
-  public String getSecretKey() {
-    return secretKey;
-  }
-
-  public void setSecretKey(String secretKey) {
-    this.secretKey = secretKey;
-  }
-
-  /**
-   * bucket名
-   *
-   * @return bucketName
-   */
-  public String getBucketName() {
-    return bucketName;
-  }
-
-  public void setBucketName(String bucketName) {
-    this.bucketName = bucketName;
-  }
-
-  /**
-   * アクセスパス
-   *
-   * @return accessPath
-   */
-  public String getAccessPath() {
-    return accessPath;
-  }
-
-  public void setAccessPath(String accessPath) {
-    this.accessPath = accessPath;
-  }
-
-  /**
-   * Url期限
-   *
-   * @return expiration
-   */
-  public Integer getExpiration() {
-    return expiration;
-  }
-
-  public void setExpiration(Integer expiration) {
-    this.expiration = expiration;
   }
 }

@@ -51,6 +51,18 @@ public class Message {
   /** 該当の社員コードは既に使用されています。 */
   public static final String MSGID_U00015 = "U00015";
 
+  /** 退職者は再通知することが出来ません。 */
+  public static final String MSGID_U00018 = "U00018";
+
+  /** メールの送信に失敗しました。メールアドレスを確認してください。 */
+  public static final String MSGID_U00019 = "U00019";
+
+  /** パスワード再通知致しました。 */
+  public static final String MSGID_U00020 = "U00020";
+
   /** 【重要】パスワードの再通知 */
   public static final String A0020_MAIL_TITLE = "webA0020.reset.title";
+
+  /** 【重要】パスワードの通知 */
+  public static final String R0045_MAIL_TITLE = "webR0045.mail.title";
 }

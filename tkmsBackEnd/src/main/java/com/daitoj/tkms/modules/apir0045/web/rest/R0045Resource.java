@@ -8,6 +8,9 @@ import com.daitoj.tkms.modules.apir0045.service.dto.R0045S02ApiResult;
 import com.daitoj.tkms.modules.apir0045.service.dto.R0045S02ReturnData;
 import com.daitoj.tkms.modules.apir0045.service.dto.R0045S03ApiResult;
 import com.daitoj.tkms.modules.apir0045.service.dto.R0045S03ReturnData;
+import com.daitoj.tkms.modules.apir0045.service.dto.R0045S04ApiResult;
+import com.daitoj.tkms.modules.apir0045.service.dto.R0045S04ReturnData;
+import com.daitoj.tkms.modules.common.constants.CommonConstants;
 import com.daitoj.tkms.modules.common.service.dto.ApiResult;
 import com.daitoj.tkms.modules.common.service.dto.ErrorInfo;
 import io.swagger.v3.oas.annotations.Operation;
@@ -18,8 +21,13 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.*;
@@ -31,11 +39,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 /** 社員登録コントローラ */
 @RestController
@@ -174,7 +177,7 @@ public class R0045Resource {
     ApiResult<R0045S03ReturnData> result = r0045Service.savesyainkanritourokuInfo(inDto);
 
     // 処理区分が新規
-    if (R0045Service.SHORIKUBUN_SINNKI.equals(inDto.getShorikubun())) {
+    if (CommonConstants.SHORIKUBUN_SINNKI.equals(inDto.getShorikubun())) {
       return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
 
@@ -199,7 +202,7 @@ public class R0045Resource {
             content =
                 @Content(
                     mediaType = "application/json",
-                    schema = @Schema(implementation = ApiResult.class))),
+                    schema = @Schema(implementation = ErrorInfo.class))),
         @ApiResponse(
             responseCode = "500",
             description = "システムエラー",
@@ -279,46 +282,95 @@ public class R0045Resource {
     return ResponseEntity.ok().body(result);
   }
 
+  /**
+   * 社員異動情報取得
+   *
+   * @return 社員異動情報
+   */
+  @Operation(
+      summary = "社員異動情報を取得",
+      description = "社員異動情報を取得する",
+      responses = {
+        @ApiResponse(
+            responseCode = "200",
+            description = "成功",
+            content =
+                @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = R0045S04ApiResult.class))),
+        @ApiResponse(
+            responseCode = "500",
+            description = "システムエラー",
+            content =
+                @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = ErrorInfo.class)))
+      })
+  @GetMapping("/transfer/get")
+  public ResponseEntity<?> getEmpTransferHdr(
+      @RequestParam(name = "emp_id", required = true)
+          @Digits(integer = Integer.MAX_VALUE, fraction = 0)
+          @Parameter(
+              name = "emp_id",
+              description = "社員ID",
+              required = true,
+              in = ParameterIn.QUERY,
+              schema = @Schema(type = "long"))
+          Long empId,
+      @RequestParam(name = "start_dt", required = true)
+          @Size(max = 8)
+          @Parameter(
+              name = "start_dt",
+              description = "適用開始日",
+              required = true,
+              in = ParameterIn.QUERY,
+              schema = @Schema(type = "string", maxLength = 6))
+          String effectiveStartDt) {
+    // 社員登録情報を取得
+    ApiResult<R0045S04ReturnData> result = r0045Service.getEmpTransferHdr(empId, effectiveStartDt);
+
+    // 成功の場合
+    return ResponseEntity.ok().body(result);
+  }
 
   @Operation(
-    summary = "社員登録の印刷処理",
-    description = "社員登録のPDF情報を出力する",
-    responses = {
-      @ApiResponse(
-        responseCode = "200",
-        description = "成功",
-        content =
-        @Content(
-          mediaType = "application/pdf",
-          schema = @Schema(implementation = ResponseEntity.class))),
-      @ApiResponse(
-        responseCode = "500",
-        description = "システムエラー",
-        content =
-        @Content(
-          mediaType = "application/json",
-          schema = @Schema(implementation = ErrorInfo.class)))
-    })
+      summary = "社員登録の印刷処理",
+      description = "社員登録のPDF情報を出力する",
+      responses = {
+        @ApiResponse(
+            responseCode = "200",
+            description = "成功",
+            content =
+                @Content(
+                    mediaType = "application/pdf",
+                    schema = @Schema(implementation = ResponseEntity.class))),
+        @ApiResponse(
+            responseCode = "500",
+            description = "システムエラー",
+            content =
+                @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = ErrorInfo.class)))
+      })
   @GetMapping("/print")
   public ResponseEntity<?> generateReport(
-    @RequestParam(name = "emp_cd", required = true)
-    @Size(max = 6)
-    @Parameter(
-      name = "emp_cd",
-      description = "社員コード",
-      required = true,
-      in = ParameterIn.QUERY,
-      schema = @Schema(type = "string", maxLength = 6))
-    String empCd,
-    @RequestParam(name = "sys_date", required = true)
-    @Parameter(
-      name = "sys_date",
-      description = "利用PCのシステム日付(YYYY-MM-DD HH:mm:ss)",
-      required = true,
-      in = ParameterIn.QUERY,
-      schema =
-      @Schema(type = "string", example = "2025-05-09 15:23:00"))
-    String sysDate) {
+      @RequestParam(name = "emp_cd", required = true)
+          @Size(max = 6)
+          @Parameter(
+              name = "emp_cd",
+              description = "社員コード",
+              required = true,
+              in = ParameterIn.QUERY,
+              schema = @Schema(type = "string", maxLength = 6))
+          String empCd,
+      @RequestParam(name = "sys_date", required = true)
+          @Parameter(
+              name = "sys_date",
+              description = "利用PCのシステム日付(YYYY-MM-DD HH:mm:ss)",
+              required = true,
+              in = ParameterIn.QUERY,
+              schema = @Schema(type = "string", example = "2025-05-09 15:23:00"))
+          String sysDate) {
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern(PARAM_DATE_FORMAT);
 
     LocalDateTime dateTime = LocalDateTime.parse(sysDate, formatter);
@@ -333,7 +385,7 @@ public class R0045Resource {
     ApiResult<?> result = r0045Service.exportReportToPdf(empCd, dateTime);
 
     // ヘッダ編集
-    org.springframework.http.HttpHeaders headers = new HttpHeaders();
+    HttpHeaders headers = new HttpHeaders();
     headers.setContentType(MediaType.APPLICATION_PDF);
     headers.setContentDisposition(ContentDisposition.inline().filename(encodedFileName).build());
 

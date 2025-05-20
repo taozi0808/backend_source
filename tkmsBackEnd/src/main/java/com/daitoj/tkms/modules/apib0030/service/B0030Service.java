@@ -1,6 +1,11 @@
 package com.daitoj.tkms.modules.apib0030.service;
 
+import com.daitoj.tkms.domain.MCustomer;
+import com.daitoj.tkms.domain.MEmp;
+import com.daitoj.tkms.domain.MMajorWork;
+import com.daitoj.tkms.domain.MMinorWork;
 import com.daitoj.tkms.domain.MOffice;
+import com.daitoj.tkms.domain.MOrg;
 import com.daitoj.tkms.domain.TConstrSite;
 import com.daitoj.tkms.domain.TDetailedEstHdr;
 import com.daitoj.tkms.domain.TProject;
@@ -21,8 +26,10 @@ import com.daitoj.tkms.modules.apib0030.repository.B0030S08Repository;
 import com.daitoj.tkms.modules.apib0030.repository.B0030S09Repository;
 import com.daitoj.tkms.modules.apib0030.repository.mapper.B0030Mapper;
 import com.daitoj.tkms.modules.apib0030.service.dto.B0030Dto;
+import com.daitoj.tkms.modules.apib0030.service.dto.B0030S01ReturnData;
 import com.daitoj.tkms.modules.apib0030.service.dto.B0030S02ReturnData;
 import com.daitoj.tkms.modules.apib0030.service.dto.B0030S03ReturnData;
+import com.daitoj.tkms.modules.apib0030.service.dto.B0030S04ReturnData;
 import com.daitoj.tkms.modules.apib0030.service.dto.ProjectBuildingDtlDto;
 import com.daitoj.tkms.modules.apib0030.service.dto.ProjectDto;
 import com.daitoj.tkms.modules.apib0030.service.dto.ProjectPaymentTermsDto;
@@ -33,11 +40,23 @@ import com.daitoj.tkms.modules.apib0030.service.dto.ProjectSiteDto;
 import com.daitoj.tkms.modules.common.constants.CommonConstants;
 import com.daitoj.tkms.modules.common.constants.MasterData;
 import com.daitoj.tkms.modules.common.constants.Message;
+import com.daitoj.tkms.modules.common.repository.MCustomerRepository;
+import com.daitoj.tkms.modules.common.repository.MEmpRepository;
 import com.daitoj.tkms.modules.common.repository.MItemListSettingRepository;
+import com.daitoj.tkms.modules.common.repository.MMajorWorkRepository;
+import com.daitoj.tkms.modules.common.repository.MMinorWorkRepository;
+import com.daitoj.tkms.modules.common.repository.MOrgRepository;
+import com.daitoj.tkms.modules.common.repository.mapper.MCustomerMapper;
+import com.daitoj.tkms.modules.common.repository.mapper.MEmpMapper;
+import com.daitoj.tkms.modules.common.repository.mapper.MMinorWorkMapper;
+import com.daitoj.tkms.modules.common.repository.mapper.MOrgMapper;
+import com.daitoj.tkms.modules.common.repository.mapper.MajorWorkMapper;
 import com.daitoj.tkms.modules.common.service.ConflictException;
+import com.daitoj.tkms.modules.common.service.ItemListSettingService;
 import com.daitoj.tkms.modules.common.service.NumberService;
 import com.daitoj.tkms.modules.common.service.SystemException;
 import com.daitoj.tkms.modules.common.service.dto.ApiResult;
+import com.daitoj.tkms.modules.common.service.dto.MItemListSettingDto;
 import com.daitoj.tkms.modules.common.utils.DateUtils;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -46,6 +65,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -86,8 +106,41 @@ public class B0030Service {
   /** 案件登録情報リポジトリ */
   private final B0030Mapper b0030Mapper;
 
+  /** 案件登録情報リポジトリ */
+  private final MCustomerMapper mcustomerMapper;
+
+  /** 従業員情報リポジトリ */
+  private final MEmpMapper mempMapper;
+
+  /** 顧客情報のリポジトリ */
+  private final MCustomerRepository mcustomerRepository;
+
+  /** 組織情報のリポジトリ */
+  private final MOrgMapper morgMapper;
+
+  /** 大工事情報のリポジトリ */
+  private final MajorWorkMapper majorWorkMapper;
+
+  /** 小工事情報のリポジトリ */
+  private final MMinorWorkMapper minorWorkMapper;
+
   /** マスタデータリポジトリ */
   private final MItemListSettingRepository mitemListSettingRepository;
+
+  /** 従業員情報のリポジトリ */
+  private final MEmpRepository mempRepository;
+
+  /** 組織情報のリポジトリ */
+  private final MOrgRepository morgRepository;
+
+  /** 大工事情報のリポジトリ */
+  private final MMajorWorkRepository mmajorWorkRepository;
+
+  /** 小工事情報のリポジトリ */
+  private final MMinorWorkRepository minorWorkRepository;
+
+  /** マスタデータサービス */
+  private final ItemListSettingService itemListSettingService;
 
   /** 採番サービス */
   private final NumberService numberRuleService;
@@ -121,8 +174,19 @@ public class B0030Service {
       B0030S07Repository b0030S07Repository,
       B0030S08Repository b0030S08Repository,
       B0030S09Repository b0030S09Repository,
+      MCustomerRepository mcustomerRepository,
+      MEmpRepository mempRepository,
+      MOrgRepository morgRepository,
+      MMajorWorkRepository mmajorWorkRepository,
+      MMinorWorkRepository minorWorkRepository,
       MItemListSettingRepository mitemListSettingRepository,
       B0030Mapper b0030Mapper,
+      MCustomerMapper mcustomerMapper,
+      MEmpMapper mempMapper,
+      MOrgMapper morgMapper,
+      MajorWorkMapper majorWorkMapper,
+      MMinorWorkMapper minorWorkMapper,
+      ItemListSettingService itemListSettingService,
       NumberService numberRuleService,
       MessageSource messageSource) {
     this.b0030S01Repository = b0030S01Repository;
@@ -134,10 +198,107 @@ public class B0030Service {
     this.b0030S07Repository = b0030S07Repository;
     this.b0030S08Repository = b0030S08Repository;
     this.b0030S09Repository = b0030S09Repository;
+    this.mcustomerRepository = mcustomerRepository;
+    this.mempRepository = mempRepository;
+    this.morgRepository = morgRepository;
+    this.mmajorWorkRepository = mmajorWorkRepository;
+    this.minorWorkRepository = minorWorkRepository;
     this.mitemListSettingRepository = mitemListSettingRepository;
     this.b0030Mapper = b0030Mapper;
+    this.mcustomerMapper = mcustomerMapper;
+    this.mempMapper = mempMapper;
+    this.morgMapper = morgMapper;
+    this.majorWorkMapper = majorWorkMapper;
+    this.minorWorkMapper = minorWorkMapper;
+    this.itemListSettingService = itemListSettingService;
     this.numberRuleService = numberRuleService;
     this.messageSource = messageSource;
+  }
+
+  /**
+   * 選択項目取得
+   *
+   * @return 選択項目
+   */
+  public ApiResult<B0030S01ReturnData> getSentakuKoumoku() {
+    try {
+      // マスタデータリストを取得
+      ApiResult<List<MItemListSettingDto>> result =
+          itemListSettingService.getDataList(
+              new String[] {
+                MasterData.ITEM_CLASS_CD_D0002,
+                MasterData.ITEM_CLASS_CD_D0001,
+                MasterData.ITEM_CLASS_CD_D0006,
+                MasterData.ITEM_CLASS_CD_D0003,
+                MasterData.ITEM_CLASS_CD_D0010,
+                MasterData.ITEM_CLASS_CD_D0004,
+                MasterData.ITEM_CLASS_CD_D0007,
+              });
+
+      // 結果情報
+      B0030S01ReturnData ret = new B0030S01ReturnData();
+      // マスタデータリスト情報
+      ret.setSettingList(result.getData());
+
+      // 顧客名リストを取得
+      List<MCustomer> customerList =
+          mcustomerRepository.findAll(Sort.by(Sort.Order.asc("customerCd")));
+      // 顧客名リストを設定
+      ret.setCustomerList(mcustomerMapper.toCustomerSearchList(customerList));
+
+      // 営業部門リストを取得
+      List<MOrg> orgList = morgRepository.findBusyos(DateUtils.formatNow(DateUtils.DATE_FORMAT));
+      // 営業部門リストを設定
+      ret.setOrgList(morgMapper.toOrgSearchDtoList(orgList));
+
+      // 営業管理職を取得
+      List<MEmp> mgrList = mempRepository.findByPositionNm(CommonConstants.POSITION_MGR_NAME);
+      // 営業管理職リストを設定
+      ret.setMgrList(mempMapper.toEmpSearchDtoList(mgrList));
+
+      // 営業担当者リストを取得
+      List<MEmp> empList = mempRepository.findAll(Sort.by(Sort.Order.asc("empCd")));
+      // 営業担当者リストを設定
+      ret.setPicList(mempMapper.toEmpSearchDtoList(empList));
+
+      // 大工事リストを取得
+      List<MMajorWork> majorWorkList =
+          mmajorWorkRepository.findAll(Sort.by(Sort.Order.asc("displayOrder")));
+      // 大工事リストを設定
+      ret.setMajorWorkList(majorWorkMapper.toMajorWorkSearchList(majorWorkList));
+
+      return ApiResult.success(ret);
+    } catch (Exception ex) {
+      LOG.error(ex.toString(), ex);
+
+      throw new SystemException(
+          messageSource.getMessage(Message.MSGID_S0000, null, LocaleContextHolder.getLocale()));
+    }
+  }
+
+  /**
+   * 小工事リスト項目取得
+   *
+   * @return 小工事リスト項目
+   */
+  public ApiResult<B0030S04ReturnData> getMinorWork(String majorWorkCd) {
+    try {
+      // 結果情報
+      B0030S04ReturnData ret = new B0030S04ReturnData();
+
+      // 小工事リストを取得
+      List<MMinorWork> minorWorkList =
+          minorWorkRepository.findById_MajorWorkCdOrderById_MinorWorkCd(majorWorkCd);
+      // 小工事リストを設定
+      ret.setMinorWorkList(minorWorkMapper.toMinorWorkSearchList(minorWorkList));
+
+      return ApiResult.success(ret);
+    } catch (Exception ex) {
+      LOG.error(ex.toString(), ex);
+
+      throw new SystemException(
+          messageSource.getMessage(Message.MSGID_S0000, null, LocaleContextHolder.getLocale()));
+    }
   }
 
   /**

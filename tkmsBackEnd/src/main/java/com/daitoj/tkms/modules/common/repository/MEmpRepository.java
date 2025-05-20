@@ -1,6 +1,7 @@
 package com.daitoj.tkms.modules.common.repository;
 
 import com.daitoj.tkms.domain.MEmp;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -28,12 +29,19 @@ public interface MEmpRepository extends JpaRepository<MEmp, Long> {
   Optional<MEmp> findByEmpCd(String empCd);
 
   /**
-   * 社員コードを採番
+   * 役職コードり、従業員情報を取得する
    *
-   * @return 社員コード
+   * @param positionNm 役職名称に長が含まれる
+   * @return 従業員情報
    */
   @Query(
-      value = "SELECT LPAD((MAX(CAST(e.emp_cd AS INT)) + 1)::TEXT, 6, '0') FROM m_emp e",
-      nativeQuery = true)
-  String getNextValue(); // TODO
+      """
+                SELECT emp
+                  FROM MEmp emp
+            INNER JOIN MPosition pos       ON emp.positionCd = pos
+                 WHERE pos.positionNm like %:positionNm%
+              ORDER BY emp.empCd
+            """)
+  List<MEmp> findByPositionNm(String positionNm);
+
 }

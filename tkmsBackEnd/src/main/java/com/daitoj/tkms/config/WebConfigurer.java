@@ -8,15 +8,11 @@ import org.springframework.boot.web.servlet.ServletContextInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
-import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 import tech.jhipster.config.JHipsterProperties;
-
-import java.util.List;
 
 /**
  * Configuration of web application with Servlet 3.0 APIs.
@@ -34,8 +30,6 @@ public class WebConfigurer implements ServletContextInitializer {
         this.env = env;
         this.jHipsterProperties = jHipsterProperties;
     }
-
-
 
     @Override
     public void onStartup(ServletContext servletContext) {

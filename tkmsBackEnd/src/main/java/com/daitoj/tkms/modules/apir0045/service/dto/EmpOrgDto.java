@@ -25,4 +25,9 @@ public class EmpOrgDto extends BaseDto {
   @NotNull
   @Schema(description = "組織情報", requiredMode = Schema.RequiredMode.REQUIRED)
   private OrgDto org;
+
+  /** 組織区分 */
+  @NotNull
+  @Schema(description = "組織区分", requiredMode = Schema.RequiredMode.REQUIRED)
+  private String orgK;
 }

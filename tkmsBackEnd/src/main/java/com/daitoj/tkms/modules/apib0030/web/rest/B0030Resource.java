@@ -2,10 +2,14 @@ package com.daitoj.tkms.modules.apib0030.web.rest;
 
 import com.daitoj.tkms.modules.apib0030.service.B0030Service;
 import com.daitoj.tkms.modules.apib0030.service.dto.B0030Dto;
+import com.daitoj.tkms.modules.apib0030.service.dto.B0030S01ApiResult;
+import com.daitoj.tkms.modules.apib0030.service.dto.B0030S01ReturnData;
 import com.daitoj.tkms.modules.apib0030.service.dto.B0030S02ApiResult;
 import com.daitoj.tkms.modules.apib0030.service.dto.B0030S02ReturnData;
+import com.daitoj.tkms.modules.apib0030.service.dto.B0030S03ApiResult;
 import com.daitoj.tkms.modules.apib0030.service.dto.B0030S03ReturnData;
-import com.daitoj.tkms.modules.apir0045.service.dto.R0045S03ApiResult;
+import com.daitoj.tkms.modules.apib0030.service.dto.B0030S04ApiResult;
+import com.daitoj.tkms.modules.apib0030.service.dto.B0030S04ReturnData;
 import com.daitoj.tkms.modules.common.constants.CommonConstants;
 import com.daitoj.tkms.modules.common.service.dto.ApiResult;
 import com.daitoj.tkms.modules.common.service.dto.ErrorInfo;
@@ -42,6 +46,81 @@ public class B0030Resource {
   /** コンストラクタ */
   public B0030Resource(B0030Service b0030Service) {
     this.b0030Service = b0030Service;
+  }
+
+  /**
+   * 選択項目取得
+   *
+   * @return 選択項目情報
+   */
+  @Operation(
+      summary = "選択項目を取得",
+      description = "選択項目を取得する",
+      responses = {
+        @ApiResponse(
+            responseCode = "200",
+            description = "成功",
+            content =
+                @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = B0030S01ApiResult.class))),
+        @ApiResponse(
+            responseCode = "500",
+            description = "システムエラー",
+            content =
+                @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = ErrorInfo.class)))
+      })
+  @GetMapping("/list")
+  public ResponseEntity<?> getsyainkanritourokuInfo() {
+    // 選択項目情報を取得
+    ApiResult<B0030S01ReturnData> result = b0030Service.getSentakuKoumoku();
+
+    // 成功の場合
+    return ResponseEntity.ok().body(result);
+  }
+
+  /**
+   * 小工事選択項目取得
+   *
+   * @return 小工事選択項目情報
+   */
+  @Operation(
+      summary = "小工事選択項目を取得",
+      description = "小工事選択項目を取得する",
+      responses = {
+        @ApiResponse(
+            responseCode = "200",
+            description = "成功",
+            content =
+                @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = B0030S04ApiResult.class))),
+        @ApiResponse(
+            responseCode = "500",
+            description = "システムエラー",
+            content =
+                @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = ErrorInfo.class)))
+      })
+  @GetMapping("/minorWork")
+  public ResponseEntity<?> getminorWork(
+      @RequestParam(name = "majorWork_cd", required = true)
+          @Size(max = 9)
+          @Parameter(
+              name = "majorWork_cd",
+              description = "大工事コード",
+              required = true,
+              in = ParameterIn.QUERY,
+              schema = @Schema(type = "string", maxLength = 9))
+          String majorWorkCd) {
+    // 小工事選択項目情報を取得
+    ApiResult<B0030S04ReturnData> result = b0030Service.getMinorWork(majorWorkCd);
+
+    // 成功の場合
+    return ResponseEntity.ok().body(result);
   }
 
   /**
@@ -102,14 +181,14 @@ public class B0030Resource {
             content =
                 @Content(
                     mediaType = "application/json",
-                    schema = @Schema(implementation = ApiResult.class))),
+                    schema = @Schema(implementation = B0030S03ApiResult.class))),
         @ApiResponse(
             responseCode = "201",
             description = "新規成功",
             content =
                 @Content(
                     mediaType = "application/json",
-                    schema = @Schema(implementation = R0045S03ApiResult.class))),
+                    schema = @Schema(implementation = B0030S03ApiResult.class))),
         @ApiResponse(
             responseCode = "500",
             description = "システムエラー",

@@ -4,11 +4,15 @@ import com.daitoj.tkms.domain.MEmp;
 import com.daitoj.tkms.domain.MEmpCert;
 import com.daitoj.tkms.domain.MEmpOrg;
 import com.daitoj.tkms.domain.MEmpPhoto;
+import com.daitoj.tkms.domain.MEmpTransferDtl;
+import com.daitoj.tkms.domain.MEmpTransferHdr;
 import com.daitoj.tkms.modules.apir0045.service.dto.EmpCertDto;
 import com.daitoj.tkms.modules.apir0045.service.dto.EmpDto;
 import com.daitoj.tkms.modules.apir0045.service.dto.EmpOrgDto;
 import com.daitoj.tkms.modules.apir0045.service.dto.EmpPhotoDto;
 import com.daitoj.tkms.modules.apir0045.service.dto.EmpResultDto;
+import com.daitoj.tkms.modules.common.service.dto.EmpTransferDtlDto;
+import com.daitoj.tkms.modules.common.service.dto.EmpTransferHdrDto;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
@@ -149,6 +153,7 @@ public interface R0045Mapper {
    */
   @Mapping(target = "emp.id", expression = "java(empId)")
   @Mapping(target = "delFlg", source = "delFlg", qualifiedByName = "nullToZero")
+  @Mapping(target = "id", source = "id", ignore = true)
   MEmpOrg toEmpOrgEntity(EmpOrgDto empOrgDto, @Context Long empId);
 
   /**
@@ -169,6 +174,7 @@ public interface R0045Mapper {
    */
   @Mapping(target = "emp.id", expression = "java(empId)")
   @Mapping(target = "delFlg", source = "delFlg", qualifiedByName = "nullToZero")
+  @Mapping(target = "id", source = "id", ignore = true)
   MEmpCert toEmpCertEntity(EmpCertDto empCertDto, @Context Long empId);
 
   /**
@@ -189,6 +195,7 @@ public interface R0045Mapper {
    */
   @Mapping(target = "emp.id", expression = "java(empId)")
   @Mapping(target = "delFlg", source = "delFlg", qualifiedByName = "nullToZero")
+  @Mapping(target = "id", source = "id", ignore = true)
   MEmpPhoto toEmpPhotoEntity(EmpPhotoDto empPhotoDto, @Context Long empId);
 
   /**
@@ -199,4 +206,41 @@ public interface R0045Mapper {
    * @return 従業員顔写真エンティティリスト
    */
   List<MEmpPhoto> toEmpPhotoEntityList(List<EmpPhotoDto> empPhotoDtoList, @Context Long empId);
+
+  /**
+   * 従業員異動情報から従業員異動Dtoに変換する.
+   *
+   * @param empTransfer 従業員
+   * @return 従業員異動Dto
+   */
+  EmpTransferHdrDto toEmpTransferHdrDto(MEmpTransferHdr empTransfer);
+
+  /**
+   * 従業員異動明細情報から従業員異動明細情報Dtoに変換する.
+   *
+   * @param empTransferDtl 従業員異動明細情報
+   * @return 従業員異動明細情報Dto
+   */
+  @Mapping(source = "org.id", target = "orgId")
+  @Mapping(source = "org.orgCd", target = "orgCd")
+  EmpTransferDtlDto mapTransferDtlDto(MEmpTransferDtl empTransferDtl);
+
+  /**
+   * 従業員異動明細情報をソート
+   *
+   * @param empTransferDtl 従業員異動明細情報
+   * @return ソートした従業員異動明細情報
+   */
+  default List<EmpTransferDtlDto> mapEmpTransferDtlList(Set<MEmpTransferDtl> empTransferDtl) {
+    if (empTransferDtl == null) {
+      return null;
+    }
+    // ソート
+    // 社員写真Dtoに変換する
+    return empTransferDtl.stream()
+        .sorted(
+            Comparator.comparing(MEmpTransferDtl::getSeqNo).thenComparing(MEmpTransferDtl::getOrgK))
+        .map(this::mapTransferDtlDto)
+        .collect(Collectors.toList());
+  }
 }

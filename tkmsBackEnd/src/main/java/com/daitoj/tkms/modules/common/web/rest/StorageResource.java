@@ -1,9 +1,11 @@
 package com.daitoj.tkms.modules.common.web.rest;
 
+import com.daitoj.tkms.modules.common.constants.KeyConstants;
 import com.daitoj.tkms.modules.common.service.CloudStorageService;
 import com.daitoj.tkms.modules.common.service.dto.ErrorInfo;
 import com.daitoj.tkms.modules.common.service.dto.StorageUploadResult;
 import com.daitoj.tkms.modules.common.service.dto.StorageUrlResult;
+import com.daitoj.tkms.modules.common.utils.ContextUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -20,6 +22,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -37,6 +40,9 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/api/v1/storage")
 public class StorageResource {
 
+  /** 機能ID */
+  public static final String PG_ID = "Web";
+
   /** ストレージサービス */
   private final CloudStorageService cloudStorageService;
 
@@ -46,51 +52,10 @@ public class StorageResource {
   }
 
   /**
-   * ファイルアップロード
-   *
-   * @param file ファイル
-   * @return オブジェクト名
-   */
-  @Operation(
-      summary = "ファイルをアップロードする",
-      description = "ファイルをアップロードする",
-      responses = {
-        @ApiResponse(
-            responseCode = "200",
-            description = "成功",
-            content =
-                @Content(
-                    mediaType = "application/json",
-                    schema = @Schema(implementation = ResponseEntity.class))),
-        @ApiResponse(
-            responseCode = "500",
-            description = "システムエラー",
-            content =
-                @Content(
-                    mediaType = "application/json",
-                    schema = @Schema(implementation = ErrorInfo.class)))
-      })
-  @PostMapping("/upload")
-  public ResponseEntity<?> upload(
-      @RequestParam(name = "file", required = true)
-          @Parameter(description = "アップロードファイル", required = true, in = ParameterIn.QUERY)
-          MultipartFile file) {
-
-    // オブジェクト名
-    String objectName = cloudStorageService.upload(file);
-
-    // 結果
-    Map<String, String> ret = new HashMap<>();
-    ret.put("objectName", objectName);
-
-    return ResponseEntity.ok().body(ret);
-  }
-
-  /**
    * ファイルリストをアップロード
    *
-   * @param file ファイルリスト
-   * @return オブジェクト名
+   * @param files ファイルリスト
+   * @return ファイルIDリスト
    */
   @Operation(
       summary = "ファイルをアップロードする",
@@ -111,19 +76,28 @@ public class StorageResource {
                     mediaType = "application/json",
                     schema = @Schema(implementation = ErrorInfo.class)))
       })
-  @PostMapping("/batchUpload")
-  public ResponseEntity<List<StorageUploadResult>> uploadList(
+  @PostMapping("/upload")
+  public ResponseEntity<StorageUploadResult> upload(
       @RequestParam(name = "file", required = true)
           @Parameter(description = "アップロードファイルリスト", required = true, in = ParameterIn.QUERY)
-          MultipartFile[] file) {
-    List<StorageUploadResult> ret = new ArrayList<>();
+          MultipartFile[] files,
+      @RequestParam(name = "login_id", required = true)
+          @Parameter(description = "ログインID", required = true, in = ParameterIn.QUERY)
+          String loginId,
+      @RequestParam(name = "pg_id", required = true)
+          @Parameter(description = "機能ID", required = true, in = ParameterIn.QUERY)
+          String pgId) {
+    StorageUploadResult ret = new StorageUploadResult();
 
-    for (MultipartFile mfile : file) {
-      // オブジェクト名
-      String objectName = cloudStorageService.upload(mfile);
-      // 結果にファイルを設定
-      ret.add(new StorageUploadResult(mfile.getOriginalFilename(), objectName));
-    }
+    // ログインID
+    ContextUtils.setParameter(KeyConstants.HTTP_HEADER_LOGIN_ID, loginId);
+    // 機能ID
+    ContextUtils.setParameter(KeyConstants.HTTP_HEADER_PG_ID, String.join("", PG_ID, pgId));
+
+    // ファイルIDリスト
+    List<UUID> uuidList = cloudStorageService.upload(files);
+    // 結果にファイルを設定
+    ret.setUuid(uuidList);
 
     return ResponseEntity.ok().body(ret);
   }

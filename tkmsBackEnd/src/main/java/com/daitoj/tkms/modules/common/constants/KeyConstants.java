@@ -35,4 +35,10 @@ public class KeyConstants {
 
   /** 変数のパスワード */
   public static final String A0020_VAR_PASSWORD = "PASSWORD";
+
+  /** 社員登録変数のログインID */
+  public static final String R0045_VAR_LOGIN_ID = "LOGIN_ID";
+
+  /** 社員登録変数のパスワード */
+  public static final String R0045_VAR_PASSWORD = "PASSWORD";
 }

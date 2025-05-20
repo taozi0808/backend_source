@@ -2,6 +2,7 @@ package com.daitoj.tkms.modules.common.repository;
 
 import com.daitoj.tkms.domain.MSystemConfig;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -35,5 +36,5 @@ public interface MSystemConfigRepository extends JpaRepository<MSystemConfig, St
       value = SYSTEMCONFIG_BY_SYSCD_KEY_CACHE,
       key = "#sysCd + '-' + #configKey",
       unless = "#result == null")
-  MSystemConfig findById_SysCdAndId_ConfigKey(String sysCd, String configKey);
+  Optional<MSystemConfig> findById_SysCdAndId_ConfigKey(String sysCd, String configKey);
 }

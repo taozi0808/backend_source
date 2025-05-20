@@ -1,6 +1,8 @@
 package com.daitoj.tkms.modules.common.service;
 
 import java.io.InputStream;
+import java.util.List;
+import java.util.UUID;
 import org.springframework.web.multipart.MultipartFile;
 
 /** ファイルサービス */
@@ -8,10 +10,10 @@ public interface CloudStorageService {
   /**
    * ファイルアップロード
    *
-   * @param file ファイル
-   * @return オブジェクト名
+   * @param files ファイル
+   * @return ファイルIDリスト
    */
-  String upload(MultipartFile file);
+  List<UUID> upload(MultipartFile[] files);
 
   /**
    * ファイルをダウンロードする

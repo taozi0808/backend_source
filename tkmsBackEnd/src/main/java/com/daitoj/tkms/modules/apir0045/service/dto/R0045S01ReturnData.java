@@ -1,7 +1,10 @@
 package com.daitoj.tkms.modules.apir0045.service.dto;
 
-import com.daitoj.tkms.domain.MCert;
+import com.daitoj.tkms.modules.common.service.dto.CertSearchDto;
 import com.daitoj.tkms.modules.common.service.dto.MItemListSettingDto;
+import com.daitoj.tkms.modules.common.service.dto.OrgRevSearchDto;
+import com.daitoj.tkms.modules.common.service.dto.OrgSearchDto;
+import com.daitoj.tkms.modules.common.service.dto.PositionSearchDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
 
@@ -17,5 +20,29 @@ public class R0045S01ReturnData {
 
   /** 資格リスト情報 */
   @Schema(description = "資格リスト情報")
-  List<MCert> certList;
+  List<CertSearchDto> certList;
+
+  /** 役職リスト情報 */
+  @Schema(description = "役職リスト情報")
+  List<PositionSearchDto> positionList;
+
+  /** 部署リスト情報 */
+  @Schema(description = "部署リスト情報")
+  List<OrgSearchDto> busyoList;
+
+  /** 部署課リスト情報 */
+  @Schema(description = "部署課リスト情報")
+  List<OrgSearchDto> busyokaList;
+
+  /** 異動部署リスト情報 */
+  @Schema(description = "異動部署リスト情報")
+  List<OrgSearchDto> transferBusyoList;
+
+  /** 異動部署課リスト情報 */
+  @Schema(description = "異動部署課リスト情報")
+  List<OrgSearchDto> transferBusyokaList;
+
+  /** 適用開始日 */
+  @Schema(description = "適用開始日")
+  List<OrgRevSearchDto> startDtList;
 }

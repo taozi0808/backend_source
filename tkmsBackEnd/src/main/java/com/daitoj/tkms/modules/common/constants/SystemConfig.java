@@ -10,4 +10,10 @@ public class SystemConfig {
 
   /** 【システム利用可能時間】終了時間（HH24:MM */
   public static final String SYS_USABLE_END_TIME = "SYS_USABLE_END_TIME";
+
+  /** システムコード:S3 */
+  public static final String SYS_CD_S3 = "S3";
+
+  /** S3ファイル格納パス */
+  public static final String SYS_S3_PATH = "PATH";
 }

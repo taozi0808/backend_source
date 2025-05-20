@@ -27,7 +27,7 @@ public class MOrgMenuItem extends BaseEntity implements Serializable {
 
   @MapsId
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
-  @JoinColumn(name = "m_org_id", nullable = false)
+  @JoinColumn(name = "org_id", nullable = false)
   private MOrg mOrg;
 
   @MapsId

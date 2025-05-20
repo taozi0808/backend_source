@@ -50,4 +50,13 @@ public final class CommonConstants {
 
   /** 概算作成フラグ 0：未作成 */
   public static final String ROUGH_EST_CREATE_FLG_UNCREATED = "0";
+
+  /** 役職名称に長が含まれる人 */
+  public static final String POSITION_MGR_NAME = "長";
+
+  /** 部署:部 */
+  public static final Integer ORG_LVL_BU = 2;
+
+  /** 部署:部課 */
+  public static final Integer ORG_LVL_KA = 4;
 }

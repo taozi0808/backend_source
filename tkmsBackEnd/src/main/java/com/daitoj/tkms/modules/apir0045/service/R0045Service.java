@@ -1,18 +1,59 @@
 package com.daitoj.tkms.modules.apir0045.service;
 
-import com.daitoj.tkms.domain.*;
+import com.daitoj.tkms.domain.MCert;
+import com.daitoj.tkms.domain.MEmp;
+import com.daitoj.tkms.domain.MEmpCert;
+import com.daitoj.tkms.domain.MEmpOrg;
+import com.daitoj.tkms.domain.MEmpPhoto;
+import com.daitoj.tkms.domain.MEmpTransferHdr;
+import com.daitoj.tkms.domain.MItemListSetting;
+import com.daitoj.tkms.domain.MLogin;
+import com.daitoj.tkms.domain.MOrg;
+import com.daitoj.tkms.domain.MOrgRev;
+import com.daitoj.tkms.domain.MPosition;
 import com.daitoj.tkms.modules.apir0045.repository.R0045Repository;
 import com.daitoj.tkms.modules.apir0045.repository.mapper.R0045Mapper;
-import com.daitoj.tkms.modules.apir0045.service.dto.*;
+import com.daitoj.tkms.modules.apir0045.service.dto.EmpCertDto;
+import com.daitoj.tkms.modules.apir0045.service.dto.EmpDto;
+import com.daitoj.tkms.modules.apir0045.service.dto.EmpOrgDto;
+import com.daitoj.tkms.modules.apir0045.service.dto.EmpPhotoDto;
+import com.daitoj.tkms.modules.apir0045.service.dto.EmpResultDto;
+import com.daitoj.tkms.modules.apir0045.service.dto.R0045Dto;
+import com.daitoj.tkms.modules.apir0045.service.dto.R0045PrintDto;
+import com.daitoj.tkms.modules.apir0045.service.dto.R0045S01ReturnData;
+import com.daitoj.tkms.modules.apir0045.service.dto.R0045S02ReturnData;
+import com.daitoj.tkms.modules.apir0045.service.dto.R0045S03ReturnData;
+import com.daitoj.tkms.modules.apir0045.service.dto.R0045S04ReturnData;
 import com.daitoj.tkms.modules.common.constants.CommonConstants;
 import com.daitoj.tkms.modules.common.constants.KeyConstants;
 import com.daitoj.tkms.modules.common.constants.MasterData;
 import com.daitoj.tkms.modules.common.constants.Message;
 import com.daitoj.tkms.modules.common.constants.TemplateName;
-import com.daitoj.tkms.modules.common.repository.*;
+import com.daitoj.tkms.modules.common.repository.MCertRepository;
+import com.daitoj.tkms.modules.common.repository.MEmpCertRepository;
+import com.daitoj.tkms.modules.common.repository.MEmpOrgRepository;
+import com.daitoj.tkms.modules.common.repository.MEmpPhotoRepository;
+import com.daitoj.tkms.modules.common.repository.MEmpRepository;
+import com.daitoj.tkms.modules.common.repository.MEmpTransferHdrRepository;
+import com.daitoj.tkms.modules.common.repository.MItemListSettingRepository;
+import com.daitoj.tkms.modules.common.repository.MLoginRepository;
+import com.daitoj.tkms.modules.common.repository.MOrgRepository;
+import com.daitoj.tkms.modules.common.repository.MOrgRevRepository;
+import com.daitoj.tkms.modules.common.repository.MPositionRepository;
+import com.daitoj.tkms.modules.common.repository.mapper.MCertMapper;
 import com.daitoj.tkms.modules.common.repository.mapper.MItemSettingMapper;
-import com.daitoj.tkms.modules.common.service.*;
+import com.daitoj.tkms.modules.common.repository.mapper.MOrgMapper;
+import com.daitoj.tkms.modules.common.repository.mapper.MOrgRevMapper;
+import com.daitoj.tkms.modules.common.repository.mapper.MPositionMapper;
+import com.daitoj.tkms.modules.common.service.CloudStorageService;
+import com.daitoj.tkms.modules.common.service.ConflictException;
+import com.daitoj.tkms.modules.common.service.CustomMailService;
+import com.daitoj.tkms.modules.common.service.ItemListSettingService;
+import com.daitoj.tkms.modules.common.service.NumberService;
+import com.daitoj.tkms.modules.common.service.ReportService;
+import com.daitoj.tkms.modules.common.service.SystemException;
 import com.daitoj.tkms.modules.common.service.dto.ApiResult;
+import com.daitoj.tkms.modules.common.service.dto.ErrorInfo;
 import com.daitoj.tkms.modules.common.service.dto.MItemListSettingDto;
 import com.daitoj.tkms.modules.common.service.dto.MitemSettingDto;
 import com.daitoj.tkms.modules.common.utils.DateUtils;
@@ -22,13 +63,19 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.mail.MessagingException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import net.sf.jasperreports.engine.JREmptyDataSource;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.data.domain.Sort;
 import org.springframework.mail.MailSendException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -62,6 +109,18 @@ public class R0045Service {
   /** 従業員顔写真情報リポジトリ */
   private final MEmpPhotoRepository mempPhotoRepository;
 
+  /** 役職情報リポジトリ */
+  private final MPositionRepository mpositionRepository;
+
+  /** 組織情報のリポジトリ */
+  private final MOrgRepository morgRepository;
+
+  /** 組織改定情報のリポジトリ */
+  private final MOrgRevRepository morgRevRepository;
+
+  /** 従業員異動ヘッダ情報のリポジトリ */
+  private final MEmpTransferHdrRepository mempTransferHdrRepository;
+
   /** レポートサービス */
   private final ReportService reportService;
 
@@ -83,22 +142,41 @@ public class R0045Service {
   /** マスタデータのDTOマッパー */
   private final MItemSettingMapper itemSettingMapper;
 
-  private final MCertRepository mCertRepository;
+  /** 役職のDTOマッパー */
+  private final MPositionMapper mpositionMapper;
+
+  /** 資格のDTOマッパー */
+  private final MCertMapper mcertMapper;
+
+  /** 組織情報のリポジトリ */
+  private final MOrgMapper morgMapper;
+
+  /** 組織改定情報のリポジトリ */
+  private final MOrgRevMapper morgRevMapper;
+
+  private final MCertRepository mcertRepository;
+
+  /** 採番サービス */
+  private final NumberService numberRuleService;
 
   /** ストレージサービス */
   private final CloudStorageService cloudStorageService;
 
-  /** 処理区分：新規 */
-  public static final String SHORIKUBUN_SINNKI = "1";
-
-  /** 歴番:01から連番 */
-  private static final String HIS_NO_START = "01";
+  /** 採番項目ID(社員コード) */
+  private static final String FIELD_ID_EMP_CD = "EMP_CD";
 
   /** 帳票日付フォーマット */
   private static final String PDF_DATE_FORMAT = "yyyy年MM年dd日HH:mm:ss";
 
   /** レポートファイル名 */
   public static final String REPORT_FILE_NAME = "WebR0045.jasper";
+
+  /** レポートファイル名 */
+  public static final String CERT_SUB_REPORT_FILE_NAME = "WebR0045_EmpCert.jasper";
+
+  /** テンプレートのテンプレートフォルダ */
+  @Value("${jasper.template.path}")
+  private String templatePath;
 
   /** コンストラクタ */
   public R0045Service(
@@ -109,15 +187,24 @@ public class R0045Service {
       MEmpOrgRepository mempOrgRepository,
       MEmpCertRepository mempCertRepository,
       MEmpPhotoRepository mempPhotoRepository,
+      MPositionRepository mpositionRepository,
+      MOrgRepository morgRepository,
+      MOrgRevRepository morgRevRepository,
+      MCertRepository mcertRepository,
+      MEmpTransferHdrRepository mempTransferHdrRepository,
       R0045Mapper r0045Mapper,
       CustomMailService customMailService,
       ItemListSettingService itemListSettingService,
       ObjectMapper objectMapper,
       ReportService reportService,
       MessageSource messageSource,
+      NumberService numberRuleService,
       CloudStorageService cloudStorageService,
       MItemSettingMapper itemSettingMapper,
-      MCertRepository mCertRepository) {
+      MPositionMapper mpositionMapper,
+      MCertMapper mcertMapper,
+      MOrgRevMapper morgRevMapper,
+      MOrgMapper morgMapper) {
     this.r0045Repository = r0045Repository;
     this.loginRepository = loginRepository;
     this.mitemListSettingRepository = mitemListSettingRepository;
@@ -125,15 +212,24 @@ public class R0045Service {
     this.mempOrgRepository = mempOrgRepository;
     this.mempCertRepository = mempCertRepository;
     this.mempPhotoRepository = mempPhotoRepository;
+    this.mpositionRepository = mpositionRepository;
+    this.morgRepository = morgRepository;
+    this.morgRevRepository = morgRevRepository;
+    this.mcertRepository = mcertRepository;
+    this.mempTransferHdrRepository = mempTransferHdrRepository;
     this.r0045Mapper = r0045Mapper;
     this.customMailService = customMailService;
     this.itemListSettingService = itemListSettingService;
     this.objectMapper = objectMapper;
     this.reportService = reportService;
     this.messageSource = messageSource;
+    this.numberRuleService = numberRuleService;
     this.cloudStorageService = cloudStorageService;
     this.itemSettingMapper = itemSettingMapper;
-    this.mCertRepository = mCertRepository;
+    this.mpositionMapper = mpositionMapper;
+    this.mcertMapper = mcertMapper;
+    this.morgMapper = morgMapper;
+    this.morgRevMapper = morgRevMapper;
   }
 
   /**
@@ -147,12 +243,68 @@ public class R0045Service {
       ApiResult<List<MItemListSettingDto>> result =
           itemListSettingService.getDataList(
               new String[] {MasterData.ITEM_CLASS_CD_D0013, MasterData.ITEM_CLASS_CD_D0014});
-      List<MCert> certList = mCertRepository.findByOrderByDisplayOrder();
+
       // 結果情報
       R0045S01ReturnData ret = new R0045S01ReturnData();
       // 選択項目情報
       ret.setSettingList(result.getData());
-      ret.setCertList(certList);
+
+      // 役職リストを取得
+      List<MPosition> positionList =
+          mpositionRepository.findAll(Sort.by(Sort.Order.asc("positionCd")));
+      // 役職リストを設定
+      ret.setPositionList(mpositionMapper.toPositionSearchDtoList(positionList));
+
+      // 組織リストを取得
+      List<MOrg> orgList = morgRepository.findBusyos(DateUtils.formatNow(DateUtils.DATE_FORMAT));
+
+      if (!CollectionUtils.isEmpty(orgList)) {
+        // 部署リスト
+        List<MOrg> busyoList =
+            orgList.stream()
+                .filter(item -> Integer.compare(CommonConstants.ORG_LVL_BU, item.getLvl()) == 0)
+                .toList();
+        ret.setBusyoList(morgMapper.toOrgSearchDtoList(busyoList));
+
+        // 部署課リスト
+        List<MOrg> busyoKaList =
+            orgList.stream()
+                .filter(item -> Integer.compare(CommonConstants.ORG_LVL_KA, item.getLvl()) == 0)
+                .toList();
+        ret.setBusyokaList(morgMapper.toOrgSearchDtoList(busyoKaList));
+      }
+
+      // 異動組織リストを取得
+      List<MOrg> transOrgList =
+          morgRepository.findTransferBusyos(DateUtils.formatNow(DateUtils.DATE_FORMAT));
+
+      if (!CollectionUtils.isEmpty(transOrgList)) {
+        // 異動部署リスト
+        List<MOrg> busyoList =
+            transOrgList.stream()
+                .filter(item -> Integer.compare(CommonConstants.ORG_LVL_BU, item.getLvl()) == 0)
+                .toList();
+        ret.setTransferBusyoList(morgMapper.toOrgSearchDtoList(busyoList));
+
+        // 異動部署課リスト
+        List<MOrg> busyoKaList =
+            transOrgList.stream()
+                .filter(item -> Integer.compare(CommonConstants.ORG_LVL_KA, item.getLvl()) == 0)
+                .toList();
+        ret.setTransferBusyokaList(morgMapper.toOrgSearchDtoList(busyoKaList));
+      }
+
+      // 資格情報を取得
+      List<MCert> certList = mcertRepository.findByOrderByDisplayOrder();
+      // 資格リストを設定
+      ret.setCertList(mcertMapper.toCertSearchList(certList));
+
+      // 適用開始日リストを取得
+      List<MOrgRev> orgRevList =
+          morgRevRepository.findByEffectiveStartDtGreaterThanOrderByEffectiveStartDt(
+              DateUtils.formatNow(DateUtils.DATE_FORMAT));
+      // 適用開始日リストを設定
+      ret.setStartDtList(morgRevMapper.toOrgRevSearchDtoList(orgRevList));
 
       return ApiResult.success(ret);
     } catch (Exception ex) {
@@ -194,6 +346,15 @@ public class R0045Service {
                 DateUtils.formatNow(DateUtils.DATE_FORMAT))
             .ifPresent(item -> empDto.setSexName(item.getItemValue()));
       }
+// TODO
+//      // 従業員の異動情報を設定
+//      Optional<MEmpTransferHdr> empTransferHdr =
+//          mempTransferHdrRepository.findByEmp_IdAndEffectiveStartDt(empEntity.getId(), effectiveStartDt);
+
+      //            .ifPresent(
+      //            empTransferHdr ->
+      //
+      // returnData.setEmpTransferHdr(r0045Mapper.toEmpTransferHdrDto(empTransferHdr)))
 
       // 結果情報
       R0045S02ReturnData result = new R0045S02ReturnData();
@@ -225,7 +386,7 @@ public class R0045Service {
       EmpDto empDto = inDto.getEmp();
 
       // 処理区分が新規
-      if (SHORIKUBUN_SINNKI.equals(inDto.getShorikubun())) {
+      if (CommonConstants.SHORIKUBUN_SINNKI.equals(inDto.getShorikubun())) {
         // 社員コードがある
         if (StringUtils.isNotBlank(empDto.getEmpCd())) {
           // 社員情報
@@ -246,7 +407,7 @@ public class R0045Service {
           empCd = empDto.getEmpCd();
         } else {
           // 社員コードを採番
-          empCd = mempRepository.getNextValue();
+          empCd = numberRuleService.getNextNumberByFieldId(FIELD_ID_EMP_CD, null, null);
         }
 
         // パスワードを生成
@@ -259,13 +420,14 @@ public class R0045Service {
 
         // メールの変数
         Map<String, Object> varMap = new HashMap<>();
-        varMap.put(KeyConstants.A0020_VAR_PASSWORD, passwordString);
+        varMap.put(KeyConstants.R0045_VAR_LOGIN_ID, empDto.getLogin().getLoginId());
+        varMap.put(KeyConstants.R0045_VAR_PASSWORD, passwordString);
 
         // メールを送信する
         customMailService.sendEmailFromTemplate(
-            TemplateName.A0020_TEMPLATE,
+            TemplateName.R0045_INS_TEMPLATE,
             empDto.getMailAddress(),
-            Message.A0020_MAIL_TITLE,
+            Message.R0045_MAIL_TITLE,
             varMap,
             false,
             false);
@@ -333,12 +495,23 @@ public class R0045Service {
       String encodePassword = bcryptPasswordEncoder.encode(passwordString);
 
       // ログイン情報を取得する
-      MLogin loginInfo = loginRepository.findById(loginId).orElseThrow(ConflictException::new);
+      Optional<MLogin> loginInfo = loginRepository.findById(loginId);
+
+      if (loginInfo.isEmpty()) {
+        // 退職者は再通知することが出来ません。
+        String msg =
+            messageSource.getMessage(Message.MSGID_U00018, null, LocaleContextHolder.getLocale());
+
+        LOG.info(msg);
+
+        // 結果情報
+        return ApiResult.error(Message.MSGID_U00018, msg);
+      }
 
       // パスワードを設定
-      loginInfo.setPassword(encodePassword);
+      loginInfo.get().setPassword(encodePassword);
       // ログイン情報の更新処理
-      loginRepository.save(loginInfo);
+      loginRepository.save(loginInfo.get());
 
       // メール変数
       Map<String, Object> varMap = new HashMap<>();
@@ -348,17 +521,25 @@ public class R0045Service {
       customMailService.sendEmailFromTemplate(
           TemplateName.A0020_TEMPLATE, mailAddress, Message.A0020_MAIL_TITLE, varMap, false, false);
 
-      return ApiResult.success();
-
-    } catch (MessagingException e) {
-      // メッセージ：メール送信に失敗しました。
+      // パスワード再通知致しました。
       String msg =
-          messageSource.getMessage(Message.MSGID_A00007, null, LocaleContextHolder.getLocale());
+          messageSource.getMessage(Message.MSGID_U00020, null, LocaleContextHolder.getLocale());
 
-      LOG.warn(msg);
+      ErrorInfo msgInfo = new ErrorInfo();
+      msgInfo.setCode(Message.MSGID_U00020);
+      msgInfo.setMessage(msg);
+
+      return ApiResult.success(msgInfo);
+
+    } catch (MessagingException | MailSendException e) {
+      // メールの送信に失敗しました。メールアドレスを確認してください。
+      String msg =
+          messageSource.getMessage(Message.MSGID_U00019, null, LocaleContextHolder.getLocale());
+
+      LOG.error(msg);
 
       // 結果情報
-      return ApiResult.error(Message.MSGID_A00007, msg);
+      return ApiResult.error(Message.MSGID_U00019, msg);
 
     } catch (Exception ex) {
       LOG.error(ex.toString(), ex);
@@ -431,6 +612,34 @@ public class R0045Service {
   }
 
   /**
+   * 従業員の異動情報を取得
+   *
+   * @param empId 従業員ID
+   * @param effectiveStartDt 適用開始日付
+   * @return 従業員の異動情報
+   */
+  public ApiResult<R0045S04ReturnData> getEmpTransferHdr(Long empId, String effectiveStartDt) {
+    try {
+      // 戻り値
+      R0045S04ReturnData returnData = new R0045S04ReturnData();
+
+      // 従業員の異動情報を設定
+      mempTransferHdrRepository
+          .findByEmp_IdAndEffectiveStartDt(empId, effectiveStartDt)
+          .ifPresent(
+              empTransferHdr ->
+                  returnData.setEmpTransferHdr(r0045Mapper.toEmpTransferHdrDto(empTransferHdr)));
+
+      return ApiResult.success(returnData);
+    } catch (Exception ex) {
+      LOG.error(ex.toString(), ex);
+
+      throw new SystemException(
+          messageSource.getMessage(Message.MSGID_S0000, null, LocaleContextHolder.getLocale()));
+    }
+  }
+
+  /**
    * ログイン情報を登録
    *
    * @param empDto 社員情報
@@ -479,7 +688,7 @@ public class R0045Service {
     // 最新フラグ;1：最新
     empEntity.setNewestFlg(CommonConstants.NEWEST_FLAG_NEW);
     // 歴番;01から連番
-    empEntity.setHisNo(HIS_NO_START);
+    empEntity.setHisNo(CommonConstants.HIS_NO_START);
     // 社員エンティティを登録
     return mempRepository.saveAndFlush(empEntity);
   }
@@ -498,7 +707,8 @@ public class R0045Service {
 
     // 社員エンティティに変換
     MEmp empEntity = r0045Mapper.toEmpEntity(empDto);
-    // ID TODO
+    // ID
+    empEntity.setId(null);
     // 最新フラグ;1：最新
     empEntity.setNewestFlg(CommonConstants.NEWEST_FLAG_NEW);
     // 歴番+1

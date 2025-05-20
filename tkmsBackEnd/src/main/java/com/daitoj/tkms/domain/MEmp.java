@@ -148,4 +148,5 @@ public class MEmp extends BaseEntity {
 
   @OneToMany(mappedBy = "emp", fetch = FetchType.LAZY)
   private Set<MEmpOrg> empOrgList;
+
 }
