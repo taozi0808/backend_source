@@ -31,26 +31,18 @@ public class M0010S01Dto extends BasePageRequest {
   private String shinseisyaCode;
 
   /** 現場着手日（開始） */
-  @Schema(name = "gcYmdStart", description = "現場着手日（開始）(yyyy-MM-dd)", example = "2025-01-02")
-  @DateTimeFormat(pattern = "yyyy-MM-dd")
-  @JsonFormat(pattern = "yyyy-MM-dd")
-  private LocalDate gcYmdStart;
+  @Schema(name = "gcYmdStart", description = "現場着手日（開始）")
+  private String gcYmdStart;
 
   /** 現場着手日（終了） */
-  @DateTimeFormat(pattern = "yyyy-MM-dd")
-  @JsonFormat(pattern = "yyyy-MM-dd")
-  @Schema(name = "gcYmdEnd", description = "現場着手日（終了）(yyyy-MM-dd)", example = "2025-01-02")
-  private LocalDate gcYmdEnd;
+  @Schema(name = "gcYmdEnd", description = "現場着手日（終了）")
+  private String gcYmdEnd;
 
   /** 現場引渡日（開始） */
-  @Schema(name = "ghYmdStart", description = "現場引渡日（開始）(yyyy-MM-dd)", example = "2025-01-02")
-  @DateTimeFormat(pattern = "yyyy-MM-dd")
-  @JsonFormat(pattern = "yyyy-MM-dd")
-  private LocalDate ghYmdStart;
+  @Schema(name = "ghYmdStart", description = "現場引渡日（開始）")
+  private String ghYmdStart;
 
   /** 現場引渡日（終了） */
-  @DateTimeFormat(pattern = "yyyy-MM-dd")
-  @JsonFormat(pattern = "yyyy-MM-dd")
-  @Schema(name = "ghYmdEnd", description = "現場引渡日（終了）(yyyy-MM-dd)", example = "2025-01-02")
-  private LocalDate ghYmdEnd;
+  @Schema(name = "ghYmdEnd", description = "現場引渡日（終了）")
+  private String ghYmdEnd;
 }

@@ -3,6 +3,7 @@ package com.daitoj.tkms.modules.apib0010.service.dto;
 import com.daitoj.tkms.modules.common.service.dto.BasePageRequest;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Size;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 /** 案件一覧初期パラメータ */
 @lombok.Getter
@@ -43,3 +44,4 @@ public class B0010S01Dto extends BasePageRequest {
   @Size(max = 255)
   private String eigyouTantousya;
 }
+    

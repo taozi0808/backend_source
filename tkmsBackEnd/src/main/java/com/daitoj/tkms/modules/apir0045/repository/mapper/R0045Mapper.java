@@ -21,7 +21,6 @@ import org.mapstruct.Context;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
-import org.mapstruct.Named;
 import org.mapstruct.ReportingPolicy;
 
 /** 社員登録マッパー */
@@ -29,17 +28,6 @@ import org.mapstruct.ReportingPolicy;
     componentModel = MappingConstants.ComponentModel.SPRING,
     unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface R0045Mapper {
-
-  /**
-   * 削除フラグのデフォルト変換処理
-   *
-   * @param value 削除フラグ
-   * @return 変換した削除フラグ
-   */
-  @Named("nullToZero")
-  static String nullToZero(String value) {
-    return value == null ? "0" : value;
-  }
 
   /**
    * 社員登録情報から社員登録Dtoに変換する.
@@ -141,7 +129,6 @@ public interface R0045Mapper {
    * @param empDto 従業員Dto
    * @return 従業員エンティティ
    */
-  @Mapping(target = "delFlg", source = "delFlg", qualifiedByName = "nullToZero")
   MEmp toEmpEntity(EmpDto empDto);
 
   /**
@@ -152,7 +139,6 @@ public interface R0045Mapper {
    * @return 従業員・組織・対照エンティティ
    */
   @Mapping(target = "emp.id", expression = "java(empId)")
-  @Mapping(target = "delFlg", source = "delFlg", qualifiedByName = "nullToZero")
   @Mapping(target = "id", source = "id", ignore = true)
   MEmpOrg toEmpOrgEntity(EmpOrgDto empOrgDto, @Context Long empId);
 
@@ -173,7 +159,6 @@ public interface R0045Mapper {
    * @return 従業員資格エンティティ
    */
   @Mapping(target = "emp.id", expression = "java(empId)")
-  @Mapping(target = "delFlg", source = "delFlg", qualifiedByName = "nullToZero")
   @Mapping(target = "id", source = "id", ignore = true)
   MEmpCert toEmpCertEntity(EmpCertDto empCertDto, @Context Long empId);
 
@@ -194,7 +179,6 @@ public interface R0045Mapper {
    * @return 従業員顔写真エンティティ
    */
   @Mapping(target = "emp.id", expression = "java(empId)")
-  @Mapping(target = "delFlg", source = "delFlg", qualifiedByName = "nullToZero")
   @Mapping(target = "id", source = "id", ignore = true)
   MEmpPhoto toEmpPhotoEntity(EmpPhotoDto empPhotoDto, @Context Long empId);
 

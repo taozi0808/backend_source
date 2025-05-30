@@ -22,15 +22,21 @@ public class ProjectPaymentTermsDto extends BaseDto {
   @Schema(description = "連番", requiredMode = Schema.RequiredMode.REQUIRED)
   private Integer seqNo;
 
-  /** 請求条件区分 */
+  /** 棟コード */
   @NotNull
   @Size(max = 2)
-  @Schema(description = "請求条件区分", requiredMode = Schema.RequiredMode.REQUIRED, maxLength = 2)
-  private String paymentTermsK;
+  @Schema(description = "棟コード", requiredMode = Schema.RequiredMode.REQUIRED, maxLength = 2)
+  private String buildingCd;
+
+  /** 請求条件コード */
+  @NotNull
+  @Size(max = 2)
+  @Schema(description = "請求条件コード", requiredMode = Schema.RequiredMode.REQUIRED, maxLength = 2)
+  private String paymentTermsCd;
 
   /** 請求条件区分名 */
   @Schema(description = "請求条件区分名", requiredMode = Schema.RequiredMode.REQUIRED)
-  private String paymentTermsKNm;
+  private String paymentTermsNm;
 
   /** 割合 */
   @NotNull
@@ -56,7 +62,7 @@ public class ProjectPaymentTermsDto extends BaseDto {
 
   /** 消費税率 */
   @Schema(description = "消費税率")
-  private String taxRate;
+  private BigDecimal taxRate;
 
   /** 消費税金額 */
   @NotNull
@@ -72,8 +78,9 @@ public class ProjectPaymentTermsDto extends BaseDto {
    *
    * @param projectId 案件ID
    * @param seqNo 連番
-   * @param paymentTermsK 請求条件区分
-   * @param paymentTermsKNm 請求条件区分名
+   * @param buildingCd 棟コード
+   * @param paymentTermsCd 請求条件区分
+   * @param paymentTermsNm 請求条件区分名
    * @param paymentRatio 割合
    * @param exclTaxPaymentAmt 税抜請求金額
    * @param inclTaxPaymentAmt 合計金額
@@ -91,13 +98,14 @@ public class ProjectPaymentTermsDto extends BaseDto {
   public ProjectPaymentTermsDto(
       Long projectId,
       Integer seqNo,
-      String paymentTermsK,
-      String paymentTermsKNm,
+      String buildingCd,
+      String paymentTermsCd,
+      String paymentTermsNm,
       String paymentRatio,
       BigDecimal exclTaxPaymentAmt,
       BigDecimal inclTaxPaymentAmt,
       Integer taxRateId,
-      String taxRate,
+      BigDecimal taxRate,
       BigDecimal salesTaxAmt,
       String delFlg,
       Instant regTs,
@@ -108,8 +116,9 @@ public class ProjectPaymentTermsDto extends BaseDto {
       String updPgId) {
     this.projectId = projectId;
     this.seqNo = seqNo;
-    this.paymentTermsK = paymentTermsK;
-    this.paymentTermsKNm = paymentTermsKNm;
+    this.buildingCd = buildingCd;
+    this.paymentTermsCd = paymentTermsCd;
+    this.paymentTermsNm = paymentTermsNm;
     this.paymentRatio = paymentRatio;
     this.exclTaxPaymentAmt = exclTaxPaymentAmt;
     this.inclTaxPaymentAmt = inclTaxPaymentAmt;

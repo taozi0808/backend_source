@@ -13,7 +13,7 @@ public class B0030S03ReturnData {
 
   /** 歴番 */
   @Schema(description = "歴番")
-  private String hisNo;
+  private Integer hisNo;
 
   /** 物件ID */
   @Schema(description = "物件ID")

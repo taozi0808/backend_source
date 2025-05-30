@@ -13,7 +13,7 @@ import java.time.OffsetDateTime;
 @Setter
 @Entity
 @Table(name = "m_price_region")
-public class MPriceRegion {
+public class MPriceRegion extends BaseEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -36,33 +36,4 @@ public class MPriceRegion {
   @NotNull
   @Column(name = "region_nm", nullable = false, length = Integer.MAX_VALUE)
   private String regionNm;
-
-  @NotNull
-  @ColumnDefault("'0'")
-  @Column(name = "del_flg", nullable = false, length = Integer.MAX_VALUE)
-  private String delFlg;
-
-  @NotNull
-  @Column(name = "reg_ts", nullable = false)
-  private OffsetDateTime regTs;
-
-  @Size(max = 255)
-  @NotNull
-  @Column(name = "reg_user_id", nullable = false)
-  private String regUserId;
-
-  @Size(max = 50)
-  @Column(name = "reg_pg_id", length = 50)
-  private String regPgId;
-
-  @Column(name = "upd_ts")
-  private OffsetDateTime updTs;
-
-  @Size(max = 255)
-  @Column(name = "upd_user_id")
-  private String updUserId;
-
-  @Size(max = 50)
-  @Column(name = "upd_pg_id", length = 50)
-  private String updPgId;
 }

@@ -20,6 +20,7 @@ import com.daitoj.tkms.modules.common.service.dto.MitemSettingDto;
 import com.daitoj.tkms.modules.common.service.dto.PaginationMeta;
 import com.daitoj.tkms.modules.common.utils.DateUtils;
 import com.daitoj.tkms.modules.common.utils.PageUtils;
+import com.daitoj.tkms.modules.common.utils.TextUtils;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletResponse;
@@ -28,6 +29,7 @@ import java.nio.charset.Charset;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.apache.commons.csv.CSVFormat;
@@ -55,6 +57,9 @@ public class B0010Service {
 
   /** CSV日付フォーマット */
   private static final String CSV_DATE_FORMAT = "yyyy年MM年dd日";
+
+    /** 検索日付フォーマット */
+    private static final String SELECT_DATE_FORMAT = "yyyyMMddyyyyMMdd";
 
   /** CSVヘッダ */
   private static final String[] CSV_HEADER = {
@@ -172,8 +177,6 @@ public class B0010Service {
               inDto.getListJyucyuuJyoutai(),
               MasterData.ITEM_CLASS_CD_D0003,
               inDto.getAnkenCode(),
-              inDto.getAnkenName(),
-              inDto.getKokyakuName(),
               inDto.getJmYmdStart(),
               inDto.getJmYmdEnd(),
               inDto.getEigyouBumon(),
@@ -181,8 +184,12 @@ public class B0010Service {
               DateUtils.formatNow(DateUtils.DATE_FORMAT),
               pageable);
 
+      // 顧客名、顧客名検索
+      List<AnkenInfoDto> searchedList =
+          compareKanaItem(ankenList.getContent(), inDto.getAnkenName(), inDto.getKokyakuName());
+
       // 取得件数が０件だった場合
-      if (CollectionUtils.isEmpty(ankenList.getContent())) {
+      if (CollectionUtils.isEmpty(searchedList)) {
         // メッセージ
         String msg =
             messageSource.getMessage(Message.MSGID_K00001, null, LocaleContextHolder.getLocale());
@@ -196,7 +203,7 @@ public class B0010Service {
       // 戻り値
       B0010ReturnData returnData = new B0010ReturnData();
       // 案件情報リスト
-      returnData.setListAnkenInfo(ankenList.getContent());
+      returnData.setListAnkenInfo(searchedList);
 
       // ページ情報
       PaginationMeta meta = new PaginationMeta(ankenList);
@@ -236,8 +243,6 @@ public class B0010Service {
               inDto.getListJyucyuuJyoutai(),
               MasterData.ITEM_CLASS_CD_D0003,
               inDto.getAnkenCode(),
-              inDto.getAnkenName(),
-              inDto.getKokyakuName(),
               inDto.getJmYmdStart(),
               inDto.getJmYmdEnd(),
               inDto.getEigyouBumon(),
@@ -245,8 +250,12 @@ public class B0010Service {
               DateUtils.formatNow(DateUtils.DATE_FORMAT),
               PageUtils.createMaxPageable());
 
-      if (!CollectionUtils.isEmpty(ankenList.getContent())
-          && ankenList.getTotalElements() > CommonConstants.SEARCH_MAX_COUNT) {
+      // 顧客名、顧客名検索
+      List<AnkenInfoDto> searchedList =
+          compareKanaItem(ankenList.getContent(), inDto.getAnkenName(), inDto.getKokyakuName());
+
+      if (!CollectionUtils.isEmpty(searchedList)
+          && searchedList.size() > CommonConstants.SEARCH_MAX_COUNT) {
         // メッセージ
         String msg =
             messageSource.getMessage(
@@ -269,12 +278,12 @@ public class B0010Service {
       try (CSVPrinter printer =
           new CSVPrinter(new OutputStreamWriter(response.getOutputStream(), charset), csvFormat)) {
         // データがある場合
-        if (!CollectionUtils.isEmpty(ankenList.getContent())) {
-          for (AnkenInfoDto ankenInfo : ankenList) {
+        if (!CollectionUtils.isEmpty(searchedList)) {
+          for (AnkenInfoDto ankenInfo : searchedList) {
             // 明細行設定
             printer.printRecord(
                 ankenInfo.getAnkenCode(),
-                ankenInfo.getAnkenEdaCode(),
+                ankenInfo.getHisNo().toString(),
                 ankenInfo.getAnkenName(),
                 ankenInfo.getKokyakuCode(),
                 ankenInfo.getKokyakuName(),
@@ -315,8 +324,6 @@ public class B0010Service {
               inDto.getListJyucyuuJyoutai(),
               MasterData.ITEM_CLASS_CD_D0003,
               inDto.getAnkenCode(),
-              inDto.getAnkenName(),
-              inDto.getKokyakuName(),
               inDto.getJmYmdStart(),
               inDto.getJmYmdEnd(),
               inDto.getEigyouBumon(),
@@ -324,8 +331,12 @@ public class B0010Service {
               DateUtils.formatNow(DateUtils.DATE_FORMAT),
               PageUtils.createMaxPageable());
 
-      if (!CollectionUtils.isEmpty(ankenList.getContent())
-          && ankenList.getTotalElements() > CommonConstants.SEARCH_MAX_COUNT) {
+      // 顧客名、顧客名検索
+      List<AnkenInfoDto> searchedList =
+          compareKanaItem(ankenList.getContent(), inDto.getAnkenName(), inDto.getKokyakuName());
+
+      if (!CollectionUtils.isEmpty(searchedList)
+          && searchedList.size() > CommonConstants.SEARCH_MAX_COUNT) {
         // メッセージ
         String msg =
             messageSource.getMessage(
@@ -349,7 +360,7 @@ public class B0010Service {
           objectMapper.convertValue(printDto, new TypeReference<Map<String, Object>>() {});
 
       // データソースを生成する
-      JRDataSource dataSource = new JRBeanCollectionDataSource(ankenList.getContent());
+      JRDataSource dataSource = new JRBeanCollectionDataSource(searchedList);
 
       // レポートを生成する
       byte[] datas = reportService.exportReportToPdf(REPORT_FILE_NAME, paramsMap, dataSource);
@@ -361,5 +372,29 @@ public class B0010Service {
       throw new SystemException(
           messageSource.getMessage(Message.MSGID_S0000, null, LocaleContextHolder.getLocale()));
     }
+  }
+
+  /**
+   * 顧客名、顧客名検索
+   *
+   * @param list 案件リスト
+   * @param ankenName 案件名
+   * @param kokyakuName 顧客名
+   * @return 検索した案件リスト
+   */
+  private List<AnkenInfoDto> compareKanaItem(
+      List<AnkenInfoDto> list, String ankenName, String kokyakuName) {
+    if (list == null) {
+      return null;
+    }
+    return list.stream()
+        .filter(
+            anken ->
+                (TextUtils.matchesIgnoringKanaWidth(anken.getAnkenName(), ankenName)
+                        || TextUtils.matchesIgnoringKanaWidth(anken.getAnkenKnName(), ankenName))
+                    && (TextUtils.matchesIgnoringKanaWidth(anken.getKokyakuName(), kokyakuName)
+                        || TextUtils.matchesIgnoringKanaWidth(
+                            anken.getKokyakuKnName(), kokyakuName)))
+        .collect(Collectors.toList());
   }
 }

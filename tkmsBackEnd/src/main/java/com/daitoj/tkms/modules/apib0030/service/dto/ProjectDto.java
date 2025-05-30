@@ -7,6 +7,7 @@ import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.math.BigDecimal;
+import java.time.Instant;
 
 /** 案件情報 */
 @lombok.Getter
@@ -23,7 +24,7 @@ public class ProjectDto extends BaseDto {
 
   /** 歴番 */
   @Schema(name = "hisNo", description = "歴番")
-  protected String hisNo;
+  protected Integer hisNo;
 
   /** 案件名 */
   @NotNull
@@ -31,8 +32,7 @@ public class ProjectDto extends BaseDto {
   protected String projectNm;
 
   /** 案件カナ名 */
-  @NotNull
-  @Schema(name = "projectKnNm", description = "案件カナ名", requiredMode = Schema.RequiredMode.REQUIRED)
+  @Schema(name = "projectKnNm", description = "案件カナ名")
   protected String projectKnNm;
 
   /** 受注状態コード */
@@ -79,86 +79,42 @@ public class ProjectDto extends BaseDto {
   protected String constrSiteAddr1;
 
   /** 現場住所２ */
-  @NotNull
-  @Schema(
-      name = "constrSiteAddr2",
-      description = "現場住所２",
-      requiredMode = Schema.RequiredMode.REQUIRED)
+  @Schema(name = "constrSiteAddr2", description = "現場住所２")
   protected String constrSiteAddr2;
 
   /** 受注見込日 */
-  @NotNull
   @Size(max = 8)
-  @Schema(
-      name = "orderExpectedYmd",
-      description = "受注見込日",
-      requiredMode = Schema.RequiredMode.REQUIRED,
-      maxLength = 8)
+  @Schema(name = "orderExpectedYmd", description = "受注見込日", maxLength = 8)
   protected String orderExpectedYmd;
 
   /** 着工希望日 */
-  @NotNull
   @Size(max = 8)
-  @Schema(
-      name = "startHopeYmd",
-      description = "着工希望日",
-      requiredMode = Schema.RequiredMode.REQUIRED,
-      maxLength = 8)
+  @Schema(name = "startHopeYmd", description = "着工希望日", maxLength = 8)
   protected String startHopeYmd;
 
   /** 完了希望日 */
-  @NotNull
-  @Schema(
-      name = "compHopeYmd",
-      description = "完了希望日",
-      requiredMode = Schema.RequiredMode.REQUIRED,
-      maxLength = 8)
+  @Schema(name = "compHopeYmd", description = "完了希望日", maxLength = 8)
   protected String compHopeYmd;
 
-  /** 営業部門適用開始日付 */
-  @NotNull
-  @Size(max = 8)
-  @Schema(
-      name = "salesDeptStartDt",
-      description = "営業部門適用開始日付",
-      requiredMode = Schema.RequiredMode.REQUIRED,
-      maxLength = 8)
-  protected String salesDeptStartDt;
-
   /** 営業部門ID */
-  @NotNull
-  @Schema(name = "salesOrgId", description = "営業部門ID", requiredMode = Schema.RequiredMode.REQUIRED)
+  @Schema(name = "salesOrgId", description = "営業部門ID")
   protected Long salesOrgId;
 
   /** 営業管理職コード */
-  @NotNull
   @Size(max = 6)
-  @Schema(
-      name = "salesMgrCd",
-      description = "営業管理職コード",
-      requiredMode = Schema.RequiredMode.REQUIRED,
-      maxLength = 6)
+  @Schema(name = "salesMgrCd", description = "営業管理職コード", maxLength = 6)
   protected String salesMgrCd;
 
   /** 営業担当者コード */
-  @NotNull
-  @Schema(
-      name = "salesPicCd",
-      description = "営業担当者コード",
-      requiredMode = Schema.RequiredMode.REQUIRED)
+  @Schema(name = "salesPicCd", description = "営業担当者コード")
   protected String salesPicCd;
 
-  /** 設計業者コード */
-  @NotNull
-  @Schema(
-      name = "designVender",
-      description = "設計業者コード",
-      requiredMode = Schema.RequiredMode.REQUIRED)
-  protected String designVender;
+  /** 設計業者名 */
+  @Schema(name = "designVendor", description = "設計業者名")
+  protected String designVendorNm;
 
-  /** 設計担当者 */
-  @NotNull
-  @Schema(name = "designPicNm", description = "設計担当者", requiredMode = Schema.RequiredMode.REQUIRED)
+  /** 設計担当者名 */
+  @Schema(name = "designPicNm", description = "設計担当者名")
   protected String designPicNm;
 
   /** 進捗度コード */
@@ -182,22 +138,12 @@ public class ProjectDto extends BaseDto {
   protected String govPeoK;
 
   /** グリンサイトフラグ */
-  @NotNull
-  @Schema(
-      name = "greenSiteFlg",
-      description = "グリンサイトフラグ",
-      requiredMode = Schema.RequiredMode.REQUIRED)
-  protected String greenSiteFlg;
+  @Schema(name = "greenSiteFlg", description = "グリンサイトフラグ")
+  protected String greenSiteFlg = "0";
 
   /** 見積提出期限 */
-  @Size(max = 8)
-  @NotNull
-  @Schema(
-      name = "estSubmitDueDt",
-      description = "見積提出期限",
-      requiredMode = Schema.RequiredMode.REQUIRED,
-      maxLength = 8)
-  protected String estSubmitDueDt;
+  @Schema(name = "estSubmitDueTs", description = "見積提出期限")
+  protected Instant estSubmitDueTs;
 
   /** 敷地面積 */
   @NotNull
@@ -233,14 +179,8 @@ public class ProjectDto extends BaseDto {
   protected BigDecimal grossFloorArea;
 
   /** 施工床面積 */
-  @NotNull
   @Digits(integer = 7, fraction = 2)
-  @Schema(
-      name = "buildupArea",
-      description = "施工床面積",
-      requiredMode = Schema.RequiredMode.REQUIRED,
-      minimum = "0.01",
-      maximum = "9999999.99")
+  @Schema(name = "buildupArea", description = "施工床面積", minimum = "0.01", maximum = "9999999.99")
   protected BigDecimal buildupArea;
 
   /** 専有面積 */
@@ -255,14 +195,8 @@ public class ProjectDto extends BaseDto {
   protected BigDecimal occupiedArea;
 
   /** 施工面積 */
-  @NotNull
   @Digits(integer = 7, fraction = 2)
-  @Schema(
-      name = "constrArea",
-      description = "施工面積",
-      requiredMode = Schema.RequiredMode.REQUIRED,
-      minimum = "0.01",
-      maximum = "9999999.99")
+  @Schema(name = "constrArea", description = "施工面積", minimum = "0.01", maximum = "9999999.99")
   protected BigDecimal constrArea;
 
   /** 戸数 */
@@ -295,26 +229,104 @@ public class ProjectDto extends BaseDto {
       maxLength = 3)
   protected BigDecimal basementCnt;
 
-  /** 締日 */
+  /** 工事経費率 */
   @NotNull
-  @Schema(name = "closingDay", description = "締日", requiredMode = Schema.RequiredMode.REQUIRED)
+  @Digits(integer = 3, fraction = 2)
+  @Schema(
+      name = "constrExpRate",
+      description = "工事経費率",
+      requiredMode = Schema.RequiredMode.REQUIRED,
+      minimum = "0.01",
+      maximum = "999.99")
+  protected BigDecimal constrExpRate;
+
+  /** 工事経費金額 */
+  @NotNull
+  @DecimalMax(value = "99999999999")
+  protected BigDecimal constrExpAmt;
+
+  /** 販売管理費率 */
+  @NotNull
+  @Digits(integer = 3, fraction = 2)
+  @Schema(
+      name = "saleMgrRate",
+      description = "販売管理費率",
+      requiredMode = Schema.RequiredMode.REQUIRED,
+      minimum = "0.01",
+      maximum = "999.99")
+  protected BigDecimal saleMgrRate;
+
+  /** 販売管理費金額 */
+  @NotNull
+  @DecimalMax(value = "99999999999")
+  protected BigDecimal saleMgrAmt;
+
+  /** 調整金額 */
+  @NotNull
+  @DecimalMax(value = "99999999999")
+  protected BigDecimal tyouseiAmt;
+
+  /** 雇用保険率 */
+  @NotNull
+  @Digits(integer = 3, fraction = 2)
+  @Schema(
+      name = "eisRate",
+      description = "雇用保険率",
+      requiredMode = Schema.RequiredMode.REQUIRED,
+      minimum = "0.01",
+      maximum = "999.99")
+  protected BigDecimal eisRate;
+
+  /** 健康保険保険率 */
+  @NotNull
+  @Digits(integer = 3, fraction = 2)
+  @Schema(
+      name = "ehiRate",
+      description = "健康保険保険率",
+      requiredMode = Schema.RequiredMode.REQUIRED,
+      minimum = "0.01",
+      maximum = "999.99")
+  protected BigDecimal ehiRate;
+
+  /** 介護保険率 */
+  @NotNull
+  @Digits(integer = 3, fraction = 2)
+  @Schema(
+      name = "ltcRate",
+      description = "介護保険率",
+      requiredMode = Schema.RequiredMode.REQUIRED,
+      minimum = "0.01",
+      maximum = "999.99")
+  protected BigDecimal ltcRate;
+
+  /** 厚生年金率 */
+  @NotNull
+  @Digits(integer = 3, fraction = 2)
+  @Schema(
+      name = "wpiRate",
+      description = "厚生年金率",
+      requiredMode = Schema.RequiredMode.REQUIRED,
+      minimum = "0.01",
+      maximum = "999.99")
+  protected BigDecimal wpiRate;
+
+  /** 締日区分 */
+  @Schema(name = "closingDay", description = "締日区分")
   protected String closingDay;
 
   /** 支払区分 */
-  @NotNull
-  @Schema(name = "paymentK", description = "支払区分", requiredMode = Schema.RequiredMode.REQUIRED)
+  @Schema(name = "paymentK", description = "支払区分")
   protected String paymentK;
 
-  /** 支払日 */
-  @NotNull
-  @Schema(name = "paymentD", description = "支払日", requiredMode = Schema.RequiredMode.REQUIRED)
+  /** 支払日区分 */
+  @Schema(name = "paymentD", description = "支払日区分")
   protected String paymentD;
 
   /** 不成約理由 */
-  @NotNull
-  @Schema(
-      name = "rejectionReason",
-      description = "不成約理由",
-      requiredMode = Schema.RequiredMode.REQUIRED)
+  @Schema(name = "rejectionReason", description = "不成約理由")
   protected String rejectionReason;
+
+  /** 物件コード */
+  @Schema(name = "projectSiteCd", description = "物件コード ")
+  private String projectSiteCd;
 }

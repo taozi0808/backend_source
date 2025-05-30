@@ -2,7 +2,9 @@ package com.daitoj.tkms.modules.apia0020.web.rest;
 
 import com.daitoj.tkms.modules.apia0020.service.A0020Service;
 import com.daitoj.tkms.modules.apia0020.service.dto.A0020Dto;
+import com.daitoj.tkms.modules.common.constants.KeyConstants;
 import com.daitoj.tkms.modules.common.service.dto.ErrorInfo;
+import com.daitoj.tkms.modules.common.utils.ContextUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -29,6 +31,9 @@ public class A0020Resource {
 
   @Value("${jhipster.security.authentication.jwt.token-validity-in-seconds:0}")
   private long tokenValidityInSeconds;
+
+  /** 機能ID */
+  public static final String PG_ID = "Web";
 
   // 認証マネージャ
   private final AuthenticationManagerBuilder authenticationManagerBuilder;
@@ -75,6 +80,10 @@ public class A0020Resource {
       })
   @PostMapping("/auth")
   public ResponseEntity<?> getPwdSaitsuchiInfo(@Valid @RequestBody A0020Dto inDto) {
+    // ログインID
+    ContextUtils.setParameter(KeyConstants.HTTP_HEADER_LOGIN_ID, inDto.getUserId());
+    // 機能ID
+    ContextUtils.setParameter(KeyConstants.HTTP_HEADER_PG_ID, String.join("", PG_ID, "A0020"));
     // 成功の場合
     return a0020Service.getPwdSaitsuchiInfo(inDto);
   }

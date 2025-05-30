@@ -2,9 +2,12 @@ package com.daitoj.tkms.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
@@ -32,8 +35,9 @@ public class TProjectPaymentTerms extends BaseEntity {
   private Long id;
 
   @NotNull
-  @Column(name = "project_id", nullable = false)
-  private Long projectId;
+  @ManyToOne(fetch = FetchType.LAZY, optional = false)
+  @JoinColumn(name = "project_id", nullable = false)
+  private TProject project;
 
   @NotNull
   @Column(name = "seq_no", nullable = false)
@@ -41,8 +45,13 @@ public class TProjectPaymentTerms extends BaseEntity {
 
   @Size(max = 2)
   @NotNull
-  @Column(name = "payment_terms_k", nullable = false, length = 2)
-  private String paymentTermsK;
+  @Column(name = "building_cd", nullable = false, length = 2)
+  private String buildingCd;
+
+  @NotNull
+  @ManyToOne(fetch = FetchType.LAZY, optional = false)
+  @JoinColumn(name = "payment_terms_cd", nullable = false)
+  private MPaymentTerm paymentTermsCd;
 
   @NotNull
   @Column(name = "payment_ratio", nullable = false, length = Integer.MAX_VALUE)
@@ -57,8 +66,9 @@ public class TProjectPaymentTerms extends BaseEntity {
   private BigDecimal inclTaxPaymentAmt;
 
   @NotNull
-  @Column(name = "tax_rate_id", nullable = false)
-  private Integer taxRateId;
+  @ManyToOne(fetch = FetchType.LAZY, optional = false)
+  @JoinColumn(name = "tax_rate_id", nullable = false)
+  private MTaxRate taxRate;
 
   @NotNull
   @Column(name = "sales_tax_amt", nullable = false, precision = 11)

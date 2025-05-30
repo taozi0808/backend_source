@@ -41,10 +41,9 @@ public class TDetailedEstHdr extends BaseEntity {
   @Column(name = "detailed_est_cd", nullable = false, length = 12)
   private String detailedEstCd;
 
-  @Size(max = 2)
   @NotNull
-  @Column(name = "his_no", nullable = false, length = 2)
-  private String hisNo;
+  @Column(name = "his_no", nullable = false)
+  private Integer hisNo;
 
   @NotNull
   @ColumnDefault("'2'")
@@ -66,12 +65,10 @@ public class TDetailedEstHdr extends BaseEntity {
   @Column(name = "building_cd", nullable = false, length = 2)
   private String buildingCd;
 
-  @NotNull
   @Column(name = "detailed_est_total_amt", nullable = false, precision = 11)
   private BigDecimal detailedEstTotalAmt;
 
   @Size(max = 8)
-  @NotNull
   @Column(name = "detailed_est_ymd", nullable = false, length = 8)
   private String detailedEstYmd;
 
@@ -79,20 +76,22 @@ public class TDetailedEstHdr extends BaseEntity {
   private Long detailedEstOrgId;
 
   @Size(max = 6)
-  @NotNull
   @Column(name = "detailed_est_pic_cd", nullable = false, length = 6)
   private String detailedEstPicCd;
 
   @Size(max = 3)
-  @NotNull
   @Column(name = "region_cd", nullable = false, length = 3)
   private String regionCd;
 
-  @NotNull
   @Column(name = "constr_site_k", nullable = false, length = Integer.MAX_VALUE)
   private String constrSiteK;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "price_region_id")
   private MPriceRegion priceRegion;
+
+  @NotNull
+  @ColumnDefault("'0'")
+  @Column(name = "detailed_est_create_flg", nullable = false, length = Integer.MAX_VALUE)
+  private String detailedEstCreateFlg = "0";
 }

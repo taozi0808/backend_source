@@ -1,15 +1,19 @@
 package com.daitoj.tkms.modules.apib0030.repository.mapper;
 
+import com.daitoj.tkms.domain.MPaymentTerm;
+import com.daitoj.tkms.domain.MTaxRate;
 import com.daitoj.tkms.domain.TProject;
 import com.daitoj.tkms.domain.TProjectBuildingDtl;
 import com.daitoj.tkms.domain.TProjectPaymentTerms;
 import com.daitoj.tkms.domain.TProjectPreWorkDtl;
 import com.daitoj.tkms.domain.TProjectRequestDtl;
+import com.daitoj.tkms.modules.apib0030.service.dto.PaymentTermDto;
 import com.daitoj.tkms.modules.apib0030.service.dto.ProjectBuildingDtlDto;
 import com.daitoj.tkms.modules.apib0030.service.dto.ProjectDto;
 import com.daitoj.tkms.modules.apib0030.service.dto.ProjectPaymentTermsDto;
 import com.daitoj.tkms.modules.apib0030.service.dto.ProjectPreWorkDtlDto;
 import com.daitoj.tkms.modules.apib0030.service.dto.ProjectRequestDtlDto;
+import com.daitoj.tkms.modules.apib0030.service.dto.TaxRateDto;
 import java.util.List;
 import org.mapstruct.Context;
 import org.mapstruct.Mapper;
@@ -37,25 +41,9 @@ public interface B0030Mapper {
    * @param dtl 先行作業明細
    * @return 先行作業明細DTO
    */
-  @Mapping(
-      target = "priceId",
-      expression = "java(dtl.getPriceId() != null ? dtl.getPriceId().getId() : null)")
-  @Mapping(
-      target = "majorWorkCd",
-      expression =
-          "java(dtl.getPriceId() != null ? dtl.getPriceId().getMajorWorkCd().getMajorWorkCd() : null)")
-  @Mapping(
-      target = "majorWorkNm",
-      expression =
-          "java(dtl.getPriceId() != null ? dtl.getPriceId().getMajorWorkCd().getMajorWorkNm() : null)")
-  @Mapping(
-      target = "minorWorkCd",
-      expression =
-          "java(dtl.getPriceId() != null ? dtl.getPriceId().getMinorWorkCd().getId().getMinorWorkCd() : null)")
-  @Mapping(
-      target = "minorWorkNm",
-      expression =
-          "java(dtl.getPriceId() != null ? dtl.getPriceId().getMinorWorkCd().getMinorWorkNm() : null)")
+  @Mapping(target = "poHid", expression = "java(null)")
+  @Mapping(source = "fileId", target = "fileId")
+  @Mapping(source = "detailedEstDid.id", target = "detailedEstDid")
   ProjectPreWorkDtlDto toProjectPreWorkDtlDto(TProjectPreWorkDtl dtl);
 
   /**
@@ -64,9 +52,6 @@ public interface B0030Mapper {
    * @param projectDto 案件Dto
    * @return 案件エンティティ
    */
-  @Mapping(
-      target = "delFlg",
-      expression = "java(projectDto.getDelFlg() == null ? \"0\" : projectDto.getDelFlg())")
   @Mapping(source = "customerBranchCd", target = "customerBranchCd")
   TProject toProjectEntity(ProjectDto projectDto);
 
@@ -77,11 +62,9 @@ public interface B0030Mapper {
    * @param projectId 案件ID
    * @return 請求条件明細エンティティ
    */
-  @Mapping(target = "projectId", expression = "java(projectId)")
-  @Mapping(
-      target = "delFlg",
-      expression =
-          "java(projectPaymentTerm.getDelFlg() == null ? \"0\" : projectPaymentTerm.getDelFlg())")
+  @Mapping(target = "project.id", expression = "java(projectId)")
+  @Mapping(source = "paymentTermsCd", target = "paymentTermsCd.paymentTermsCd")
+  @Mapping(source = "taxRateId", target = "taxRate.id")
   TProjectPaymentTerms toProjectPaymentTermEntity(
       ProjectPaymentTermsDto projectPaymentTerm, @Context Long projectId);
 
@@ -102,11 +85,7 @@ public interface B0030Mapper {
    * @param projectId 案件ID
    * @return 現場棟明細エンティティ
    */
-  @Mapping(target = "projectId", expression = "java(projectId)")
-  @Mapping(
-      target = "delFlg",
-      expression =
-          "java(projectBuildingDtlDto.getDelFlg() == null ? \"0\" : projectBuildingDtlDto.getDelFlg())")
+  @Mapping(target = "project.id", expression = "java(projectId)")
   TProjectBuildingDtl toProjectBuildingDtlEntity(
       ProjectBuildingDtlDto projectBuildingDtlDto, @Context Long projectId);
 
@@ -127,11 +106,7 @@ public interface B0030Mapper {
    * @param projectId 案件ID
    * @return 案件要望明細エンティティ
    */
-  @Mapping(target = "projectId", expression = "java(projectId)")
-  @Mapping(
-      target = "delFlg",
-      expression =
-          "java(projectRequestDtlDto.getDelFlg() == null ? \"0\" : projectRequestDtlDto.getDelFlg())")
+  @Mapping(target = "project.id", expression = "java(projectId)")
   TProjectRequestDtl toTProjectRequestDtlEntity(
       ProjectRequestDtlDto projectRequestDtlDto, @Context Long projectId);
 
@@ -152,12 +127,10 @@ public interface B0030Mapper {
    * @param projectId 案件ID
    * @return 先行作業明細エンティティ
    */
-  @Mapping(target = "projectId", expression = "java(projectId)")
-  @Mapping(
-      target = "delFlg",
-      expression =
-          "java(projectPreWorkDtlDto.getDelFlg() == null ? \"0\" : projectPreWorkDtlDto.getDelFlg())")
-  @Mapping(source = "priceId", target = "priceId.id")
+  @Mapping(target = "project.id", expression = "java(projectId)")
+  @Mapping(source = "detailedEstDid", target = "detailedEstDid.id")
+  @Mapping(source = "fileId", target = "fileId")
+  @Mapping(target = "poHid", expression = "java(null)")
   TProjectPreWorkDtl toTProjectPreWorkDtlEntity(
       ProjectPreWorkDtlDto projectPreWorkDtlDto, @Context Long projectId);
 
@@ -170,4 +143,20 @@ public interface B0030Mapper {
    */
   List<TProjectPreWorkDtl> toTProjectPreWorkDtlEntityList(
       List<ProjectPreWorkDtlDto> projectPreWorkDtlDtos, @Context Long projectId);
+
+  /**
+   * 消費税率リストから消費税率toリストに変換する.
+   *
+   * @param taxRateList 消費税率リスト
+   * @return 消費税率DTOリスト
+   */
+  List<TaxRateDto> toTaxRateList(List<MTaxRate> taxRateList);
+
+  /**
+   * 請求条件リストから請求条件toリストに変換する.
+   *
+   * @param paymentTermList 請求条件リスト
+   * @return 請求条件DTOリスト
+   */
+  List<PaymentTermDto> toPaymentTermList(List<MPaymentTerm> paymentTermList);
 }

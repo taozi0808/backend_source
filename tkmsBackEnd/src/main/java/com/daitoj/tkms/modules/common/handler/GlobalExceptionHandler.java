@@ -6,23 +6,24 @@ import com.daitoj.tkms.modules.common.service.InvalidUserException;
 import com.daitoj.tkms.modules.common.service.SystemException;
 import com.daitoj.tkms.modules.common.service.dto.ApiResult;
 import com.daitoj.tkms.modules.common.service.dto.ErrorResponse;
+import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.MailSendException;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 /** コントローラ例外処理 */
 @RestControllerAdvice
@@ -59,28 +60,17 @@ public class GlobalExceptionHandler {
   }
 
   /**
-   * ユーザ例外処理
-   *
-   * @param ex InvalidUserException
-   * @return ログインエラー情報
-   */
-  @ExceptionHandler(InvalidUserException.class)
-  public ResponseEntity<?> handleInvalidUserException(InvalidUserException ex) {
-
-    // 例外処理
-    ApiResult<?> response = ApiResult.error(ex.getErrorCode(), ex.getMessage());
-
-    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
-  }
-
-  /**
    * パスワード例外処理
    *
-   * @param ex BadCredentialsException
+   * @param ex Exception
    * @return ログインエラー情報
    */
-  @ExceptionHandler(BadCredentialsException.class)
-  public ResponseEntity<?> handleBadCredentialsException(BadCredentialsException ex) {
+  @ExceptionHandler({
+    InternalAuthenticationServiceException.class,
+    InvalidUserException.class,
+    BadCredentialsException.class
+  })
+  public ResponseEntity<?> handleBadCredentialsException(Exception ex) {
 
     // 例外処理
     ApiResult<?> response =
@@ -103,10 +93,28 @@ public class GlobalExceptionHandler {
     // 例外処理
     ApiResult<?> response =
         ApiResult.error(
-            Message.MSGID_S0001,
-            messageSource.getMessage(Message.MSGID_S0001, null, LocaleContextHolder.getLocale()));
+            Message.MSGID_P00003,
+            messageSource.getMessage(Message.MSGID_P00003, null, LocaleContextHolder.getLocale()));
 
     return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+  }
+
+  /**
+   * メールの送信例外処理
+   *
+   * @param ex Exception
+   * @return メールの送信エラー情報
+   */
+  @ExceptionHandler({MailSendException.class, MessagingException.class})
+  public ResponseEntity<?> handleMailException(Exception ex) {
+
+    // 例外処理
+    ApiResult<?> response =
+        ApiResult.error(
+            Message.MSGID_A00007,
+            messageSource.getMessage(Message.MSGID_A00007, null, LocaleContextHolder.getLocale()));
+
+    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
   }
 
   /**

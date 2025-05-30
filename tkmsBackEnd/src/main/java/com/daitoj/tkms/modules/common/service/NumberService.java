@@ -14,7 +14,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 /** 採番サービス */
 @Service
@@ -49,7 +48,6 @@ public class NumberService {
    * @param number 主番
    * @return 採番結果
    */
-  @Transactional(rollbackFor = Throwable.class)
   public String getNextNumberByFieldId(String fieldId, String prefix, String number) {
     // 連番
     int newNumber = 0;
@@ -167,13 +165,17 @@ public class NumberService {
     } else if (NumberPattern.PREFIX_AND_YEAR_MONTH_YYYYMM_AND_SEQUENCE
         .getPattern()
         .equals(numberRule.getNumberPat())) {
-      retNumber = prefixStr + DateUtils.formatDateTime(sysDate, DateUtils.DATE_FORMAT_YYYYMM) + editedNumber;
+      retNumber =
+          prefixStr
+              + DateUtils.formatDateTime(sysDate, DateUtils.DATE_FORMAT_YYYYMM)
+              + editedNumber;
 
       // 接頭辞＋年月(YYMM)＋連番
     } else if (NumberPattern.PREFIX_AND_YEAR_MONTH_YYMM_AND_SEQUENCE
         .getPattern()
         .equals(numberRule.getNumberPat())) {
-      retNumber = prefixStr + DateUtils.formatDateTime(sysDate, DateUtils.DATE_FORMAT_YYMM) + editedNumber;
+      retNumber =
+          prefixStr + DateUtils.formatDateTime(sysDate, DateUtils.DATE_FORMAT_YYMM) + editedNumber;
     }
 
     return retNumber;

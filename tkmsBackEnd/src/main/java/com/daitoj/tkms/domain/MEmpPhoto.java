@@ -11,6 +11,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
+import java.util.UUID;
 import org.hibernate.annotations.Where;
 
 /** 従業員顔写真情報 */
@@ -42,6 +43,6 @@ public class MEmpPhoto extends BaseEntity {
   private Integer seqNo;
 
   @NotNull
-  @Column(name = "photo_url", nullable = false, length = Integer.MAX_VALUE)
-  private String photoUrl;
+  @Column(name = "photo_file_id", nullable = false)
+  private UUID photoFileId;
 }

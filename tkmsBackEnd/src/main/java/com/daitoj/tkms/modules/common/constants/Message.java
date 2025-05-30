@@ -9,8 +9,8 @@ public class Message {
   /** システムエラーが発生しました。 */
   public static final String MSGID_S0000 = "S0000"; // TODO
 
-  /** 排他エラーが発生しました。 */
-  public static final String MSGID_S0001 = "S0001"; // TODO
+  /** 他の方が更新したため、上書きできません。再度画面を開きなおし、最新の情報を取得しなおしてください。 */
+  public static final String MSGID_P00003 = "P00003";
 
   /** IDもしくはパスワードが違います。 */
   public static final String MSGID_A0003 = "A0003";
@@ -63,6 +63,9 @@ public class Message {
   /** 【重要】パスワードの再通知 */
   public static final String A0020_MAIL_TITLE = "webA0020.reset.title";
 
-  /** 【重要】パスワードの通知 */
-  public static final String R0045_MAIL_TITLE = "webR0045.mail.title";
+  /** 【登録完了のお知らせ】施工管理システムが利用できるようになりました */
+  public static final String R0045_INS_MAIL_TITLE = "webR0045.mail.title.ins";
+
+  /** 【重要】パスワード再通知（施工管理システム） */
+  public static final String R0045_UPD_MAIL_TITLE = "webR0045.mail.title.upd";
 }

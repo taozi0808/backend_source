@@ -39,17 +39,14 @@ public final class CommonConstants {
   /** CSV・PDF最大件数 */
   public static final int SEARCH_MAX_COUNT = 10000;
 
-  /** 担当事業所：「本社」 */
-  public static final String OFFICE_HONSHA = "01";
+  /** 担当事業所コード：「本社」 */
+  public static final String OFFICE_HONSHA_CODE = "000";
 
   /** 歴番:01から連番 */
-  public static final String HIS_NO_START = "01";
+  public static final Integer HIS_NO_START = 1;
 
   /** 処理区分：新規 */
   public static final String SHORIKUBUN_SINNKI = "1";
-
-  /** 概算作成フラグ 0：未作成 */
-  public static final String ROUGH_EST_CREATE_FLG_UNCREATED = "0";
 
   /** 役職名称に長が含まれる人 */
   public static final String POSITION_MGR_NAME = "長";
@@ -59,4 +56,16 @@ public final class CommonConstants {
 
   /** 部署:部課 */
   public static final Integer ORG_LVL_KA = 4;
+
+  /** 業務データステータス：'2'(申請中) */
+  public static final String BUSINESS_DATA_ST_REQ = "2";
+
+  /** 承認状態：'1'(承認待) */
+  public static final String APPR_ST_PENDING_APPROVAL = "1";
+
+  /** 承認状態：'3'(承認済) */
+  public static final String APPR_ST_PASS = "3";
+
+  /** 承認状態：'9'(差戻) */
+  public static final String APPR_ST_RETURN = "9";
 }

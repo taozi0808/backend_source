@@ -11,6 +11,9 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import java.util.UUID;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Where;
 
 /** 先行作業明細 */
@@ -33,38 +36,63 @@ public class TProjectPreWorkDtl extends BaseEntity {
   private Long id;
 
   @NotNull
-  @Column(name = "project_id", nullable = false)
-  private Long projectId;
+  @ManyToOne(fetch = FetchType.LAZY, optional = false)
+  @JoinColumn(name = "project_id", nullable = false)
+  private TProject project;
 
   @NotNull
   @Column(name = "seq_no", nullable = false)
   private Integer seqNo;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "price_id", nullable = true)
-  private MPrice priceId;
+  @Size(max = 3)
+  @NotNull
+  @Column(name = "major_work_cd", nullable = false, length = 3)
+  private String majorWorkCd;
+
+  @Size(max = 4)
+  @NotNull
+  @Column(name = "minor_work_cd", nullable = false, length = 4)
+  private String minorWorkCd;
+
+  @NotNull
+  @ManyToOne(fetch = FetchType.LAZY, optional = false)
+  @JoinColumn(name = "detailed_est_did", nullable = false)
+  private TDetailedEstDtl detailedEstDid;
+
+  @Size(max = 8)
+  @Column(name = "est_ymd", length = 8)
+  private String estYmd;
 
   @NotNull
   @Column(name = "outline", nullable = false, length = Integer.MAX_VALUE)
   private String outline;
 
-  @NotNull
-  @Column(name = "pre_constr_content", nullable = false, length = Integer.MAX_VALUE)
+  @Column(name = "pre_constr_content", length = Integer.MAX_VALUE)
   private String preConstrContent;
 
-  @NotNull
-  @Column(name = "constr_cost", nullable = false, length = Integer.MAX_VALUE)
+  @Column(name = "constr_cost", length = Integer.MAX_VALUE)
   private String constrCost;
 
-  @NotNull
-  @Column(name = "payment_terms", nullable = false, length = Integer.MAX_VALUE)
+  @Column(name = "payment_terms", length = Integer.MAX_VALUE)
   private String paymentTerms;
 
-  @NotNull
-  @Column(name = "sonota", nullable = false, length = Integer.MAX_VALUE)
+  @Column(name = "sonota", length = Integer.MAX_VALUE)
   private String sonota;
 
+  @Column(name = "file_id", nullable = true)
+  private UUID fileId;
+
   @NotNull
-  @Column(name = "file_id", nullable = false)
-  private Long fileId;
+  @ColumnDefault("'1'")
+  @Column(name = "pre_work_process_k", nullable = false, length = Integer.MAX_VALUE)
+  private String preWorkProcessK = "1";
+
+  @ManyToOne(fetch = FetchType.LAZY, optional = false)
+  @JoinColumn(name = "po_hid", nullable = false)
+  private TPoHdr poHid;
+
+  @Size(max = 3)
+  @NotNull
+  @Column(name = "work_seq_no", nullable = false, length = 3)
+  private String workSeqNo;
 }

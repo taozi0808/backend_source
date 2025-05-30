@@ -86,4 +86,84 @@ public class R0045PrintDto extends EmpDto {
   /** 資格テーブルField10 */
   @Schema(description = "資格テーブルField10")
   private String empCertField10;
+
+  /** 所属部署（部）Field1 */
+  @Schema(description = "所属部署（部）Field1")
+  private String empOrgBuField1;
+
+  /** 所属部署（部）Field2 */
+  @Schema(description = "所属部署（部）Field2")
+  private String empOrgBuField2;
+
+  /** 所属部署（部）Field3 */
+  @Schema(description = "所属部署（部）Field3")
+  private String empOrgBuField3;
+
+  /** 所属部署（部）Field4 */
+  @Schema(description = "所属部署（部）Field4")
+  private String empOrgBuField4;
+
+  /** 所属部署（部）Field5*/
+  @Schema(description = "所属部署（部）Field5")
+  private String empOrgBuField5;
+
+  /** 所属部署（課）Field1 */
+  @Schema(description = "所属部署（課）Field1")
+  private String empOrgKaField1;
+
+  /** 所属部署（課）Field2 */
+  @Schema(description = "所属部署（課）Field2")
+  private String empOrgKaField2;
+
+  /** 所属部署（課）Field3 */
+  @Schema(description = "所属部署（課）Field3")
+  private String empOrgKaField3;
+
+  /** 所属部署（課）Field4 */
+  @Schema(description = "所属部署（課）Field4")
+  private String empOrgKaField4;
+
+  /** 所属部署（課）Field5*/
+  @Schema(description = "所属部署（課）Field5")
+  private String empOrgKaField5;
+
+  /** 部署異動設定（部）Field1 */
+  @Schema(description = "部署異動設定（部）Field1")
+  private String transEmpOrgBuField1;
+
+  /** 部署異動設定（部）Field2 */
+  @Schema(description = "部署異動設定（部）Field2")
+  private String transEmpOrgBuField2;
+
+  /** 部署異動設定（部）Field3 */
+  @Schema(description = "部署異動設定（部）Field3")
+  private String transEmpOrgBuField3;
+
+  /** 部署異動設定（部）Field4 */
+  @Schema(description = "部署異動設定（部）Field4")
+  private String transEmpOrgBuField4;
+
+  /** 部署異動設定（部）Field5*/
+  @Schema(description = "部署異動設定（部）Field5")
+  private String transEmpOrgBuField5;
+
+  /** 部署異動設定（課）Field1 */
+  @Schema(description = "部署異動設定（課）Field1")
+  private String transEmpOrgKaField1;
+
+  /** 部署異動設定（課）Field2 */
+  @Schema(description = "部署異動設定（課）Field2")
+  private String transEmpOrgKaField2;
+
+  /** 部署異動設定（課）Field3 */
+  @Schema(description = "部署異動設定（課）Field3")
+  private String transEmpOrgKaField3;
+
+  /** 部署異動設定（課）Field4 */
+  @Schema(description = "部署異動設定（課）Field4")
+  private String transEmpOrgKaField4;
+
+  /** 部署異動設定（課）Field5*/
+  @Schema(description = "部署異動設定（課）Field5")
+  private String transEmpOrgKaField5;
 }

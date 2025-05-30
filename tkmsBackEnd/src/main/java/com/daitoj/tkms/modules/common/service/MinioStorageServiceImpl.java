@@ -11,6 +11,7 @@ import io.minio.GetPresignedObjectUrlArgs;
 import io.minio.MinioClient;
 import io.minio.PutObjectArgs;
 import io.minio.http.Method;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +23,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 /** minioファイルサービス */
@@ -44,6 +44,7 @@ public class MinioStorageServiceImpl implements CloudStorageService {
   /** 添付ファイルリポジトリ */
   private final TFifleRepository tfifleRepository;
 
+  /** S3のパス */
   private static final String S3_PATH = "upload/";
 
   /** コンストラクタ */
@@ -65,7 +66,6 @@ public class MinioStorageServiceImpl implements CloudStorageService {
    * @return オブジェクト名
    */
   @Override
-  @Transactional
   public List<UUID> upload(MultipartFile[] files) {
     // 戻り値
     List<UUID> ret = new ArrayList<>();
@@ -74,7 +74,7 @@ public class MinioStorageServiceImpl implements CloudStorageService {
       // S3ファイル格納パス
       Optional<MSystemConfig> config =
           msystemConfigRepository.findById_SysCdAndId_ConfigKey(
-              SystemConfig.SYS_CD_S3, SystemConfig.SYS_S3_PATH);
+              SystemConfig.SYS_CD_AWS, SystemConfig.SYS_S3_S3_UPLOAD_LOC);
 
       // ファイルパス
       String filePath = S3_PATH;
@@ -131,14 +131,17 @@ public class MinioStorageServiceImpl implements CloudStorageService {
   /**
    * ファイルをダウンロードする
    *
-   * @param objectName オブジェクト名
+   * @param fileId ファイルID
    * @return ファイル
    */
   @Override
-  public InputStream download(String objectName) {
+  public InputStream download(String fileId) {
     try {
       return minioClient.getObject(
-          GetObjectArgs.builder().bucket(minioConfig.getBucketName()).object(objectName).build());
+          GetObjectArgs.builder()
+              .bucket(minioConfig.getBucketName())
+              .object(getObjectNameFromUuid(fileId))
+              .build());
     } catch (Exception ex) {
       LOG.error(ex.toString(), ex);
 
@@ -149,18 +152,18 @@ public class MinioStorageServiceImpl implements CloudStorageService {
   /**
    * ファイルUrlを取得する
    *
-   * @param objectName オブジェクト名
+   * @param fileId ファイルID
    * @return ファイルUrl
    */
   @Override
-  public String createUrl(String objectName) {
+  public String createUrl(String fileId) {
 
     try {
       return minioClient.getPresignedObjectUrl(
           GetPresignedObjectUrlArgs.builder()
               .method(Method.GET)
               .bucket(minioConfig.getBucketName())
-              .object(objectName)
+              .object(getObjectNameFromUuid(fileId))
               .expiry(minioConfig.getExpiration())
               .build());
     } catch (Exception ex) {
@@ -181,5 +184,17 @@ public class MinioStorageServiceImpl implements CloudStorageService {
     // TODO
 
     return false;
+  }
+
+  /**
+   * オブジェクト名を取得
+   *
+   * @param uuid UUID
+   * @return オブジェクト名
+   */
+  private String getObjectNameFromUuid(String uuid) throws IOException {
+    TFifle tfile = tfifleRepository.findById(UUID.fromString(uuid)).orElseThrow(IOException::new);
+
+    return tfile.getFilePath() + uuid + "." + tfile.getFileExt();
   }
 }

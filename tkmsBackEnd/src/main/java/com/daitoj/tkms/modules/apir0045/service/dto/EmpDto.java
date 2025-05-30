@@ -49,6 +49,15 @@ public class EmpDto extends BaseDto {
       requiredMode = Schema.RequiredMode.REQUIRED)
   protected String empNm;
 
+  /** 従業員カナ氏名 */
+  @NotNull
+  @Size(max = Integer.MAX_VALUE)
+  @Schema(
+      description = "従業員カナ氏名",
+      maxLength = Integer.MAX_VALUE,
+      requiredMode = Schema.RequiredMode.REQUIRED)
+  protected String empKnNm;
+
   /** 職種 */
   @Size(max = 2)
   @NotNull
@@ -102,7 +111,6 @@ public class EmpDto extends BaseDto {
   protected String compPhoneNo;
 
   @Valid
-  @NotNull
   @Schema(description = "ログインID", requiredMode = Schema.RequiredMode.REQUIRED)
   protected LoginDto login;
 
@@ -112,16 +120,14 @@ public class EmpDto extends BaseDto {
   @Schema(description = "所属事業所コード", requiredMode = Schema.RequiredMode.REQUIRED)
   protected OfficeDto belongOfficeCd;
 
-  /** 役職コード */
+  /** 所属部署役職コード */
   @Valid
   @NotNull
-  @Schema(description = "役職コード", requiredMode = Schema.RequiredMode.REQUIRED)
+  @Schema(description = "所属部署役職コード", requiredMode = Schema.RequiredMode.REQUIRED)
   protected PositionDto positionCd;
 
   /** 従業員顔写真情報 */
   @Valid
-  @NotNull
-  @Size(min = 1)
   @Schema(description = "従業員顔写真情報")
   protected List<EmpPhotoDto> empPhotoList;
 
@@ -131,6 +137,20 @@ public class EmpDto extends BaseDto {
   @Size(min = 1)
   @Schema(description = "従業員・組織・対照情報", requiredMode = Schema.RequiredMode.REQUIRED)
   protected List<EmpOrgDto> empOrgList;
+
+  /** 適用開始日付 */
+  @Size(max = 8)
+  @Schema(description = "適用開始日付", maxLength = 8)
+  protected String effectiveStartDt;
+
+  /** 部署異動役職コード */
+  @Schema(description = "部署異動役職コード")
+  protected String transgerPositionCd;
+
+  /** 部署異動情報 */
+  @Valid
+  @Schema(description = "部署異動情報")
+  protected List<EmpOrgDto> transferEmpOrgList;
 
   /** 郵便番号 */
   @Size(max = 7)

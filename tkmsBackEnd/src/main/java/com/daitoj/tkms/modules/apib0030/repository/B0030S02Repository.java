@@ -15,6 +15,7 @@ public interface B0030S02Repository extends JpaRepository<TProjectSite, Long> {
    * 物件情報を取得
    *
    * @param projectCd 案件コード
+   * @param buildingCd 棟コード
    * @return 物件情報
    */
   @Query(
@@ -26,18 +27,20 @@ public interface B0030S02Repository extends JpaRepository<TProjectSite, Long> {
                        tp.projectSiteCd,
                        tp.projectSiteNm,
                        tp.projectSiteKnNm,
-                       null,
-                       tp.delFlg,
-                       tp.regTs,
-                       tp.regUserId,
-                       tp.regPgId,
-                       tp.updTs,
-                       tp.updUserId,
-                       tp.updPgId
+                       hdr.roughEstCd,
+                       hdr.delFlg,
+                       hdr.regTs,
+                       hdr.regUserId,
+                       hdr.regPgId,
+                       hdr.updTs,
+                       hdr.updUserId,
+                       hdr.updPgId
                        )
-               FROM TProjectSite tp
-          LEFT JOIN TConstrSite  tc ON tp = tc.projectSite
-              WHERE tp.projectCd = :projectCd
-          """) // TODO estYmd <- 先行作業明細
-  List<ProjectSiteDto> findByProjectCd(String projectCd);
+               FROM TRoughEstHdr hdr
+          LEFT JOIN TProjectSite tp ON tp.projectCd = hdr.projectCd
+          LEFT JOIN TConstrSite  tc ON tp = tc.projectSite AND tc.buildingCd = :buildingCd
+              WHERE hdr.projectCd  = :projectCd
+                AND hdr.buildingCd = :buildingCd
+          """)
+  List<ProjectSiteDto> findByProjectCd(String projectCd, String buildingCd);
 }

@@ -15,8 +15,8 @@ import org.hibernate.annotations.Where;
 @Where(clause = "del_flg = '0'")
 public class MOffice extends BaseEntity {
   @Id
-  @Size(max = 2)
-  @Column(name = "office_cd", nullable = false, length = 2)
+  @Size(max = 3)
+  @Column(name = "office_cd", nullable = false, length = 3)
   private String officeCd;
 
   @NotNull

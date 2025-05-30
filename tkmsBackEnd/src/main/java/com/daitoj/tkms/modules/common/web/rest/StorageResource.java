@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -76,10 +77,11 @@ public class StorageResource {
                     mediaType = "application/json",
                     schema = @Schema(implementation = ErrorInfo.class)))
       })
-  @PostMapping("/upload")
+  @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
   public ResponseEntity<StorageUploadResult> upload(
       @RequestParam(name = "file", required = true)
           @Parameter(description = "アップロードファイルリスト", required = true, in = ParameterIn.QUERY)
+          @RequestPart("files")
           MultipartFile[] files,
       @RequestParam(name = "login_id", required = true)
           @Parameter(description = "ログインID", required = true, in = ParameterIn.QUERY)
@@ -156,7 +158,7 @@ public class StorageResource {
   /**
    * ファイルUrlを取得する
    *
-   * @param objectName オブジェクト名
+   * @param fileId ファイルID
    * @return ファイルUrl
    */
   @Operation(
@@ -183,13 +185,13 @@ public class StorageResource {
       @RequestParam(name = "object_name", required = true)
           @Parameter(
               name = "object_name",
-              description = "オブジェクト名",
+              description = "ファイルID",
               required = true,
               in = ParameterIn.QUERY)
-          String objectName) {
+          String fileId) {
 
     // ファイルUrl
-    String url = cloudStorageService.createUrl(objectName);
+    String url = cloudStorageService.createUrl(fileId);
 
     // 結果
     Map<String, String> ret = new HashMap<>();
@@ -201,7 +203,7 @@ public class StorageResource {
   /**
    * ファイルUrlリストを取得する
    *
-   * @param objectNames オブジェクト名リスト
+   * @param fileIds ファイルIDリスト
    * @return ファイルUrlリスト
    */
   @Operation(
@@ -228,18 +230,18 @@ public class StorageResource {
       @RequestParam(name = "object_names", required = true)
           @Parameter(
               name = "object_names",
-              description = "オブジェクト名リスト",
+              description = "ファイルIDリスト",
               required = true,
               in = ParameterIn.QUERY)
-          String[] objectNames) {
+          String[] fileIds) {
 
     List<StorageUrlResult> ret = new ArrayList<>();
 
-    for (String objectName : objectNames) {
+    for (String fileId : fileIds) {
       // ファイルUrl
-      String url = cloudStorageService.createUrl(objectName);
+      String url = cloudStorageService.createUrl(fileId);
       // 結果にファイルを設定
-      ret.add(new StorageUrlResult(objectName, url));
+      ret.add(new StorageUrlResult(fileId, url));
     }
 
     return ResponseEntity.ok().body(ret);

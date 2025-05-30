@@ -32,4 +32,8 @@ public class B0030S02ReturnData {
   /** 先行作業明細情報 */
   @Schema(description = "先行作業明細情報")
   List<ProjectPreWorkDtlDto> projectPreWorkDtls;
+
+  /** 大工事リスト */
+  @Schema(description = "大工事リスト")
+  List<DetailedEstDtlDto> majorWorkList;
 }

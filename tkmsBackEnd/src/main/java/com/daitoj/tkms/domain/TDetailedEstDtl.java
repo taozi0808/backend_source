@@ -3,13 +3,12 @@ package com.daitoj.tkms.domain;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import java.math.BigDecimal;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Where;
 
-import java.math.BigDecimal;
-
+/** 精積算明細 */
 @Getter
 @Setter
 @Entity
@@ -26,10 +25,6 @@ public class TDetailedEstDtl extends BaseEntity {
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
   @JoinColumn(name = "detailed_est_hid", nullable = false)
   private TDetailedEstHdr detailedEstHid;
-
-  @NotNull
-  @Column(name = "price_id", nullable = false)
-  private Long priceId;
 
   @Size(max = 3)
   @NotNull
@@ -68,4 +63,20 @@ public class TDetailedEstDtl extends BaseEntity {
   @NotNull
   @Column(name = "remarks", nullable = false, length = Integer.MAX_VALUE)
   private String remarks;
+
+  @Size(max = 14)
+  @Column(name = "vendor_est_no", length = 14)
+  private String vendorEstNo;
+
+  @Size(max = 9)
+  @Column(name = "partner_vendor_cd", length = 9)
+  private String partnerVendorCd;
+
+  @Column(name = "vendor_est_did")
+  private Long vendorEstDid;
+
+  @Size(max = 3)
+  @NotNull
+  @Column(name = "work_seq_no", nullable = false, length = 3)
+  private String workSeqNo;
 }

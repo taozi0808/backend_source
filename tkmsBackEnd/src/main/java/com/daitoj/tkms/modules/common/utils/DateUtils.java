@@ -2,8 +2,10 @@ package com.daitoj.tkms.modules.common.utils;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
+import org.apache.commons.lang3.StringUtils;
 
 /** 日付処理クラス */
 public class DateUtils {
@@ -25,6 +27,10 @@ public class DateUtils {
    * @return フォーマットした日付
    */
   public static String formatDateFromYYYYMMDD(String dateString, String pattern) {
+
+    if (StringUtils.isBlank(dateString)) {
+      return "";
+    }
 
     LocalDate date = LocalDate.parse(dateString, DateTimeFormatter.BASIC_ISO_DATE);
 
@@ -63,5 +69,21 @@ public class DateUtils {
   public static Instant getDbDateTime() {
 
     return Instant.now();
+  }
+
+  /**
+   * YYYYMMDD日付はInstantに変換.
+   *
+   * @param inDateString 日付
+   * @return 変換後の日付
+   */
+  public static Instant stringToInstant(String inDateString) {
+    if (inDateString == null || inDateString.isEmpty()) {
+      return null;
+    }
+    return LocalDate.parse(inDateString, DateTimeFormatter.ofPattern(DATE_FORMAT))
+        .atStartOfDay()
+        .atZone(ZoneId.systemDefault())
+        .toInstant();
   }
 }

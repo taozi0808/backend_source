@@ -171,8 +171,21 @@ public class A0020Service {
       mloginRepository.save(loginInfo.get());
 
       varMap.put(KeyConstants.A0020_VAR_PASSWORD, password);
-      customMailService.sendEmailFromTemplate(
-          TemplateName.A0020_TEMPLATE, to, Message.A0020_MAIL_TITLE, varMap, false, false);
+        Long mailResult =
+            customMailService.sendMail(
+                TemplateName.A0020_TEMPLATE,
+                Message.A0020_MAIL_TITLE,
+                to,
+                null,
+                null,
+                varMap,
+                null);
+
+        if (mailResult == -1L) {
+            throw new SystemException(
+                messageSource.getMessage(
+                    Message.MSGID_A00007, null, LocaleContextHolder.getLocale()));
+        }
       // メッセージ
       String msg =
           messageSource.getMessage(Message.MSGID_A00008, null, LocaleContextHolder.getLocale());

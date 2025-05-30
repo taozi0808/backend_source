@@ -12,8 +12,8 @@ public class SystemConfig {
   public static final String SYS_USABLE_END_TIME = "SYS_USABLE_END_TIME";
 
   /** システムコード:S3 */
-  public static final String SYS_CD_S3 = "S3";
+  public static final String SYS_CD_AWS = "AWS";
 
   /** S3ファイル格納パス */
-  public static final String SYS_S3_PATH = "PATH";
+  public static final String SYS_S3_S3_UPLOAD_LOC = "S3_UPLOAD_LOC";
 }

@@ -20,6 +20,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.Email;
@@ -35,10 +36,11 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 /** 社員登録コントローラ */
 @RestController
@@ -50,10 +52,10 @@ public class R0045Resource {
   /** 社員登録サービス */
   private final R0045Service r0045Service;
 
-  /* 日付フォーマット */
+  /** 日付フォーマット */
   private static final String DATE_FORMAT = "yyyyMMddHHmmss";
 
-  /* 日付フォーマット */
+  /** 日付フォーマット */
   private static final String PARAM_DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
   /** PDF拡張子 */
@@ -171,10 +173,13 @@ public class R0045Resource {
                     mediaType = "application/json",
                     schema = @Schema(implementation = ErrorInfo.class)))
       })
-  @PostMapping("/save")
-  public ResponseEntity<?> savesyainkanritourokuInfo(@Valid @RequestBody R0045Dto inDto) {
+  @PostMapping(value = "/save", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+  public ResponseEntity<?> savesyainkanritourokuInfo(
+      @RequestPart("inDto") @Valid R0045Dto inDto,
+      @RequestPart(value = "files", required = false) MultipartFile[] files)
+      throws MessagingException {
     // 社員登録情報を保存
-    ApiResult<R0045S03ReturnData> result = r0045Service.savesyainkanritourokuInfo(inDto);
+    ApiResult<R0045S03ReturnData> result = r0045Service.savesyainkanritourokuInfo(inDto, files);
 
     // 処理区分が新規
     if (CommonConstants.SHORIKUBUN_SINNKI.equals(inDto.getShorikubun())) {
@@ -222,6 +227,15 @@ public class R0045Resource {
               in = ParameterIn.QUERY,
               schema = @Schema(type = "string"))
           String loginId,
+      @RequestParam(name = "emp_nm", required = true)
+          @Size(max = 255)
+          @Parameter(
+              name = "emp_nm",
+              description = "氏名",
+              required = true,
+              in = ParameterIn.QUERY,
+              schema = @Schema(type = "string"))
+          String shimei,
       @RequestParam(name = "mail_address", required = true)
           @Email
           @Parameter(
@@ -230,10 +244,10 @@ public class R0045Resource {
               required = true,
               in = ParameterIn.QUERY,
               schema = @Schema(type = "string"))
-          String mailAddress) {
+          String mailAddress) throws MessagingException {
 
     // パスワード通知
-    ApiResult<?> result = r0045Service.syainkanritourokupasswordalert(loginId, mailAddress);
+    ApiResult<?> result = r0045Service.syainkanritourokupasswordalert(loginId, shimei, mailAddress);
 
     // 成功の場合
     return ResponseEntity.ok().body(result);

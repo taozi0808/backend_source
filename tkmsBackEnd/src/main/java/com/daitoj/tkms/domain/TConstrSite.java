@@ -39,17 +39,20 @@ public class TConstrSite extends BaseEntity {
   @JoinColumn(name = "project_site_id", nullable = false)
   private TProjectSite projectSite;
 
+  @Size(max = 2)
+  @NotNull
+  @Column(name = "building_cd", nullable = false, length = 2)
+  private String buildingCd;
+
   @Size(max = 12)
   @NotNull
   @Column(name = "constr_site_cd", nullable = false, length = 12)
   private String constrSiteCd;
 
-  @NotNull
-  @Column(name = "constr_site_nm", nullable = false, length = Integer.MAX_VALUE)
+  @Column(name = "constr_site_nm", length = Integer.MAX_VALUE)
   private String constrSiteNm;
 
-  @NotNull
-  @Column(name = "constr_site_kn_nm", nullable = false, length = Integer.MAX_VALUE)
+  @Column(name = "constr_site_kn_nm", length = Integer.MAX_VALUE)
   private String constrSiteKnNm;
 
   @Size(max = 3)
@@ -57,16 +60,13 @@ public class TConstrSite extends BaseEntity {
   @Column(name = "related_work_cd", nullable = false, length = 3)
   private String relatedWorkCd;
 
-  @NotNull
-  @Column(name = "building_area", nullable = false, precision = 9, scale = 2)
+  @Column(name = "building_area", precision = 9, scale = 2)
   private BigDecimal buildingArea;
 
-  @NotNull
-  @Column(name = "gross_floor_area", nullable = false, precision = 9, scale = 2)
+  @Column(name = "gross_floor_area", precision = 9, scale = 2)
   private BigDecimal grossFloorArea;
 
-  @NotNull
-  @Column(name = "buildup_area", nullable = false, precision = 9, scale = 2)
+  @Column(name = "buildup_area", precision = 9, scale = 2)
   private BigDecimal buildupArea;
 
   @NotNull
@@ -77,41 +77,32 @@ public class TConstrSite extends BaseEntity {
   @Column(name = "basement_cnt", nullable = false, precision = 3)
   private BigDecimal basementCnt;
 
-  @NotNull
-  @Column(name = "structure_k", nullable = false, length = Integer.MAX_VALUE)
+  @Column(name = "structure_k", length = Integer.MAX_VALUE)
   private String structureK;
 
   @Size(max = 8)
-  @NotNull
-  @Column(name = "constr_site_start_ymd", nullable = false, length = 8)
+  @Column(name = "constr_site_start_ymd", length = 8)
   private String constrSiteStartYmd;
 
   @Size(max = 8)
-  @NotNull
-  @Column(name = "constr_site_delivery_ymd", nullable = false, length = 8)
+  @Column(name = "constr_site_delivery_ymd", length = 8)
   private String constrSiteDeliveryYmd;
 
-  @NotNull
-  @Column(name = "excl_tax_co_amt", nullable = false, precision = 11)
+  @Column(name = "excl_tax_co_amt", precision = 11)
   private BigDecimal exclTaxCoAmt;
 
-  @NotNull
-  @Column(name = "incl_tax_co_amt", nullable = false, precision = 11)
+  @Column(name = "incl_tax_co_amt", precision = 11)
   private BigDecimal inclTaxCoAmt;
 
-  @NotNull
-  @Column(name = "co_sales_tax_amt", nullable = false, precision = 11)
+  @Column(name = "co_sales_tax_amt", precision = 11)
   private BigDecimal coSalesTaxAmt;
 
-  @NotNull
-  @Column(name = "gross_profit_amt", nullable = false, length = Integer.MAX_VALUE)
+  @Column(name = "gross_profit_amt", length = Integer.MAX_VALUE)
   private String grossProfitAmt;
 
-  @NotNull
-  @Column(name = "gross_profit_rate", nullable = false, length = Integer.MAX_VALUE)
-  private String grossProfitRate;
+  @Column(name = "gross_profit_rate", precision = 5, scale = 2)
+  private BigDecimal grossProfitRate;
 
-  @NotNull
-  @Column(name = "memo", nullable = false, length = Integer.MAX_VALUE)
+  @Column(name = "memo", length = Integer.MAX_VALUE)
   private String memo;
 }

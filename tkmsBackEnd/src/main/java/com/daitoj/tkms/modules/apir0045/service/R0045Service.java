@@ -5,6 +5,7 @@ import com.daitoj.tkms.domain.MEmp;
 import com.daitoj.tkms.domain.MEmpCert;
 import com.daitoj.tkms.domain.MEmpOrg;
 import com.daitoj.tkms.domain.MEmpPhoto;
+import com.daitoj.tkms.domain.MEmpTransferDtl;
 import com.daitoj.tkms.domain.MEmpTransferHdr;
 import com.daitoj.tkms.domain.MItemListSetting;
 import com.daitoj.tkms.domain.MLogin;
@@ -18,6 +19,8 @@ import com.daitoj.tkms.modules.apir0045.service.dto.EmpDto;
 import com.daitoj.tkms.modules.apir0045.service.dto.EmpOrgDto;
 import com.daitoj.tkms.modules.apir0045.service.dto.EmpPhotoDto;
 import com.daitoj.tkms.modules.apir0045.service.dto.EmpResultDto;
+import com.daitoj.tkms.modules.apir0045.service.dto.LoginDto;
+import com.daitoj.tkms.modules.apir0045.service.dto.OrgDto;
 import com.daitoj.tkms.modules.apir0045.service.dto.R0045Dto;
 import com.daitoj.tkms.modules.apir0045.service.dto.R0045PrintDto;
 import com.daitoj.tkms.modules.apir0045.service.dto.R0045S01ReturnData;
@@ -34,6 +37,7 @@ import com.daitoj.tkms.modules.common.repository.MEmpCertRepository;
 import com.daitoj.tkms.modules.common.repository.MEmpOrgRepository;
 import com.daitoj.tkms.modules.common.repository.MEmpPhotoRepository;
 import com.daitoj.tkms.modules.common.repository.MEmpRepository;
+import com.daitoj.tkms.modules.common.repository.MEmpTransferDtlRepository;
 import com.daitoj.tkms.modules.common.repository.MEmpTransferHdrRepository;
 import com.daitoj.tkms.modules.common.repository.MItemListSettingRepository;
 import com.daitoj.tkms.modules.common.repository.MLoginRepository;
@@ -63,16 +67,18 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.mail.MessagingException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
+import java.util.stream.Collectors;
 import net.sf.jasperreports.engine.JREmptyDataSource;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.domain.Sort;
@@ -81,6 +87,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 /** 社員登録ビジネスロジック */
 @Service
@@ -121,6 +128,9 @@ public class R0045Service {
   /** 従業員異動ヘッダ情報のリポジトリ */
   private final MEmpTransferHdrRepository mempTransferHdrRepository;
 
+  /** 従業員異動ヘッダ明細情報のリポジトリ */
+  private final MEmpTransferDtlRepository mempTransferDtlRepository;
+
   /** レポートサービス */
   private final ReportService reportService;
 
@@ -132,6 +142,9 @@ public class R0045Service {
 
   /** メールサービス */
   private final CustomMailService customMailService;
+
+  /** ストレージサービス */
+  private final CloudStorageService cloudStorageService;
 
   /** メッセージ */
   private final MessageSource messageSource;
@@ -159,24 +172,20 @@ public class R0045Service {
   /** 採番サービス */
   private final NumberService numberRuleService;
 
-  /** ストレージサービス */
-  private final CloudStorageService cloudStorageService;
-
   /** 採番項目ID(社員コード) */
   private static final String FIELD_ID_EMP_CD = "EMP_CD";
+
+  /** 社員コード先頭文字 */
+  private static final String PREFIX_EMP_CD = "j";
+
+  /** 社員コード接尾辞 */
+  private static final String SUFFIXEMP_CD = "000001";
 
   /** 帳票日付フォーマット */
   private static final String PDF_DATE_FORMAT = "yyyy年MM年dd日HH:mm:ss";
 
   /** レポートファイル名 */
   public static final String REPORT_FILE_NAME = "WebR0045.jasper";
-
-  /** レポートファイル名 */
-  public static final String CERT_SUB_REPORT_FILE_NAME = "WebR0045_EmpCert.jasper";
-
-  /** テンプレートのテンプレートフォルダ */
-  @Value("${jasper.template.path}")
-  private String templatePath;
 
   /** コンストラクタ */
   public R0045Service(
@@ -192,6 +201,7 @@ public class R0045Service {
       MOrgRevRepository morgRevRepository,
       MCertRepository mcertRepository,
       MEmpTransferHdrRepository mempTransferHdrRepository,
+      MEmpTransferDtlRepository mempTransferDtlRepository,
       R0045Mapper r0045Mapper,
       CustomMailService customMailService,
       ItemListSettingService itemListSettingService,
@@ -217,6 +227,7 @@ public class R0045Service {
     this.morgRevRepository = morgRevRepository;
     this.mcertRepository = mcertRepository;
     this.mempTransferHdrRepository = mempTransferHdrRepository;
+    this.mempTransferDtlRepository = mempTransferDtlRepository;
     this.r0045Mapper = r0045Mapper;
     this.customMailService = customMailService;
     this.itemListSettingService = itemListSettingService;
@@ -323,6 +334,9 @@ public class R0045Service {
    */
   public ApiResult<R0045S02ReturnData> getsyainkanritourokuInfo(String empCd) {
     try {
+      // システム日付
+      String sysDate = DateUtils.formatNow(DateUtils.DATE_FORMAT);
+
       // 社員情報を取得
       MEmp empEntity = r0045Repository.findByEmpCd(empCd).orElseThrow(ConflictException::new);
       EmpResultDto empDto = r0045Mapper.toEmpResultDto(empEntity);
@@ -331,9 +345,7 @@ public class R0045Service {
         // 職種マスタデータを取得
         mitemListSettingRepository
             .findById_ItemClassCdAndId_ItemCdAndId_EffectiveStartDtLessThanEqual(
-                MasterData.ITEM_CLASS_CD_D0014,
-                empEntity.getEmpJobTypeCd(),
-                DateUtils.formatNow(DateUtils.DATE_FORMAT))
+                MasterData.ITEM_CLASS_CD_D0014, empEntity.getEmpJobTypeCd(), sysDate)
             .ifPresent(item -> empDto.setEmpJobTypeName(item.getItemValue()));
       }
 
@@ -341,20 +353,73 @@ public class R0045Service {
         // 性別マスタデータを取得
         mitemListSettingRepository
             .findById_ItemClassCdAndId_ItemCdAndId_EffectiveStartDtLessThanEqual(
-                MasterData.ITEM_CLASS_CD_D0013,
-                empEntity.getSex(),
-                DateUtils.formatNow(DateUtils.DATE_FORMAT))
+                MasterData.ITEM_CLASS_CD_D0013, empEntity.getSex(), sysDate)
             .ifPresent(item -> empDto.setSexName(item.getItemValue()));
       }
-// TODO
-//      // 従業員の異動情報を設定
-//      Optional<MEmpTransferHdr> empTransferHdr =
-//          mempTransferHdrRepository.findByEmp_IdAndEffectiveStartDt(empEntity.getId(), effectiveStartDt);
 
-      //            .ifPresent(
-      //            empTransferHdr ->
-      //
-      // returnData.setEmpTransferHdr(r0045Mapper.toEmpTransferHdrDto(empTransferHdr)))
+      // 従業員の異動情報を取得
+      List<MEmpTransferHdr> empTransferHdrList =
+          mempTransferHdrRepository.findByEmp_IdOrderByEffectiveStartDt(empEntity.getId());
+
+      if (!CollectionUtils.isEmpty(empTransferHdrList)) {
+        // 直近従業員の異動情報
+        MEmpTransferHdr transferHdr = null;
+
+        // 適用開始日 > システム日時のデータ
+        List<MEmpTransferHdr> aftList =
+            empTransferHdrList.stream()
+                .filter(item -> item.getEffectiveStartDt().compareTo(sysDate) > 0)
+                .toList();
+
+        if (!CollectionUtils.isEmpty(aftList)) {
+          transferHdr = aftList.get(0);
+        } else {
+          // 適用開始日 <= システム日時のデータ
+          List<MEmpTransferHdr> befList =
+              empTransferHdrList.stream()
+                  .filter(item -> item.getEffectiveStartDt().compareTo(sysDate) <= 0)
+                  .toList();
+
+          transferHdr = befList.get(befList.size() - 1);
+        }
+
+        // 適用開始日を設定
+        empDto.setEffectiveStartDt(transferHdr.getEffectiveStartDt());
+        // 部署異動役職コードを設定
+        empDto.setTransgerPositionCd(transferHdr.getPositionCd());
+
+        // 従業員異動明細
+        List<MEmpTransferDtl> transferDtls =
+            mempTransferDtlRepository.findByEmpTransferHid_Id(transferHdr.getId());
+
+        if (!CollectionUtils.isEmpty(transferDtls)) {
+          // 部署異動情報
+          List<EmpOrgDto> transferEmpOrgList = new ArrayList<>();
+
+          for (MEmpTransferDtl dtl : transferDtls) {
+            EmpOrgDto empOrgDto = new EmpOrgDto();
+            // 連番
+            empOrgDto.setSeqNo(dtl.getSeqNo());
+
+            OrgDto orgDto = new OrgDto();
+            // 組織ID
+            orgDto.setId(dtl.getOrg().getId());
+            // 組織コード
+            orgDto.setOrgCd(dtl.getOrg().getOrgCd());
+            // 組織名
+            orgDto.setOrgNm(dtl.getOrg().getOrgNm());
+            // 組織情報
+            empOrgDto.setOrg(orgDto);
+
+            // 組織区分
+            empOrgDto.setOrgK(dtl.getOrgK());
+
+            transferEmpOrgList.add(empOrgDto);
+          }
+          // 部署異動情報を設定
+          empDto.setTransferEmpOrgList(transferEmpOrgList);
+        }
+      }
 
       // 結果情報
       R0045S02ReturnData result = new R0045S02ReturnData();
@@ -378,8 +443,32 @@ public class R0045Service {
    * @param inDto 社員管理登録情報保存パラメータ
    * @return 社員コード
    */
-  public ApiResult<R0045S03ReturnData> savesyainkanritourokuInfo(R0045Dto inDto) {
+  public ApiResult<R0045S03ReturnData> savesyainkanritourokuInfo(
+      R0045Dto inDto, MultipartFile[] files) throws MessagingException {
     try {
+
+      if (files != null && files.length > 0) {
+        // 従業員顔写真アップロード
+        List<UUID> uuids = cloudStorageService.upload(files);
+
+        // 従業員顔写真情報を設定
+        for (int i = 0; i < uuids.size(); i++) {
+          if (!CollectionUtils.isEmpty(inDto.getEmp().getEmpPhotoList())) {
+            // ファイルのインデックス
+            String fileIndex = String.valueOf(i);
+            // ファイルのDto
+            Optional<EmpPhotoDto> photoDto =
+                inDto.getEmp().getEmpPhotoList().stream()
+                    .filter(item -> fileIndex.equals(item.getFileIndex()))
+                    .findAny();
+            if (photoDto.isPresent()) {
+              // S3パスを設定
+              photoDto.get().setPhotoFileId(uuids.get(i));
+            }
+          }
+        }
+      }
+
       // 社員コード
       String empCd;
       // 社員情報
@@ -410,27 +499,49 @@ public class R0045Service {
           empCd = numberRuleService.getNextNumberByFieldId(FIELD_ID_EMP_CD, null, null);
         }
 
+        // ログインIDが設定されない場合
+        if (empDto.getLogin() == null || StringUtils.isBlank(empDto.getLogin().getLoginId())) {
+          LoginDto loginDto = new LoginDto();
+          empDto.setLogin(loginDto);
+
+          // ログインIDを設定:j + 社員コード + 000001
+          loginDto.setLoginId(PREFIX_EMP_CD + empCd + SUFFIXEMP_CD);
+        }
+
         // パスワードを生成
         String passwordString = PasswordUtils.createPassword();
         // 社員情報を登録
         MEmp newEmpEntity = insertEmpInfoWithLogin(empDto, empCd, passwordString);
 
         // m_emp以外のデータを保存
-        saveOtherInfo(newEmpEntity.getId(), empDto);
+        saveOtherInfo(newEmpEntity.getId(), empDto, newEmpEntity);
 
         // メールの変数
         Map<String, Object> varMap = new HashMap<>();
+
+        // 社員名
+        varMap.put(KeyConstants.R0045_VAR_EMP_NAME, empDto.getEmpNm());
+        // ログインID
         varMap.put(KeyConstants.R0045_VAR_LOGIN_ID, empDto.getLogin().getLoginId());
+        // パスワード
         varMap.put(KeyConstants.R0045_VAR_PASSWORD, passwordString);
 
         // メールを送信する
-        customMailService.sendEmailFromTemplate(
-            TemplateName.R0045_INS_TEMPLATE,
-            empDto.getMailAddress(),
-            Message.R0045_MAIL_TITLE,
-            varMap,
-            false,
-            false);
+        Long mailResult =
+            customMailService.sendMail(
+                TemplateName.R0045_INS_TEMPLATE,
+                Message.R0045_INS_MAIL_TITLE,
+                empDto.getMailAddress(),
+                null,
+                null,
+                varMap,
+                null);
+
+        if (mailResult == -1L) {
+          throw new SystemException(
+              messageSource.getMessage(
+                  Message.MSGID_A00007, null, LocaleContextHolder.getLocale()));
+        }
 
         // 戻り値
         R0045S03ReturnData ret = new R0045S03ReturnData();
@@ -456,18 +567,15 @@ public class R0045Service {
         MEmp newEmpEntity = updateEmpInfo(empDto, dbEmpEntity);
 
         // m_emp以外のデータを保存
-        saveOtherInfo(newEmpEntity.getId(), empDto);
+        saveOtherInfo(newEmpEntity.getId(), empDto, newEmpEntity);
       }
 
       return ApiResult.success();
     } catch (MessagingException | MailSendException e) {
       // メッセージ：メール送信に失敗しました。
-      String msg =
-          messageSource.getMessage(Message.MSGID_A00007, null, LocaleContextHolder.getLocale());
+      LOG.error(e.toString(), e);
 
-      LOG.warn(msg);
-
-      throw new SystemException(msg);
+      throw e;
     } catch (ConflictException ex) {
       throw ex;
     } catch (Exception ex) {
@@ -482,10 +590,12 @@ public class R0045Service {
    * パスワード通知
    *
    * @param loginId ログインID社員コード
+   * @param shimei 氏名
    * @param mailAddress メールアドレス
    * @return エラー情報
    */
-  public ApiResult<?> syainkanritourokupasswordalert(String loginId, String mailAddress) {
+  public ApiResult<?> syainkanritourokupasswordalert(
+      String loginId, String shimei, String mailAddress) throws MessagingException {
     try {
       // パスワードを生成
       String passwordString = PasswordUtils.createPassword();
@@ -515,11 +625,26 @@ public class R0045Service {
 
       // メール変数
       Map<String, Object> varMap = new HashMap<>();
-      varMap.put(KeyConstants.A0020_VAR_PASSWORD, passwordString);
+      // 社員名
+      varMap.put(KeyConstants.R0045_VAR_EMP_NAME, shimei);
+      // パスワード
+      varMap.put(KeyConstants.R0045_VAR_PASSWORD, passwordString);
 
       // メールを送信する
-      customMailService.sendEmailFromTemplate(
-          TemplateName.A0020_TEMPLATE, mailAddress, Message.A0020_MAIL_TITLE, varMap, false, false);
+      Long mailResult =
+          customMailService.sendMail(
+              TemplateName.R0045_UPD_TEMPLATE,
+              Message.R0045_UPD_MAIL_TITLE,
+              mailAddress,
+              null,
+              null,
+              varMap,
+              null);
+
+      if (mailResult == -1L) {
+        throw new SystemException(
+            messageSource.getMessage(Message.MSGID_A00007, null, LocaleContextHolder.getLocale()));
+      }
 
       // パスワード再通知致しました。
       String msg =
@@ -532,15 +657,9 @@ public class R0045Service {
       return ApiResult.success(msgInfo);
 
     } catch (MessagingException | MailSendException e) {
-      // メールの送信に失敗しました。メールアドレスを確認してください。
-      String msg =
-          messageSource.getMessage(Message.MSGID_U00019, null, LocaleContextHolder.getLocale());
-
-      LOG.error(msg);
-
-      // 結果情報
-      return ApiResult.error(Message.MSGID_U00019, msg);
-
+      // メッセージ：メール送信に失敗しました。
+      LOG.error(e.toString(), e);
+      throw e;
     } catch (Exception ex) {
       LOG.error(ex.toString(), ex);
 
@@ -558,46 +677,66 @@ public class R0045Service {
     try {
       // 最新社員情報を取得
       MEmp empEntity = r0045Repository.findByEmpCd(empCd).orElseThrow(ConflictException::new);
-      // "1"（削除済）
-      empEntity.setDelFlg(CommonConstants.DELETE_FLAG_DELETE);
-      // 社員情報を削除
-      mempRepository.saveAndFlush(empEntity);
 
-      // ログイン情報を取得する
-      Optional<MLogin> loginInfo = loginRepository.findById(empEntity.getLogin().getLoginId());
-      loginInfo.ifPresent(
-          mlogin -> {
-            // "1"（削除済）
-            mlogin.setDelFlg(CommonConstants.DELETE_FLAG_DELETE);
-            // ログイン情報を削除
-            loginRepository.save(mlogin);
-          });
-
+      // 従業員・組織・対照情報を削除
       if (!CollectionUtils.isEmpty(empEntity.getEmpOrgList())) {
         // "1"（削除済）
         empEntity
             .getEmpOrgList()
             .forEach(entity -> entity.setDelFlg(CommonConstants.DELETE_FLAG_DELETE));
-        // 従業員・組織・対照情報を削除
-        mempOrgRepository.saveAllAndFlush(empEntity.getEmpOrgList());
       }
 
+      // 従業員資格情報を削除
       if (!CollectionUtils.isEmpty(empEntity.getEmpCertList())) {
         // "1"（削除済）
         empEntity
             .getEmpCertList()
             .forEach(entity -> entity.setDelFlg(CommonConstants.DELETE_FLAG_DELETE));
-        // 従業員資格情報を削除
-        mempCertRepository.saveAllAndFlush(empEntity.getEmpCertList());
       }
 
+      // 従業員顔写真を削除
       if (!CollectionUtils.isEmpty(empEntity.getEmpPhotoList())) {
         // "1"（削除済）
         empEntity
             .getEmpPhotoList()
             .forEach(entity -> entity.setDelFlg(CommonConstants.DELETE_FLAG_DELETE));
-        // 従業員顔写真を削除
-        mempPhotoRepository.saveAllAndFlush(empEntity.getEmpPhotoList());
+      }
+
+      // 従業員の異動情報を取得
+      List<MEmpTransferHdr> empTransferHdrList =
+          mempTransferHdrRepository.findByEmp_IdOrderByEffectiveStartDt(empEntity.getId());
+      if (!CollectionUtils.isEmpty(empTransferHdrList)) {
+
+        for (MEmpTransferHdr hdr : empTransferHdrList) {
+          // 従業員異動明細
+          List<MEmpTransferDtl> transferDtls =
+              mempTransferDtlRepository.findByEmpTransferHid_Id(hdr.getId());
+
+          if (!CollectionUtils.isEmpty(transferDtls)) {
+            // "1"（削除済）
+            transferDtls.forEach(entity -> entity.setDelFlg(CommonConstants.DELETE_FLAG_DELETE));
+          }
+        }
+
+        // 従業員の異動情報を削除
+        empTransferHdrList.forEach(entity -> entity.setDelFlg(CommonConstants.DELETE_FLAG_DELETE));
+      }
+
+      // 社員情報を削除
+      empEntity.setDelFlg(CommonConstants.DELETE_FLAG_DELETE);
+
+      // ログイン情報を取得する
+      Optional<MLogin> loginInfo = loginRepository.findById(empEntity.getLogin().getLoginId());
+      if (loginInfo.isPresent()) {
+
+        // 退職日付が入れられた場合
+        if (StringUtils.isNotBlank(empEntity.getTerminationYmd())) {
+          // 利用終了日付を設定
+          loginInfo.get().setEndYmd(empEntity.getTerminationYmd());
+        }
+
+        // "1"（削除済）
+        loginInfo.get().setDelFlg(CommonConstants.DELETE_FLAG_DELETE);
       }
 
       return ApiResult.success();
@@ -712,7 +851,21 @@ public class R0045Service {
     // 最新フラグ;1：最新
     empEntity.setNewestFlg(CommonConstants.NEWEST_FLAG_NEW);
     // 歴番+1
-    empEntity.setHisNo(String.format("%02d", Integer.parseInt(dbEmpEntity.getHisNo()) + 1));
+    empEntity.setHisNo(dbEmpEntity.getHisNo() + 1);
+    // 利用時間制御フラグ
+    if (dbEmpEntity.getUseTimeControlFlg() != null) {
+      empEntity.setUseTimeControlFlg(dbEmpEntity.getUseTimeControlFlg());
+    }
+
+    // 退職日付が入れられた場合
+    if (StringUtils.isNotBlank(empEntity.getTerminationYmd())) {
+      // ログイン情報を取得する
+      Optional<MLogin> loginInfo = loginRepository.findById(empDto.getLogin().getLoginId());
+
+      // 利用終了日付を設定
+      loginInfo.ifPresent(mlogin -> mlogin.setEndYmd(empDto.getTerminationYmd()));
+    }
+
     // 最新データとして登録
     return mempRepository.save(empEntity);
   }
@@ -723,7 +876,7 @@ public class R0045Service {
    * @param empId 社員ID
    * @param empDto 社員情報
    */
-  private void saveOtherInfo(Long empId, EmpDto empDto) {
+  private void saveOtherInfo(Long empId, EmpDto empDto, MEmp emp) {
     // 従業員・組織・対照情報
     List<EmpOrgDto> empOrgDtoList = empDto.getEmpOrgList();
     // 資格情報
@@ -751,6 +904,47 @@ public class R0045Service {
       // 従業員顔写真を登録
       mempPhotoRepository.saveAllAndFlush(mempPhotoList);
     }
+
+    // 部署異動情報
+    List<EmpOrgDto> transferEmpOrgList = empDto.getTransferEmpOrgList();
+    if (!CollectionUtils.isEmpty(transferEmpOrgList)) {
+      // 適用開始日付
+      String effectiveStartDt = empDto.getEffectiveStartDt();
+
+      // 従業員異動ヘッダ情報
+      MEmpTransferHdr transferHdr = new MEmpTransferHdr();
+      // 従業員ID
+      transferHdr.setEmp(emp);
+      // 適用開始日
+      transferHdr.setEffectiveStartDt(effectiveStartDt);
+      // 役職コード
+      transferHdr.setPositionCd(empDto.getTransgerPositionCd());
+      // 従業員異動ヘッダ情報を登録
+      MEmpTransferHdr newRransferHdr = mempTransferHdrRepository.save(transferHdr);
+
+      List<MEmpTransferDtl> transferDtls = new ArrayList<>();
+
+      // 部、課でそれぞれ１レコードづつ作成する
+      for (EmpOrgDto dto : transferEmpOrgList) {
+        MEmpTransferDtl transferDtl = new MEmpTransferDtl();
+
+        // 従業員異動HID
+        transferDtl.setEmpTransferHid(newRransferHdr);
+        // 連番
+        transferDtl.setSeqNo(dto.getSeqNo());
+        // 組織ID
+        MOrg org = new MOrg();
+        org.setId(dto.getOrg().getId());
+        transferDtl.setOrg(org);
+        // 組織区分
+        transferDtl.setOrgK(dto.getOrgK());
+
+        transferDtls.add(transferDtl);
+      }
+
+      // 従業員異動明細情報を登録
+      mempTransferDtlRepository.saveAll(transferDtls);
+    }
   }
 
   /**
@@ -773,8 +967,8 @@ public class R0045Service {
       for (int i = 0; i < photoList.size(); i++) {
         EmpPhotoDto photo = photoList.get(i);
         String url = null;
-        if (StringUtils.isNotEmpty(photo.getPhotoUrl().trim())) {
-          url = cloudStorageService.createUrl(photo.getPhotoUrl());
+        if (StringUtils.isNotEmpty(photo.getPhotoFileId().toString())) {
+          url = cloudStorageService.createUrl(photo.getPhotoFileId().toString());
         }
         switch (i) {
           case 0 -> printDto.setPhotoUrl1(url);
@@ -823,10 +1017,63 @@ public class R0045Service {
       printDto.setEmploymentYmd(empDto.getEmploymentYmd());
       // 退職年月日
       printDto.setTerminationYmd(empDto.getTerminationYmd());
+      List<String> orgBulist = new ArrayList<>();
+      List<String> orgKalist = new ArrayList<>();
+      List<String> transFerBulist = new ArrayList<>();
+      List<String> transFerKalist = new ArrayList<>();
+      // 所属部署（部）
+      if (empDto.getEmpOrgList() != null) {
+        orgBulist =
+            empDto.getEmpOrgList().stream()
+                .filter(
+                    item ->
+                        "1".equals(item.getOrgK())
+                            && item.getOrg() != null
+                            && item.getOrg().getOrgNm() != null)
+                .map(item -> item.getOrg().getOrgNm())
+                .collect(Collectors.toList());
+        // 所属部署（課）
+        orgKalist =
+            empDto.getEmpOrgList().stream()
+                .filter(
+                    item ->
+                        "2".equals(item.getOrgK())
+                            && item.getOrg() != null
+                            && item.getOrg().getOrgNm() != null)
+                .map(item -> item.getOrg().getOrgNm())
+                .collect(Collectors.toList());
+      }
+      if (empDto.getTransferEmpOrgList() != null) {
+        // 部署異動設定（部）
+        transFerBulist =
+            empDto.getTransferEmpOrgList().stream()
+                .filter(
+                    item ->
+                        "1".equals(item.getOrgK())
+                            && item.getOrg() != null
+                            && item.getOrg().getOrgNm() != null)
+                .map(item -> item.getOrg().getOrgNm())
+                .collect(Collectors.toList());
+        // 部署異動設定（部）
+        transFerKalist =
+            empDto.getTransferEmpOrgList().stream()
+                .filter(
+                    item ->
+                        "2".equals(item.getOrgK())
+                            && item.getOrg() != null
+                            && item.getOrg().getOrgNm() != null)
+                .map(item -> item.getOrg().getOrgNm())
+                .collect(Collectors.toList());
+      }
+
       // 資格情報
       for (int i = 0; i < 5; i++) {
         String certNm = "";
         String certExpirationDt = "";
+        String empOrgBu = (orgBulist.size() > i) ? orgBulist.get(i) : "";
+        String empOrgKa = (orgKalist.size() > i) ? orgKalist.get(i) : "";
+        String transEmpOrgBu = (transFerBulist.size() > i) ? transFerBulist.get(i) : "";
+        String transEmpOrgKa = (transFerKalist.size() > i) ? transFerKalist.get(i) : "";
         if (i < empDto.getEmpCertList().size()) {
           certNm =
               StringUtils.isEmpty(empDto.getEmpCertList().get(i).getCertCd().getCertNm())
@@ -841,22 +1088,42 @@ public class R0045Service {
           case 0 -> {
             printDto.setEmpCertField1(certNm);
             printDto.setEmpCertField2(certExpirationDt);
+            printDto.setEmpOrgBuField1(empOrgBu);
+            printDto.setEmpOrgKaField1(empOrgKa);
+            printDto.setTransEmpOrgBuField1(transEmpOrgBu);
+            printDto.setTransEmpOrgKaField1(transEmpOrgKa);
           }
           case 1 -> {
             printDto.setEmpCertField3(certNm);
             printDto.setEmpCertField4(certExpirationDt);
+            printDto.setEmpOrgBuField2(empOrgBu);
+            printDto.setEmpOrgKaField2(empOrgKa);
+            printDto.setTransEmpOrgBuField2(transEmpOrgBu);
+            printDto.setTransEmpOrgKaField2(transEmpOrgKa);
           }
           case 3 -> {
             printDto.setEmpCertField5(certNm);
             printDto.setEmpCertField6(certExpirationDt);
+            printDto.setEmpOrgBuField3(empOrgBu);
+            printDto.setEmpOrgKaField3(empOrgKa);
+            printDto.setTransEmpOrgBuField3(transEmpOrgBu);
+            printDto.setTransEmpOrgKaField3(transEmpOrgKa);
           }
           case 4 -> {
             printDto.setEmpCertField7(certNm);
             printDto.setEmpCertField8(certExpirationDt);
+            printDto.setEmpOrgBuField4(empOrgBu);
+            printDto.setEmpOrgKaField4(empOrgKa);
+            printDto.setTransEmpOrgBuField4(transEmpOrgBu);
+            printDto.setTransEmpOrgKaField4(transEmpOrgKa);
           }
           case 5 -> {
             printDto.setEmpCertField9(certNm);
             printDto.setEmpCertField10(certExpirationDt);
+            printDto.setEmpOrgBuField5(empOrgBu);
+            printDto.setEmpOrgKaField5(empOrgKa);
+            printDto.setTransEmpOrgBuField5(transEmpOrgBu);
+            printDto.setTransEmpOrgKaField5(transEmpOrgKa);
           }
         }
       }

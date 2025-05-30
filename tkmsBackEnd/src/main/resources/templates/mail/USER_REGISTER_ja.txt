@@ -1,0 +1,12 @@
+
+[[${EMP_NAME}]] [[#{webR0045.mail.text1}]]
+
+[[#{webR0045.mail.text2}]]
+
+[[#{webR0045.mail.text3}]]
+ID: [[${LOGIN_ID}]]
+PWD: [[${PASSWORD}]]
+
+[[#{webR0045.mail.text4}]]
+[[#{webR0045.mail.text5}]]
+[[#{webR0045.mail.text6}]]

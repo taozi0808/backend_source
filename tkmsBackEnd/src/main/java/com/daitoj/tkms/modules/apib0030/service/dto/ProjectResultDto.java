@@ -30,6 +30,10 @@ public class ProjectResultDto extends ProjectDto {
   @Schema(name = "customerNm", description = "顧客名")
   private String customerNm;
 
+  /** 代表者名 */
+  @Schema(name = "ceoNm", description = "代表者名")
+  private String ceoNm;
+
   /** 顧客郵便番号 */
   @Schema(name = "custPostNo", description = "顧客郵便番号")
   private String custPostNo;
@@ -41,16 +45,6 @@ public class ProjectResultDto extends ProjectDto {
   /** 顧客住所２ */
   @Schema(name = "custAddr2", description = "顧客住所２")
   private String custAddr2;
-
-  /** 営業部門コード */
-  @NotNull
-  @Size(max = 6)
-  @Schema(
-      name = "salesOrgCd",
-      description = "営業部門コード",
-      requiredMode = Schema.RequiredMode.REQUIRED,
-      maxLength = 6)
-  private String salesOrgCd;
 
   /** 営業部門名 */
   @Schema(name = "salesOrgNm", description = "営業部門名")
@@ -93,6 +87,7 @@ public class ProjectResultDto extends ProjectDto {
    * @param customerBranchCd 顧客支店コード
    * @param customerCd 顧客コード
    * @param customerNm 顧客名
+   * @param ceoNm 代表者名
    * @param expectAmt 想定金額
    * @param custPostNo 顧客郵便番号
    * @param custAddr1 顧客住所１
@@ -102,19 +97,23 @@ public class ProjectResultDto extends ProjectDto {
    * @param constrSiteAddr2 現場住所２
    * @param orderExpectedYmd 受注見込日
    * @param startHopeYmd 着工希望日
-   * @param salesOrgCd 営業部門コード
+   * @param compHopeYmd 完了希望日
+   * @param salesOrgId 営業部門ID
    * @param salesOrgNm 営業部門名
-   * @param salesMgrCd 営業管理職名
+   * @param salesMgrCd 営業管理職コード
    * @param salesMgrNm 営業管理職名
    * @param salesPicCd 営業担当者コード
    * @param salesPicNm 営業担当者名
+   * @param designVendorNm 設計業者コード
+   * @param designPicNm 設計担当者
    * @param progressCd 進捗度コード
    * @param progressNm 進捗度項目内容
    * @param projectK 案件区分
    * @param projectKNm 案件区分項目内容
    * @param govPeoK 官民区分
    * @param govPeoKNm 官民区分項目内容
-   * @param estSubmitDueDt 見積提出期限
+   * @param greenSiteFlg グリンサイトフラグ
+   * @param estSubmitDueTs 見積提出期限
    * @param siteArea 敷地面積
    * @param buildingArea 建築面積
    * @param grossFloorArea 延床面積
@@ -124,17 +123,20 @@ public class ProjectResultDto extends ProjectDto {
    * @param households 戸数
    * @param floorCnt 階数（地上）
    * @param basementCnt 階数（地下）
+   * @param constrExpRate 工事経費率
+   * @param constrExpAmt 工事経費金額
+   * @param saleMgrRate 販売管理費率
+   * @param saleMgrAmt 販売管理費金額
+   * @param tyouseiAmt 調整金額
+   * @param eisRate 雇用保険率
+   * @param ehiRate 健康保険保険率
+   * @param ltcRate 介護保険率
+   * @param wpiRate 厚生年金率
    * @param closingDay 締日
    * @param paymentK 支払区分
    * @param paymentKNm 支払区分項目内容
    * @param paymentD 支払日
    * @param rejectionReason 不成約理由
-   * @param salesDeptStartDt 営業部門適用開始日付
-   * @param compHopeYmd 完了希望日
-   * @param designVender 設計業者コード
-   * @param designPicNm 設計担当者
-   * @param greenSiteFlg グリンサイトフラグ
-   * @param salesOrgId 営業部門ID
    * @param delFlg 削除フラグ
    * @param regTs 登録日時
    * @param regUserId 登録者ID
@@ -146,7 +148,7 @@ public class ProjectResultDto extends ProjectDto {
   public ProjectResultDto(
       Long id,
       String projectCd,
-      String hisNo,
+      Integer hisNo,
       String projectNm,
       String projectKnNm,
       String orderStCd,
@@ -154,6 +156,7 @@ public class ProjectResultDto extends ProjectDto {
       String customerBranchCd,
       String customerCd,
       String customerNm,
+      String ceoNm,
       BigDecimal expectAmt,
       String custPostNo,
       String custAddr1,
@@ -163,19 +166,23 @@ public class ProjectResultDto extends ProjectDto {
       String constrSiteAddr2,
       String orderExpectedYmd,
       String startHopeYmd,
-      String salesOrgCd,
+      String compHopeYmd,
+      Long salesOrgId,
       String salesOrgNm,
       String salesMgrCd,
       String salesMgrNm,
       String salesPicCd,
       String salesPicNm,
+      String designVendorNm,
+      String designPicNm,
       String progressCd,
       String progressNm,
       String projectK,
       String projectKNm,
       String govPeoK,
       String govPeoKNm,
-      String estSubmitDueDt,
+      String greenSiteFlg,
+      Instant estSubmitDueTs,
       BigDecimal siteArea,
       BigDecimal buildingArea,
       BigDecimal grossFloorArea,
@@ -185,17 +192,20 @@ public class ProjectResultDto extends ProjectDto {
       BigDecimal households,
       BigDecimal floorCnt,
       BigDecimal basementCnt,
+      BigDecimal constrExpRate,
+      BigDecimal constrExpAmt,
+      BigDecimal saleMgrRate,
+      BigDecimal saleMgrAmt,
+      BigDecimal tyouseiAmt,
+      BigDecimal eisRate,
+      BigDecimal ehiRate,
+      BigDecimal ltcRate,
+      BigDecimal wpiRate,
       String closingDay,
       String paymentK,
       String paymentKNm,
       String paymentD,
       String rejectionReason,
-      String salesDeptStartDt,
-      String compHopeYmd,
-      String designVender,
-      String designPicNm,
-      String greenSiteFlg,
-      Long salesOrgId,
       String delFlg,
       Instant regTs,
       String regUserId,
@@ -213,6 +223,7 @@ public class ProjectResultDto extends ProjectDto {
     this.customerBranchCd = customerBranchCd;
     this.customerCd = customerCd;
     this.customerNm = customerNm;
+    this.ceoNm = ceoNm;
     this.expectAmt = expectAmt;
     this.custPostNo = custPostNo;
     this.custAddr1 = custAddr1;
@@ -222,7 +233,7 @@ public class ProjectResultDto extends ProjectDto {
     this.constrSiteAddr2 = constrSiteAddr2;
     this.orderExpectedYmd = orderExpectedYmd;
     this.startHopeYmd = startHopeYmd;
-    this.salesOrgCd = salesOrgCd;
+    this.salesOrgId = salesOrgId;
     this.salesOrgNm = salesOrgNm;
     this.salesMgrCd = salesMgrCd;
     this.salesMgrNm = salesMgrNm;
@@ -234,7 +245,7 @@ public class ProjectResultDto extends ProjectDto {
     this.projectKNm = projectKNm;
     this.govPeoK = govPeoK;
     this.govPeoKNm = govPeoKNm;
-    this.estSubmitDueDt = estSubmitDueDt;
+    this.estSubmitDueTs = estSubmitDueTs;
     this.siteArea = siteArea;
     this.buildingArea = buildingArea;
     this.grossFloorArea = grossFloorArea;
@@ -244,17 +255,24 @@ public class ProjectResultDto extends ProjectDto {
     this.households = households;
     this.floorCnt = floorCnt;
     this.basementCnt = basementCnt;
+    this.constrExpRate = constrExpRate;
+    this.constrExpAmt = constrExpAmt;
+    this.saleMgrRate = saleMgrRate;
+    this.saleMgrAmt = saleMgrAmt;
+    this.tyouseiAmt = tyouseiAmt;
+    this.eisRate = eisRate;
+    this.ehiRate = ehiRate;
+    this.ltcRate = ltcRate;
+    this.wpiRate = wpiRate;
     this.closingDay = closingDay;
     this.paymentK = paymentK;
     this.paymentKNm = paymentKNm;
     this.paymentD = paymentD;
     this.rejectionReason = rejectionReason;
-    this.salesDeptStartDt = salesDeptStartDt;
     this.compHopeYmd = compHopeYmd;
-    this.designVender = designVender;
+    this.designVendorNm = designVendorNm;
     this.designPicNm = designPicNm;
     this.greenSiteFlg = greenSiteFlg;
-    this.salesOrgId = salesOrgId;
     this.delFlg = delFlg;
     this.regTs = regTs;
     this.regUserId = regUserId;

@@ -19,13 +19,13 @@ import java.time.OffsetDateTime;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Where;
 
-/** 概算情報 */
+/** 概算添付ファイル明細 */
 @Entity
 @lombok.Getter
 @lombok.Setter
 @Table(name = "t_rough_est_file_dtl")
 @Where(clause = "del_flg = '0'")
-public class TRoughEstFileDtl implements Serializable {
+public class TRoughEstFileDtl  extends BaseEntity implements Serializable {
 
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -45,33 +45,4 @@ public class TRoughEstFileDtl implements Serializable {
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
   @JoinColumn(name = "file_id", nullable = false)
   private TFifle file;
-
-  @NotNull
-  @ColumnDefault("'0'")
-  @Column(name = "del_flg", nullable = false, length = Integer.MAX_VALUE)
-  private String delFlg;
-
-  @NotNull
-  @Column(name = "reg_ts", nullable = false)
-  private OffsetDateTime regTs;
-
-  @Size(max = 255)
-  @NotNull
-  @Column(name = "reg_user_id", nullable = false)
-  private String regUserId;
-
-  @Size(max = 50)
-  @Column(name = "reg_pg_id", length = 50)
-  private String regPgId;
-
-  @Column(name = "upd_ts")
-  private OffsetDateTime updTs;
-
-  @Size(max = 255)
-  @Column(name = "upd_user_id")
-  private String updUserId;
-
-  @Size(max = 50)
-  @Column(name = "upd_pg_id", length = 50)
-  private String updPgId;
 }

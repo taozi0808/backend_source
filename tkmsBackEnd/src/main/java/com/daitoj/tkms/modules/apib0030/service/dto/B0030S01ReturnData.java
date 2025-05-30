@@ -3,7 +3,6 @@ package com.daitoj.tkms.modules.apib0030.service.dto;
 import com.daitoj.tkms.modules.common.service.dto.CustomerSearchDto;
 import com.daitoj.tkms.modules.common.service.dto.EmpSearchDto;
 import com.daitoj.tkms.modules.common.service.dto.MItemListSettingDto;
-import com.daitoj.tkms.modules.common.service.dto.MajorWorkSearchDto;
 import com.daitoj.tkms.modules.common.service.dto.OrgSearchDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
@@ -33,7 +32,11 @@ public class B0030S01ReturnData {
   @Schema(description = "営業担当者リスト")
   List<EmpSearchDto> picList;
 
-  /** 大工事リスト */
-  @Schema(description = "大工事リスト")
-  List<MajorWorkSearchDto> majorWorkList;
+  /** 消費税率 */
+  @Schema(description = "消費税率")
+  List<TaxRateDto> taxRateList;
+
+  /** 請求条件 */
+  @Schema(description = "請求条件")
+  List<PaymentTermDto> paymentTermList;
 }

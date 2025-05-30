@@ -18,7 +18,7 @@ public class ContextUtils {
 
     return (String)
         RequestContextHolder.getRequestAttributes()
-            .getAttribute(key, RequestAttributes.SCOPE_REQUEST);
+            .getAttribute(key, RequestAttributes.SCOPE_SESSION);
   }
 
   /**
@@ -33,6 +33,6 @@ public class ContextUtils {
     }
 
     RequestContextHolder.getRequestAttributes()
-        .setAttribute(key, value, RequestAttributes.SCOPE_REQUEST);
+        .setAttribute(key, value, RequestAttributes.SCOPE_SESSION);
   }
 }

@@ -4,7 +4,7 @@ import com.daitoj.tkms.modules.common.service.dto.BaseDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.Instant;
 
-/** 物件情報 */
+/** 物件、概算情報 */
 @lombok.Getter
 @lombok.Setter
 @lombok.AllArgsConstructor
@@ -30,9 +30,9 @@ public class ProjectSiteDto extends BaseDto {
   @Schema(description = "物件カナ名")
   private String projectSiteKnNm;
 
-  /** 見積日付 */
-  @Schema(description = "見積日付")
-  private String estYmd;
+  /** 概算コード */
+  @Schema(description = "概算コード")
+  private String roughEstCd;
 
   /**
    * コンストラクタ
@@ -42,7 +42,7 @@ public class ProjectSiteDto extends BaseDto {
    * @param projectSiteCd 物件コード
    * @param projectSiteNm 物件名
    * @param projectSiteKnNm 物件カナ名
-   * @param estYmd 見積日付
+   * @param roughEstCd 概算コード
    * @param delFlg 削除フラグ
    * @param regTs 登録日時
    * @param regUserId 登録者ID
@@ -57,7 +57,7 @@ public class ProjectSiteDto extends BaseDto {
       String projectSiteCd,
       String projectSiteNm,
       String projectSiteKnNm,
-      String estYmd,
+      String roughEstCd,
       String delFlg,
       Instant regTs,
       String regUserId,
@@ -70,7 +70,7 @@ public class ProjectSiteDto extends BaseDto {
     this.projectSiteCd = projectSiteCd;
     this.projectSiteNm = projectSiteNm;
     this.projectSiteKnNm = projectSiteKnNm;
-    this.estYmd = estYmd;
+    this.roughEstCd = roughEstCd;
     this.delFlg = delFlg;
     this.regTs = regTs;
     this.regUserId = regUserId;

@@ -15,14 +15,16 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.util.Set;
 import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.Where;
+import org.hibernate.annotations.SQLRestriction;
+//import org.hibernate.annotations.Where;
 
-/** 従業員情報 */
+/** 従業員情報. */
 @lombok.Getter
 @lombok.Setter
 @Entity
 @Table(name = "m_emp")
-@Where(clause = "del_flg = '0' AND newest_flg ='1'")
+//@Where(clause = "del_flg = '0' AND newest_flg ='1'")
+@SQLRestriction("del_flg = '0' AND newest_flg = '1'")
 public class MEmp extends BaseEntity {
 
   @Id
@@ -39,10 +41,9 @@ public class MEmp extends BaseEntity {
   @Column(name = "emp_cd", nullable = false, length = 6)
   private String empCd;
 
-  @Size(max = 2)
   @NotNull
-  @Column(name = "his_no", nullable = false, length = 2)
-  private String hisNo;
+  @Column(name = "his_no", nullable = false)
+  private Integer hisNo;
 
   @ColumnDefault("'2'")
   @Column(name = "newest_flg", nullable = false, length = Integer.MAX_VALUE)
@@ -59,6 +60,10 @@ public class MEmp extends BaseEntity {
   @NotNull
   @Column(name = "emp_nm", nullable = false, length = Integer.MAX_VALUE)
   private String empNm;
+
+  @NotNull
+  @Column(name = "emp_kn_nm", nullable = false, length = Integer.MAX_VALUE)
+  private String empKnNm;
 
   @NotNull
   @Size(max = 2)

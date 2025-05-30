@@ -8,6 +8,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import org.hibernate.annotations.Where;
@@ -21,7 +22,11 @@ import org.hibernate.annotations.Where;
 public class MEmpTransferDtl extends BaseEntity {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE)
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "m_emp_transfer_dtl_emp_transfer_did_seq_generator")
+  @SequenceGenerator(
+      name = "m_emp_transfer_dtl_emp_transfer_did_seq_generator",
+      sequenceName = "m_emp_transfer_dtl_emp_transfer_did_seq",
+      allocationSize = 1)
   @Column(name = "emp_transfer_did", nullable = false)
   private Long id;
 

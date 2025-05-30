@@ -183,7 +183,7 @@ public class B0010Resource {
     }
 
     // 出力結果
-    return ResponseEntity.ok().body(result);
+    return ResponseEntity.ok().build();
   }
 
   /**

@@ -10,6 +10,7 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.math.BigDecimal;
+import java.time.Instant;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Where;
 
@@ -37,10 +38,9 @@ public class TProject extends BaseEntity {
   @Column(name = "project_cd", nullable = false, length = 9)
   private String projectCd;
 
-  @Size(max = 2)
   @NotNull
-  @Column(name = "his_no", nullable = false, length = 2)
-  private String hisNo;
+  @Column(name = "his_no", nullable = false)
+  private Integer hisNo;
 
   @NotNull
   @ColumnDefault("'2'")
@@ -51,8 +51,7 @@ public class TProject extends BaseEntity {
   @Column(name = "project_nm", nullable = false, length = Integer.MAX_VALUE)
   private String projectNm;
 
-  @NotNull
-  @Column(name = "project_kn_nm", nullable = false, length = Integer.MAX_VALUE)
+  @Column(name = "project_kn_nm", length = Integer.MAX_VALUE)
   private String projectKnNm;
 
   @NotNull
@@ -77,50 +76,36 @@ public class TProject extends BaseEntity {
   @Column(name = "constr_site_addr1", nullable = false, length = Integer.MAX_VALUE)
   private String constrSiteAddr1;
 
-  @NotNull
-  @Column(name = "constr_site_addr2", nullable = false, length = Integer.MAX_VALUE)
+  @Column(name = "constr_site_addr2", length = Integer.MAX_VALUE)
   private String constrSiteAddr2;
 
   @Size(max = 8)
-  @NotNull
-  @Column(name = "order_expected_ymd", nullable = false, length = 8)
+  @Column(name = "order_expected_ymd", length = 8)
   private String orderExpectedYmd;
 
   @Size(max = 8)
-  @NotNull
-  @Column(name = "start_hope_ymd", nullable = false, length = 8)
+  @Column(name = "start_hope_ymd", length = 8)
   private String startHopeYmd;
 
   @Size(max = 8)
-  @NotNull
-  @Column(name = "comp_hope_ymd", nullable = false, length = 8)
+  @Column(name = "comp_hope_ymd", length = 8)
   private String compHopeYmd;
 
-  @Size(max = 8)
-  @NotNull
-  @Column(name = "sales_dept_start_dt", nullable = false, length = 8)
-  private String salesDeptStartDt;
-
-  @NotNull
-  @Column(name = "sales_org_id", nullable = false)
+  @Column(name = "sales_org_id")
   private Long salesOrgId;
 
   @Size(max = 6)
-  @NotNull
-  @Column(name = "sales_mgr_cd", nullable = false, length = 6)
+  @Column(name = "sales_mgr_cd", length = 6)
   private String salesMgrCd;
 
   @Size(max = 6)
-  @NotNull
-  @Column(name = "sales_pic_cd", nullable = false, length = 6)
+  @Column(name = "sales_pic_cd", length = 6)
   private String salesPicCd;
 
-  @NotNull
-  @Column(name = "design_vender", nullable = false, length = Integer.MAX_VALUE)
-  private String designVender;
+  @Column(name = "design_vendor_nm", length = Integer.MAX_VALUE)
+  private String designVendorNm;
 
-  @NotNull
-  @Column(name = "design_pic_nm", nullable = false, length = Integer.MAX_VALUE)
+  @Column(name = "design_pic_nm", length = Integer.MAX_VALUE)
   private String designPicNm;
 
   @Size(max = 2)
@@ -140,10 +125,8 @@ public class TProject extends BaseEntity {
   @Column(name = "green_site_flg", nullable = false, length = Integer.MAX_VALUE)
   private String greenSiteFlg;
 
-  @Size(max = 8)
-  @NotNull
-  @Column(name = "est_submit_due_dt", nullable = false, length = 8)
-  private String estSubmitDueDt;
+  @Column(name = "est_submit_due_ts")
+  private Instant estSubmitDueTs;
 
   @NotNull
   @Column(name = "site_area", nullable = false, precision = 9, scale = 2)
@@ -165,8 +148,7 @@ public class TProject extends BaseEntity {
   @Column(name = "occupied_area", nullable = false, precision = 9, scale = 2)
   private BigDecimal occupiedArea;
 
-  @NotNull
-  @Column(name = "constr_area", nullable = false, precision = 9, scale = 2)
+  @Column(name = "constr_area", precision = 9, scale = 2)
   private BigDecimal constrArea;
 
   @NotNull
@@ -182,18 +164,52 @@ public class TProject extends BaseEntity {
   private BigDecimal basementCnt;
 
   @NotNull
-  @Column(name = "closing_day", nullable = false, length = Integer.MAX_VALUE)
+  @Column(name = "constr_exp_rate", nullable = false, precision = 5, scale = 2)
+  private BigDecimal constrExpRate;
+
+  @NotNull
+  @Column(name = "constr_exp_amt", nullable = false, precision = 11)
+  private BigDecimal constrExpAmt;
+
+  @NotNull
+  @Column(name = "sale_mgr_rate", nullable = false, precision = 5, scale = 2)
+  private BigDecimal saleMgrRate;
+
+  @NotNull
+  @Column(name = "sale_mgr_amt", nullable = false, precision = 11)
+  private BigDecimal saleMgrAmt;
+
+  @NotNull
+  @Column(name = "tyousei_amt", nullable = false, precision = 11)
+  private BigDecimal tyouseiAmt;
+
+  @NotNull
+  @Column(name = "eis_rate", nullable = false, precision = 5, scale = 2)
+  private BigDecimal eisRate;
+
+  @NotNull
+  @Column(name = "ehi_rate", nullable = false, precision = 5, scale = 2)
+  private BigDecimal ehiRate;
+
+  @NotNull
+  @Column(name = "ltc_rate", nullable = false, precision = 5, scale = 2)
+  private BigDecimal ltcRate;
+
+  @NotNull
+  @Column(name = "wpi_rate", nullable = false, precision = 5, scale = 2)
+  private BigDecimal wpiRate;
+
+  @Size(max = 2)
+  @Column(name = "closing_day", length = 2)
   private String closingDay;
 
-  @NotNull
-  @Column(name = "payment_k", nullable = false, length = Integer.MAX_VALUE)
+  @Column(name = "payment_k", length = Integer.MAX_VALUE)
   private String paymentK;
 
-  @NotNull
-  @Column(name = "payment_d", nullable = false, length = Integer.MAX_VALUE)
+  @Size(max = 2)
+  @Column(name = "payment_d", length = 2)
   private String paymentD;
 
-  @NotNull
-  @Column(name = "rejection_reason", nullable = false, length = Integer.MAX_VALUE)
+  @Column(name = "rejection_reason", length = Integer.MAX_VALUE)
   private String rejectionReason;
 }

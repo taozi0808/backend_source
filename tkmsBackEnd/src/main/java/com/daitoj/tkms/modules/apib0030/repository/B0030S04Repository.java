@@ -20,11 +20,10 @@ public interface B0030S04Repository extends JpaRepository<TProjectBuildingDtl, L
       """
             SELECT
                 new com.daitoj.tkms.modules.apib0030.service.dto.ProjectBuildingDtlDto(
-                 tp.projectId,
+                 tp.project.id,
                  tp.seqNo,
                  tp.buildingCd,
                  tp.buildingWorkNm,
-                 tr.roughEstCd,
                  tp.delFlg,
                  tp.regTs,
                  tp.regUserId,
@@ -33,8 +32,7 @@ public interface B0030S04Repository extends JpaRepository<TProjectBuildingDtl, L
                  tp.updUserId,
                  tp.updPgId)
                FROM TProjectBuildingDtl tp
-          LEFT JOIN TRoughEstHdr tr ON tr.projectCd = :projectCd AND tr.buildingCd = tp.buildingCd
-              WHERE tp.projectId = :projectId
+              WHERE tp.project.id = :projectId
           """)
   List<ProjectBuildingDtlDto> findByProjectId(Long projectId, String projectCd);
 }

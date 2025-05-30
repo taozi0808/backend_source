@@ -20,8 +20,6 @@ public interface B0010Repository extends JpaRepository<TProject, Long> {
    * @param sysDate システム日付
    * @return 案件一覧
    */
-  // TODO
-  // ※（ｶﾅ含む）の項目については、半角全角を区別しないこととする。
   @Query(
       """
               SELECT new com.daitoj.tkms.modules.apib0010.service.dto.AnkenInfoDto(
@@ -29,8 +27,10 @@ public interface B0010Repository extends JpaRepository<TProject, Long> {
                     ah.projectCd,
                     ah.hisNo,
                     ah.projectNm,
+                    ah.projectKnNm,
                     kh.customerCd,
                     CONCAT(kh.customerNm1, kh.customerNm2),
+                    kh.customerKnNm,
                     ah.expectAmt,
                     ah.constrSiteAddr1,
                     ah.constrSiteAddr2,
@@ -59,8 +59,6 @@ public interface B0010Repository extends JpaRepository<TProject, Long> {
    *
    * @param statusList 受注状態リスト
    * @param ankenCode 案件コード
-   * @param ankenName 案件名（ｶﾅ含む）
-   * @param kokyakuName 顧客名（ｶﾅ含む）
    * @param startDate 受注見込時期（開始）
    * @param endDate 受注見込時期（終了）
    * @param bumonName 営業部門
@@ -75,8 +73,10 @@ public interface B0010Repository extends JpaRepository<TProject, Long> {
                     ah.projectCd,
                     ah.hisNo,
                     ah.projectNm,
+                    ah.projectKnNm,
                     kh.customerCd,
                     CONCAT(kh.customerNm1, kh.customerNm2),
+                    kh.customerKnNm,
                     ah.expectAmt,
                     ah.constrSiteAddr1,
                     ah.constrSiteAddr2,
@@ -96,11 +96,7 @@ public interface B0010Repository extends JpaRepository<TProject, Long> {
                                         AND is.id.itemClassCd = :itemClassCd
                                         AND is.id.effectiveStartDt <= :sysDate
                WHERE (:ankenCode   IS NULL OR :ankenCode = ''   OR ah.projectCd LIKE %:ankenCode%)
-                 AND (:ankenName   IS NULL OR :ankenName = ''   OR ah.projectNm LIKE %:ankenName%
-                                           OR ah.projectKnNm    LIKE %:ankenName%)
                  AND ah.orderStCd  IN :statusList
-                 AND (:kokyakuName IS NULL OR :kokyakuName = '' OR kh.customerNm1 LIKE %:kokyakuName%
-                                           OR kh.customerKnNm   LIKE %:kokyakuName%)
                  AND (:startDate   IS NULL OR :startDate = ''   OR :startDate <= ah.orderExpectedYmd)
                  AND (:endDate     IS NULL OR :endDate = ''     OR ah.orderExpectedYmd <= :endDate)
                  AND (:bumonName   IS NULL OR :bumonName = ''   OR si.orgNm LIKE %:bumonName%)
@@ -111,8 +107,6 @@ public interface B0010Repository extends JpaRepository<TProject, Long> {
       List<String> statusList,
       String itemClassCd,
       String ankenCode,
-      String ankenName,
-      String kokyakuName,
       String startDate,
       String endDate,
       String bumonName,

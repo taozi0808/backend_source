@@ -2,12 +2,17 @@ package com.daitoj.tkms.modules.apib0030.service;
 
 import com.daitoj.tkms.domain.MCustomer;
 import com.daitoj.tkms.domain.MEmp;
-import com.daitoj.tkms.domain.MMajorWork;
-import com.daitoj.tkms.domain.MMinorWork;
 import com.daitoj.tkms.domain.MOffice;
 import com.daitoj.tkms.domain.MOrg;
+import com.daitoj.tkms.domain.MPaymentTerm;
+import com.daitoj.tkms.domain.MTaxRate;
 import com.daitoj.tkms.domain.TConstrSite;
+import com.daitoj.tkms.domain.TDetailedEstDtl;
 import com.daitoj.tkms.domain.TDetailedEstHdr;
+import com.daitoj.tkms.domain.TEvSim;
+import com.daitoj.tkms.domain.TEvSimBgt;
+import com.daitoj.tkms.domain.TExecBgtDtl;
+import com.daitoj.tkms.domain.TExecBgtHdr;
 import com.daitoj.tkms.domain.TProject;
 import com.daitoj.tkms.domain.TProjectBuildingDtl;
 import com.daitoj.tkms.domain.TProjectPaymentTerms;
@@ -24,12 +29,15 @@ import com.daitoj.tkms.modules.apib0030.repository.B0030S06Repository;
 import com.daitoj.tkms.modules.apib0030.repository.B0030S07Repository;
 import com.daitoj.tkms.modules.apib0030.repository.B0030S08Repository;
 import com.daitoj.tkms.modules.apib0030.repository.B0030S09Repository;
+import com.daitoj.tkms.modules.apib0030.repository.B0030S10Repository;
 import com.daitoj.tkms.modules.apib0030.repository.mapper.B0030Mapper;
 import com.daitoj.tkms.modules.apib0030.service.dto.B0030Dto;
+import com.daitoj.tkms.modules.apib0030.service.dto.B0030PreWorkPrintDto;
 import com.daitoj.tkms.modules.apib0030.service.dto.B0030S01ReturnData;
 import com.daitoj.tkms.modules.apib0030.service.dto.B0030S02ReturnData;
 import com.daitoj.tkms.modules.apib0030.service.dto.B0030S03ReturnData;
 import com.daitoj.tkms.modules.apib0030.service.dto.B0030S04ReturnData;
+import com.daitoj.tkms.modules.apib0030.service.dto.DetailedEstDtlDto;
 import com.daitoj.tkms.modules.apib0030.service.dto.ProjectBuildingDtlDto;
 import com.daitoj.tkms.modules.apib0030.service.dto.ProjectDto;
 import com.daitoj.tkms.modules.apib0030.service.dto.ProjectPaymentTermsDto;
@@ -43,24 +51,38 @@ import com.daitoj.tkms.modules.common.constants.Message;
 import com.daitoj.tkms.modules.common.repository.MCustomerRepository;
 import com.daitoj.tkms.modules.common.repository.MEmpRepository;
 import com.daitoj.tkms.modules.common.repository.MItemListSettingRepository;
-import com.daitoj.tkms.modules.common.repository.MMajorWorkRepository;
-import com.daitoj.tkms.modules.common.repository.MMinorWorkRepository;
 import com.daitoj.tkms.modules.common.repository.MOrgRepository;
+import com.daitoj.tkms.modules.common.repository.MPaymentTermRepository;
+import com.daitoj.tkms.modules.common.repository.MTaxRateRepository;
+import com.daitoj.tkms.modules.common.repository.TEvSimBgtRepository;
+import com.daitoj.tkms.modules.common.repository.TEvSimRepository;
+import com.daitoj.tkms.modules.common.repository.TExecBgtDtlRepository;
+import com.daitoj.tkms.modules.common.repository.TExecBgtHdrRepository;
 import com.daitoj.tkms.modules.common.repository.mapper.MCustomerMapper;
 import com.daitoj.tkms.modules.common.repository.mapper.MEmpMapper;
-import com.daitoj.tkms.modules.common.repository.mapper.MMinorWorkMapper;
 import com.daitoj.tkms.modules.common.repository.mapper.MOrgMapper;
-import com.daitoj.tkms.modules.common.repository.mapper.MajorWorkMapper;
+import com.daitoj.tkms.modules.common.service.CloudStorageService;
 import com.daitoj.tkms.modules.common.service.ConflictException;
 import com.daitoj.tkms.modules.common.service.ItemListSettingService;
 import com.daitoj.tkms.modules.common.service.NumberService;
+import com.daitoj.tkms.modules.common.service.ReportService;
 import com.daitoj.tkms.modules.common.service.SystemException;
 import com.daitoj.tkms.modules.common.service.dto.ApiResult;
 import com.daitoj.tkms.modules.common.service.dto.MItemListSettingDto;
 import com.daitoj.tkms.modules.common.utils.DateUtils;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.stream.Collectors;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import net.sf.jasperreports.engine.JREmptyDataSource;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
@@ -69,6 +91,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 /** 案件登録ビジネスロジック */
 @Service
@@ -97,11 +120,32 @@ public class B0030Service {
   /** 概算ヘッダリポジトリ */
   private final B0030S07Repository b0030S07Repository;
 
-  /** 精積算情報リポジトリ */
+  /** 精積算ヘッダ情報リポジトリ */
   private final B0030S08Repository b0030S08Repository;
+
+  /** 精積算明細情報リポジトリ */
+  private final B0030S10Repository b0030S10Repository;
 
   /** 現場情報のリポジトリ */
   private final B0030S09Repository b0030S09Repository;
+
+  /** 出来高シミュレーションのリポジトリ */
+  private final TEvSimRepository tevSimRepository;
+
+  /** 消費税率のリポジトリ */
+  private final MTaxRateRepository mtaxRateRepository;
+
+  /** 請求条件リポジトリ */
+  private final MPaymentTermRepository mpaymentTermRepository;
+
+  /** 実行予算ヘッダのリポジトリ */
+  private final TExecBgtHdrRepository texecBgtHdrRepository;
+
+  /** 実行予算明細のリポジトリ */
+  private final TExecBgtDtlRepository texecBgtDtlRepository;
+
+  /** 出来高シミュレーション予算項目のリポジトリ */
+  private final TEvSimBgtRepository tevSimBgtRepository;
 
   /** 案件登録情報リポジトリ */
   private final B0030Mapper b0030Mapper;
@@ -118,12 +162,6 @@ public class B0030Service {
   /** 組織情報のリポジトリ */
   private final MOrgMapper morgMapper;
 
-  /** 大工事情報のリポジトリ */
-  private final MajorWorkMapper majorWorkMapper;
-
-  /** 小工事情報のリポジトリ */
-  private final MMinorWorkMapper minorWorkMapper;
-
   /** マスタデータリポジトリ */
   private final MItemListSettingRepository mitemListSettingRepository;
 
@@ -133,17 +171,14 @@ public class B0030Service {
   /** 組織情報のリポジトリ */
   private final MOrgRepository morgRepository;
 
-  /** 大工事情報のリポジトリ */
-  private final MMajorWorkRepository mmajorWorkRepository;
-
-  /** 小工事情報のリポジトリ */
-  private final MMinorWorkRepository minorWorkRepository;
-
   /** マスタデータサービス */
   private final ItemListSettingService itemListSettingService;
 
   /** 採番サービス */
   private final NumberService numberRuleService;
+
+  /** ストレージサービス */
+  private final CloudStorageService cloudStorageService;
 
   /** メッセージ */
   private final MessageSource messageSource;
@@ -163,6 +198,18 @@ public class B0030Service {
   /** 付帯工事コード */
   private static final String RELATED_WORK_CD = "000";
 
+  /** fasterxml.jacksonのObjectMapper */
+  private final ObjectMapper objectMapper;
+
+  /** レポートサービス */
+  private final ReportService reportService;
+
+  /** レポートファイル名 */
+  public static final String REPORT_PRE_WORK_FILE_NAME = "WebB0030PreWork.jasper";
+
+  /** レポートファイル名 */
+  public static final String REPORT_FILE_NAME = "WebB0030.jasper";
+
   /** コンストラクタ */
   public B0030Service(
       B0030S01Repository b0030S01Repository,
@@ -174,21 +221,27 @@ public class B0030Service {
       B0030S07Repository b0030S07Repository,
       B0030S08Repository b0030S08Repository,
       B0030S09Repository b0030S09Repository,
+      B0030S10Repository b0030S10Repository,
       MCustomerRepository mcustomerRepository,
+      TExecBgtHdrRepository texecBgtHdrRepository,
+      TExecBgtDtlRepository texecBgtDtlRepository,
+      TEvSimBgtRepository tevSimBgtRepository,
+      TEvSimRepository tevSimRepository,
       MEmpRepository mempRepository,
       MOrgRepository morgRepository,
-      MMajorWorkRepository mmajorWorkRepository,
-      MMinorWorkRepository minorWorkRepository,
+      MTaxRateRepository mtaxRateRepository,
+      MPaymentTermRepository mpaymentTermRepository,
       MItemListSettingRepository mitemListSettingRepository,
       B0030Mapper b0030Mapper,
       MCustomerMapper mcustomerMapper,
       MEmpMapper mempMapper,
       MOrgMapper morgMapper,
-      MajorWorkMapper majorWorkMapper,
-      MMinorWorkMapper minorWorkMapper,
       ItemListSettingService itemListSettingService,
       NumberService numberRuleService,
-      MessageSource messageSource) {
+      CloudStorageService cloudStorageService,
+      MessageSource messageSource,
+      ObjectMapper objectMapper,
+      ReportService reportService) {
     this.b0030S01Repository = b0030S01Repository;
     this.b0030S02Repository = b0030S02Repository;
     this.b0030S03Repository = b0030S03Repository;
@@ -198,21 +251,27 @@ public class B0030Service {
     this.b0030S07Repository = b0030S07Repository;
     this.b0030S08Repository = b0030S08Repository;
     this.b0030S09Repository = b0030S09Repository;
+    this.b0030S10Repository = b0030S10Repository;
     this.mcustomerRepository = mcustomerRepository;
+    this.mtaxRateRepository = mtaxRateRepository;
+    this.texecBgtHdrRepository = texecBgtHdrRepository;
+    this.texecBgtDtlRepository = texecBgtDtlRepository;
+    this.tevSimRepository = tevSimRepository;
+    this.tevSimBgtRepository = tevSimBgtRepository;
     this.mempRepository = mempRepository;
     this.morgRepository = morgRepository;
-    this.mmajorWorkRepository = mmajorWorkRepository;
-    this.minorWorkRepository = minorWorkRepository;
+    this.mpaymentTermRepository = mpaymentTermRepository;
     this.mitemListSettingRepository = mitemListSettingRepository;
     this.b0030Mapper = b0030Mapper;
     this.mcustomerMapper = mcustomerMapper;
     this.mempMapper = mempMapper;
     this.morgMapper = morgMapper;
-    this.majorWorkMapper = majorWorkMapper;
-    this.minorWorkMapper = minorWorkMapper;
     this.itemListSettingService = itemListSettingService;
     this.numberRuleService = numberRuleService;
+    this.cloudStorageService = cloudStorageService;
     this.messageSource = messageSource;
+    this.objectMapper = objectMapper;
+    this.reportService = reportService;
   }
 
   /**
@@ -222,6 +281,9 @@ public class B0030Service {
    */
   public ApiResult<B0030S01ReturnData> getSentakuKoumoku() {
     try {
+      // システム日付
+      String sysDate = DateUtils.formatNow(DateUtils.DATE_FORMAT);
+
       // マスタデータリストを取得
       ApiResult<List<MItemListSettingDto>> result =
           itemListSettingService.getDataList(
@@ -230,8 +292,6 @@ public class B0030Service {
                 MasterData.ITEM_CLASS_CD_D0001,
                 MasterData.ITEM_CLASS_CD_D0006,
                 MasterData.ITEM_CLASS_CD_D0003,
-                MasterData.ITEM_CLASS_CD_D0010,
-                MasterData.ITEM_CLASS_CD_D0004,
                 MasterData.ITEM_CLASS_CD_D0007,
               });
 
@@ -261,11 +321,15 @@ public class B0030Service {
       // 営業担当者リストを設定
       ret.setPicList(mempMapper.toEmpSearchDtoList(empList));
 
-      // 大工事リストを取得
-      List<MMajorWork> majorWorkList =
-          mmajorWorkRepository.findAll(Sort.by(Sort.Order.asc("displayOrder")));
-      // 大工事リストを設定
-      ret.setMajorWorkList(majorWorkMapper.toMajorWorkSearchList(majorWorkList));
+      // 消費税率を取得
+      List<MTaxRate> taxRateList = mtaxRateRepository.findByTaxRateList(sysDate);
+      // 消費税率を設定
+      ret.setTaxRateList(b0030Mapper.toTaxRateList(taxRateList));
+      // 請求条件を取得
+      List<MPaymentTerm> paymentTermList =
+          mpaymentTermRepository.findAll(Sort.by(Sort.Order.asc("paymentTermsCd")));
+      // 請求条件を設定
+      ret.setPaymentTermList(b0030Mapper.toPaymentTermList(paymentTermList));
 
       return ApiResult.success(ret);
     } catch (Exception ex) {
@@ -281,16 +345,16 @@ public class B0030Service {
    *
    * @return 小工事リスト項目
    */
-  public ApiResult<B0030S04ReturnData> getMinorWork(String majorWorkCd) {
+  public ApiResult<B0030S04ReturnData> getMinorWork(String projectCd, String majorWorkCd) {
     try {
       // 結果情報
       B0030S04ReturnData ret = new B0030S04ReturnData();
 
       // 小工事リストを取得
-      List<MMinorWork> minorWorkList =
-          minorWorkRepository.findById_MajorWorkCdOrderById_MinorWorkCd(majorWorkCd);
+      List<DetailedEstDtlDto> minorWorkList =
+          b0030S06Repository.findMinorWorkByProjectCd(projectCd, majorWorkCd);
       // 小工事リストを設定
-      ret.setMinorWorkList(minorWorkMapper.toMinorWorkSearchList(minorWorkList));
+      ret.setMinorWorkList(minorWorkList);
 
       return ApiResult.success(ret);
     } catch (Exception ex) {
@@ -309,6 +373,9 @@ public class B0030Service {
    */
   public ApiResult<B0030S02ReturnData> getAnkenInfo(String projectCd) {
     try {
+      // システム日付
+      String sysDate = DateUtils.formatNow(DateUtils.DATE_FORMAT);
+
       // 戻り値
       B0030S02ReturnData returnData = new B0030S02ReturnData();
 
@@ -323,9 +390,7 @@ public class B0030Service {
         // 受注状態を取得
         mitemListSettingRepository
             .findById_ItemClassCdAndId_ItemCdAndId_EffectiveStartDtLessThanEqual(
-                MasterData.ITEM_CLASS_CD_D0001,
-                projectInfo.getOrderStCd(),
-                DateUtils.formatNow(DateUtils.DATE_FORMAT))
+                MasterData.ITEM_CLASS_CD_D0001, projectInfo.getOrderStCd(), sysDate)
             .ifPresent(item -> projectInfo.setOrderStNm(item.getItemValue()));
       }
 
@@ -333,9 +398,7 @@ public class B0030Service {
         // 案件区分を取得
         mitemListSettingRepository
             .findById_ItemClassCdAndId_ItemCdAndId_EffectiveStartDtLessThanEqual(
-                MasterData.ITEM_CLASS_CD_D0002,
-                projectInfo.getProjectK(),
-                DateUtils.formatNow(DateUtils.DATE_FORMAT))
+                MasterData.ITEM_CLASS_CD_D0002, projectInfo.getProjectK(), sysDate)
             .ifPresent(item -> projectInfo.setProjectKNm(item.getItemValue()));
       }
 
@@ -343,9 +406,7 @@ public class B0030Service {
         // 進捗度を取得
         mitemListSettingRepository
             .findById_ItemClassCdAndId_ItemCdAndId_EffectiveStartDtLessThanEqual(
-                MasterData.ITEM_CLASS_CD_D0003,
-                projectInfo.getProgressCd(),
-                DateUtils.formatNow(DateUtils.DATE_FORMAT))
+                MasterData.ITEM_CLASS_CD_D0003, projectInfo.getProgressCd(), sysDate)
             .ifPresent(item -> projectInfo.setProgressNm(item.getItemValue()));
       }
 
@@ -353,9 +414,7 @@ public class B0030Service {
         // 官民区分を取得
         mitemListSettingRepository
             .findById_ItemClassCdAndId_ItemCdAndId_EffectiveStartDtLessThanEqual(
-                MasterData.ITEM_CLASS_CD_D0006,
-                projectInfo.getGovPeoK(),
-                DateUtils.formatNow(DateUtils.DATE_FORMAT))
+                MasterData.ITEM_CLASS_CD_D0006, projectInfo.getGovPeoK(), sysDate)
             .ifPresent(item -> projectInfo.setGovPeoKNm(item.getItemValue()));
       }
 
@@ -363,44 +422,8 @@ public class B0030Service {
         // 支払日区分を取得
         mitemListSettingRepository
             .findById_ItemClassCdAndId_ItemCdAndId_EffectiveStartDtLessThanEqual(
-                MasterData.ITEM_CLASS_CD_D0007,
-                projectInfo.getPaymentK(),
-                DateUtils.formatNow(DateUtils.DATE_FORMAT))
+                MasterData.ITEM_CLASS_CD_D0007, projectInfo.getPaymentK(), sysDate)
             .ifPresent(item -> projectInfo.setPaymentKNm(item.getItemValue()));
-      }
-
-      // 物件、概算情報を取得
-      List<ProjectSiteDto> projectSites = b0030S02Repository.findByProjectCd(projectCd);
-      returnData.setProjectSites(projectSites);
-
-      // 案件請求条件情報を取得
-      List<ProjectPaymentTermsDto> projectPaymentTerms =
-          b0030S03Repository.findByProjectId(projectInfo.getId());
-
-      if (!CollectionUtils.isEmpty(projectPaymentTerms)) {
-        for (ProjectPaymentTermsDto paymentTerm : projectPaymentTerms) {
-          if (paymentTerm.getPaymentTermsK() != null) {
-            // 請求条件区分を取得
-            mitemListSettingRepository
-                .findById_ItemClassCdAndId_ItemCdAndId_EffectiveStartDtLessThanEqual(
-                    MasterData.ITEM_CLASS_CD_D0010,
-                    paymentTerm.getPaymentTermsK(),
-                    DateUtils.formatNow(DateUtils.DATE_FORMAT))
-                .ifPresent(dataItem -> paymentTerm.setPaymentTermsKNm(dataItem.getItemValue()));
-          }
-
-          if (paymentTerm.getTaxRateId() != null) {
-            // 消費税区分を取得 // TODO 確認要
-            mitemListSettingRepository
-                .findById_ItemClassCdAndId_ItemCdAndId_EffectiveStartDtLessThanEqual(
-                    MasterData.ITEM_CLASS_CD_D0004,
-                    String.valueOf(paymentTerm.getTaxRateId()),
-                    DateUtils.formatNow(DateUtils.DATE_FORMAT))
-                .ifPresent(dataItem -> paymentTerm.setTaxRate(dataItem.getItemValue()));
-          }
-        }
-        // 案件請求条件情報を設定
-        returnData.setProjectPaymentTerms(projectPaymentTerms);
       }
 
       // 現場棟明細情報
@@ -408,21 +431,51 @@ public class B0030Service {
           b0030S04Repository.findByProjectId(projectInfo.getId(), projectCd);
       returnData.setProjectBuildingDtls(projectBuildingDtls);
 
-      // 案件要望明細情報
+      if (!CollectionUtils.isEmpty(projectBuildingDtls)) {
+        // 棟番号が１番小さい番号
+        String buildingCd =
+            projectBuildingDtls.stream()
+                .min(Comparator.comparing(ProjectBuildingDtlDto::getBuildingCd))
+                .get()
+                .getBuildingCd();
+
+        // 物件、概算情報を取得
+        List<ProjectSiteDto> projectSites =
+            b0030S02Repository.findByProjectCd(projectCd, buildingCd);
+        returnData.setProjectSites(projectSites);
+      }
+
+      // 案件請求条件情報を取得
+      List<ProjectPaymentTermsDto> projectPaymentTerms =
+          b0030S03Repository.findByProjectId(projectInfo.getId(), sysDate);
+      if (!CollectionUtils.isEmpty(projectPaymentTerms)) {
+        returnData.setProjectPaymentTerms(projectPaymentTerms);
+      }
+
+      // 案件要望明細情報を取得
       List<ProjectRequestDtlDto> projectRequestDtls =
           b0030S05Repository.findByProjectId(projectInfo.getId());
-      returnData.setProjectRequestDtls(projectRequestDtls);
+      if (!CollectionUtils.isEmpty(projectRequestDtls)) {
+        returnData.setProjectRequestDtls(projectRequestDtls);
+      }
 
       // 先行作業明細を取得
-      List<TProjectPreWorkDtl> projectPreWorkDtls =
+      List<ProjectPreWorkDtlDto> projectPreWorkDtls =
           b0030S06Repository.findByProjectId(projectInfo.getId());
-
       if (!CollectionUtils.isEmpty(projectPreWorkDtls)) {
-        List<ProjectPreWorkDtlDto> projectPreWorkDtlDtos =
-            b0030Mapper.toDtoList(projectPreWorkDtls);
-        // 先行作業明細を設定
-        returnData.setProjectPreWorkDtls(projectPreWorkDtlDtos);
+        returnData.setProjectPreWorkDtls(projectPreWorkDtls);
       }
+
+      // 大工事リストを取得
+      List<DetailedEstDtlDto> majorWorkList =
+          b0030S06Repository.findMajorWorkByProjectCd(projectCd);
+
+      if (!CollectionUtils.isEmpty(majorWorkList)) {
+        // 大工事リストを設定
+        returnData.setMajorWorkList(majorWorkList.stream().distinct().collect(Collectors.toList()));
+      }
+
+      // 発注情報明細 TODO 未確定
 
       return ApiResult.success(returnData);
     } catch (ConflictException ex) {
@@ -441,10 +494,35 @@ public class B0030Service {
    * @param inDto 案件登録保存パラメータ
    * @return 案件ID、歴番
    */
-  public ApiResult<B0030S03ReturnData> saveAnkenInfo(B0030Dto inDto) {
+  public ApiResult<B0030S03ReturnData> saveAnkenInfo(B0030Dto inDto, MultipartFile[] files) {
     try {
+      // 先行作業内諾書明細ファイル
+      if (files != null && files.length > 0) {
+        // 従業員顔写真アップロード
+        List<UUID> uuids = cloudStorageService.upload(files);
+
+        // 従業員顔写真情報を設定
+        for (int i = 0; i < uuids.size(); i++) {
+          if (!CollectionUtils.isEmpty(inDto.getProjectPreWorkDtls())) {
+            // ファイルのインデックス
+            String fileIndex = String.valueOf(i);
+            // ファイルのDto
+            Optional<ProjectPreWorkDtlDto> dtlDto =
+                inDto.getProjectPreWorkDtls().stream()
+                    .filter(item -> fileIndex.equals(item.getFileIndex()))
+                    .findAny();
+            if (dtlDto.isPresent()) {
+              // S3パスを設定
+              dtlDto.get().setFileId(uuids.get(i));
+            }
+          }
+        }
+      }
+
       // 案件情報
       ProjectDto projectInfo = inDto.getProjectInfo();
+      // 案件情報を更新
+      TProject newProjectEntity = null;
       // 案件コード
       String projectCd = null;
       // 戻り値
@@ -458,7 +536,7 @@ public class B0030Service {
                 FIELD_ID_PROJECT_CD, projectInfo.getProjectK(), null);
 
         // 案件を登録
-        TProject newProjectEntity = insertProjectInfo(projectInfo, projectCd);
+        newProjectEntity = insertProjectInfo(projectInfo, projectCd);
 
         // 戻り値を設定(案件ID)
         ret.setProjectId(newProjectEntity.getId());
@@ -480,8 +558,11 @@ public class B0030Service {
           throw new ConflictException();
         }
 
+        // 案件エンティティに変換
+        TProject projectEntity = b0030Mapper.toProjectEntity(projectInfo);
+
         // 案件情報を更新
-        TProject newProjectEntity = updateProjectInfo(projectInfo, tproject);
+        newProjectEntity = updateProjectInfo(tproject, projectEntity);
 
         // 戻り値を設定(案件ID)
         ret.setProjectId(newProjectEntity.getId());
@@ -495,11 +576,14 @@ public class B0030Service {
       // 処理区分が新規
       if (CommonConstants.SHORIKUBUN_SINNKI.equals(inDto.getShorikubun())) {
         // 概算情報データを作成する
-        saveTRoughEstHdr(projectCd, inDto);
+        saveRoughEstHdr(projectCd, inDto);
 
         // 精積算情報データを作成する
-        saveTDetailedEstHdr(projectCd, inDto);
+        saveDetailedEstHdr(projectCd, inDto);
       }
+
+      // 現場情報
+      List<TConstrSite> constrSiteList = null;
 
       // 受注状態:成約
       if (MasterData.ITEM_CLASS_CD_D0001_ITEM_CD_2.equals(projectInfo.getOrderStCd())) {
@@ -512,8 +596,11 @@ public class B0030Service {
         ret.setProjectSiteCd(projectSite.getProjectSiteCd());
 
         // 現場情報を作成する
-        saveTConstrSite(projectSite, inDto);
+        constrSiteList = saveConstrSite(projectSite, inDto);
       }
+
+      // 実行予算、出来高を保存
+      saveExecBgt(newProjectEntity, constrSiteList);
 
       return ApiResult.success(ret);
     } catch (ConflictException ex) {
@@ -549,25 +636,23 @@ public class B0030Service {
   /**
    * 案件情報を更新
    *
-   * @param projectDto 案件情報
+   * @param newProjectEntity 案件情報
    * @param dbProjectEntity DBの案件情報
    * @return 更新した案件情報
    */
-  private TProject updateProjectInfo(ProjectDto projectDto, TProject dbProjectEntity) {
+  public TProject updateProjectInfo(TProject dbProjectEntity, TProject newProjectEntity) {
     // DBの案件情報を過去に更新
     dbProjectEntity.setNewestFlg(CommonConstants.NEWEST_FLAG_HIS);
     b0030S01Repository.save(dbProjectEntity);
 
-    // 案件エンティティに変換
-    TProject projectEntity = b0030Mapper.toProjectEntity(projectDto);
     // ID
-    projectEntity.setId(null);
+    newProjectEntity.setId(null);
     // 最新フラグ;1：最新
-    projectEntity.setNewestFlg(CommonConstants.NEWEST_FLAG_NEW);
+    newProjectEntity.setNewestFlg(CommonConstants.NEWEST_FLAG_NEW);
     // 歴番 + 1
-    projectEntity.setHisNo(String.format("%02d", Integer.parseInt(dbProjectEntity.getHisNo()) + 1));
+    newProjectEntity.setHisNo(dbProjectEntity.getHisNo() + 1);
     // 最新データとして登録
-    return b0030S01Repository.save(projectEntity);
+    return b0030S01Repository.save(newProjectEntity);
   }
 
   /**
@@ -630,7 +715,7 @@ public class B0030Service {
    * @param projectCd 案件コード
    * @param inDto 案件登録保存パラメータ
    */
-  private void saveTRoughEstHdr(String projectCd, B0030Dto inDto) {
+  private void saveRoughEstHdr(String projectCd, B0030Dto inDto) {
 
     // 現場棟明細情報
     List<ProjectBuildingDtlDto> projectBuildingDtls = inDto.getProjectBuildingDtls();
@@ -649,27 +734,11 @@ public class B0030Service {
         // 最新フラグ;1：最新
         entity.setNewestFlg(CommonConstants.NEWEST_FLAG_NEW);
         // 概算日付
-        entity.setRoughEstYmd("N");
+        entity.setRoughEstYmd(DateUtils.formatNow(DateUtils.DATE_FORMAT));
         // 案件コード
         entity.setProjectCd(projectCd);
         // 棟コード
         entity.setBuildingCd(projectBuildingDtl.getBuildingCd());
-        // 概算合計金額
-        entity.setRoughEstTotalAmt(BigDecimal.ZERO);
-        // 概算部門ID
-        entity.setRoughEstOrgId(0L);
-        // 概算担当者コード
-        entity.setRoughEstPicCd("N");
-        // 担当事業所コード
-        MOffice office = new MOffice();
-        office.setOfficeCd("10");
-        entity.setTantouOfficeCd(office);
-        // 地域コード
-        entity.setRegionCd("N");
-        // 現場区分
-        entity.setConstrSiteK("N");
-        // 概算作成フラグ
-        entity.setRoughEstCreateFlg(CommonConstants.ROUGH_EST_CREATE_FLG_UNCREATED);
 
         entityList.add(entity);
       }
@@ -684,7 +753,7 @@ public class B0030Service {
    * @param projectCd 案件コード
    * @param inDto 案件登録保存パラメータ
    */
-  private void saveTDetailedEstHdr(String projectCd, B0030Dto inDto) {
+  private void saveDetailedEstHdr(String projectCd, B0030Dto inDto) {
     // 現場棟明細情報
     List<ProjectBuildingDtlDto> projectBuildingDtls = inDto.getProjectBuildingDtls();
 
@@ -709,14 +778,6 @@ public class B0030Service {
         entity.setBuildingCd(projectBuildingDtl.getBuildingCd());
         // 精積算合計金額
         entity.setDetailedEstTotalAmt(BigDecimal.ZERO);
-        // 精積算日付
-        entity.setDetailedEstYmd("N");
-        // 精積算担当者コード
-        entity.setDetailedEstPicCd("N");
-        // 地域コード
-        entity.setRegionCd("N");
-        // 現場区分
-        entity.setConstrSiteK("N");
 
         entityList.add(entity);
       }
@@ -738,9 +799,14 @@ public class B0030Service {
     // 物件情報
     TProjectSite entity = new TProjectSite();
 
-    // 物件コード TODO 案件番号がK始まりの場合は手動
-    entity.setProjectSiteCd(
-        numberRuleService.getNextNumberByFieldId(FIELD_ID_PROJECT_SITE_CD, null, null));
+    // 物件コード
+    if (StringUtils.isNotBlank(projectInfo.getProjectSiteCd())) {
+      entity.setProjectSiteCd(projectInfo.getProjectSiteCd());
+    } else {
+      entity.setProjectSiteCd(
+          numberRuleService.getNextNumberByFieldId(FIELD_ID_PROJECT_SITE_CD, null, null));
+    }
+
     // 歴番
     entity.setHisNo(CommonConstants.HIS_NO_START);
     // 最新フラグ;1：最新
@@ -762,56 +828,34 @@ public class B0030Service {
     entity.setInclTaxCoTotalAmt(BigDecimal.ZERO);
     // 消費税合計金額
     entity.setSalesTaxTotalAmt(BigDecimal.ZERO);
+
+    // TODO QA117
     // 着工日
-    entity.setConstrStartYmd("N");
+    if (StringUtils.isBlank(projectInfo.getStartHopeYmd())) {
+      entity.setConstrStartYmd(
+          DateUtils.formatDateTime(numberRuleService.getSystemDate(), DateUtils.DATE_FORMAT));
+    } else {
+      entity.setConstrStartYmd(projectInfo.getStartHopeYmd());
+    }
+
     // 完工日
-    entity.setConstrCompYmd("N");
+    if (StringUtils.isBlank(projectInfo.getCompHopeYmd())) {
+      entity.setConstrCompYmd("20991231");
+    } else {
+      entity.setConstrCompYmd(projectInfo.getCompHopeYmd());
+    }
+
     // 担当事業所コード
     MOffice office = new MOffice();
-    office.setOfficeCd("10");
+    office.setOfficeCd(CommonConstants.OFFICE_HONSHA_CODE);
     entity.setIcOfficeCd(office);
-    // 工事部門適用開始日
-    entity.setConstrDeptStartDt("N");
-    // 工事部門ID
-    entity.setConstrOrgId(0L);
-    // 工事管理職コード
-    entity.setConstMgrCd("N");
-    // 専任技術者コード
-    entity.setFtEngineerCd("N");
-    // 施工担当者コード
-    entity.setConstrPicCd("N");
+
     // 物件郵便番号
     entity.setProjectSitePostNo(projectInfo.getPostNo());
     // 物件住所１
     entity.setProjectSiteAddr1(projectInfo.getConstrSiteAddr1());
     // 物件住所２
     entity.setProjectSiteAddr2(projectInfo.getConstrSiteAddr2());
-    // 現場所長コード
-    entity.setConstrSiteDirectorCd("N");
-    // 所長代理コード
-    entity.setDeputyDirectorCd("N");
-    // 副所長コード
-    entity.setViceDirectorCd("N");
-    // 現場主任コード
-    entity.setConstrSiteSupvCd("N");
-    // 現場担当者コード１
-    entity.setConstrSitePicCd1("N");
-    // 現場担当者コード２
-    entity.setConstrSitePicCd2("N");
-    // 現場担当者コード３
-    entity.setConstrSitePicCd3("N");
-    // 現場担当者コード４
-    entity.setConstrSitePicCd4("N");
-    // 現場担当者コード５
-    entity.setConstrSitePicCd5("N");
-    // 設計業者名
-    entity.setDesignVenderNm("N");
-    // 設計担当者
-    entity.setDesignPicNm("N");
-    // 用途地域区分
-    entity.setZoningK("N");
-    // 防火地域区分
-    entity.setFireAreaK("N");
 
     return b0030S02Repository.save(entity);
   }
@@ -822,7 +866,8 @@ public class B0030Service {
    * @param projectSite 物件情報
    * @param inDto 案件登録保存パラメータ
    */
-  private void saveTConstrSite(TProjectSite projectSite, B0030Dto inDto) {
+  private List<TConstrSite> saveConstrSite(TProjectSite projectSite, B0030Dto inDto) {
+    List<TConstrSite> retList = null;
     // 案件情報
     ProjectDto projectInfo = inDto.getProjectInfo();
 
@@ -838,13 +883,13 @@ public class B0030Service {
         TConstrSite entity = new TConstrSite();
         // 物件ID
         entity.setProjectSite(projectSite);
+        // 棟コード
+        entity.setBuildingCd(projectBuildingDtl.getBuildingCd());
         // 現場コード
         entity.setConstrSiteCd(
             projectSite.getProjectSiteCd() + "000" + projectBuildingDtl.getBuildingCd());
         // 現場名
         entity.setConstrSiteNm(projectBuildingDtl.getBuildingWorkNm());
-        // 現場カナ名
-        entity.setConstrSiteKnNm("N");
         // 付帯工事コード
         entity.setRelatedWorkCd(RELATED_WORK_CD);
         // 建築面積
@@ -857,29 +902,203 @@ public class B0030Service {
         entity.setFloorCnt(projectInfo.getFloorCnt());
         // 階数（地下）
         entity.setBasementCnt(projectInfo.getBasementCnt());
-        // 構造区分 TODO
-        entity.setStructureK("N");
-        // 現場着手日
-        entity.setConstrSiteStartYmd("N");
-        // 現場引渡日
-        entity.setConstrSiteDeliveryYmd("N");
-        // 税抜請負金額
-        entity.setExclTaxCoAmt(BigDecimal.ZERO);
-        // 税込請負金額
-        entity.setInclTaxCoAmt(BigDecimal.ZERO);
-        // 請負消費税金額
-        entity.setCoSalesTaxAmt(BigDecimal.ZERO);
-        // 粗利益額
-        entity.setGrossProfitAmt("N");
-        // 粗利益率
-        entity.setGrossProfitRate("N");
-        // メモ
-        entity.setMemo("N");
 
         entityList.add(entity);
       }
       // 現場情報を作成する
-      b0030S09Repository.saveAll(entityList);
+      retList = b0030S09Repository.saveAll(entityList);
+    }
+
+    return retList;
+  }
+
+  /**
+   * 実行予算、出来高を保存
+   *
+   * @param projectEntity 案件情報
+   * @param constrSiteList 現場情報
+   */
+  private void saveExecBgt(TProject projectEntity, List<TConstrSite> constrSiteList) {
+    // 実行予算ヘッダ
+    TExecBgtHdr newBgtHdr = null;
+    // 出来高シミュレーション
+    TEvSim newEvSim = null;
+
+    if (!CollectionUtils.isEmpty(constrSiteList)) {
+      // 精積算ヘッダを取得
+      List<TDetailedEstHdr> detailedEstHdrList =
+          b0030S08Repository.findByProjectCd(projectEntity.getProjectCd());
+
+      for (TConstrSite constrSite : constrSiteList) {
+        // 実行予算明細の大工事コードリスト
+        List<String> majorWorkList = new ArrayList<>();
+
+        // 精積算ヘッダ
+        Optional<TDetailedEstHdr> estHdr =
+            detailedEstHdrList.stream()
+                .filter(
+                    item ->
+                        item.getProjectCd().equals(projectEntity.getProjectCd())
+                            && item.getBuildingCd().equals(constrSite.getBuildingCd()))
+                .findAny();
+
+
+        if (estHdr.isPresent()) {
+          TExecBgtHdr bgtHdr = new TExecBgtHdr();
+          // 実行予算コード
+          bgtHdr.setExecBgtCd(constrSite.getConstrSiteCd());
+          // 歴番
+          bgtHdr.setHisNo(CommonConstants.HIS_NO_START);
+          // 最新フラグ
+          bgtHdr.setNewestFlg(CommonConstants.NEWEST_FLAG_NEW);
+          // 現場コード
+          bgtHdr.setConstrSiteCd(constrSite.getConstrSiteCd());
+          // 精積算コード
+          bgtHdr.setDetailedEstCd(estHdr.get().getDetailedEstCd());
+          // 実行予算合計金額
+          bgtHdr.setExecBgtTotalAmt(estHdr.get().getDetailedEstTotalAmt());
+
+          // 実行予算ヘッダを保存
+          newBgtHdr = texecBgtHdrRepository.save(bgtHdr);
+
+          // 精積算明細を取得
+          List<TDetailedEstDtl> detailedEstDtlList =
+              b0030S10Repository.findByDetailedEstHid_Id(estHdr.get().getId());
+          if (!CollectionUtils.isEmpty(detailedEstDtlList)) {
+            List<TExecBgtDtl> bgtDtlList = new ArrayList<>();
+
+            for (TDetailedEstDtl detailedEstDtl : detailedEstDtlList) {
+              TExecBgtDtl bgtDtl = new TExecBgtDtl();
+              // 実行予算ヘッダID
+              bgtDtl.setExecBgtHid(newBgtHdr);
+              // 連番
+              bgtDtl.setSeqNo(detailedEstDtl.getSeqNo());
+              // 大工事コード
+              bgtDtl.setMajorWorkCd(detailedEstDtl.getMajorWorkCd());
+              // 小工事コード
+              bgtDtl.setMinorWorkCd(detailedEstDtl.getMinorWorkCd());
+              // 工事連番
+              bgtDtl.setWorkSeqNo(detailedEstDtl.getWorkSeqNo());
+              // 規格
+              bgtDtl.setSpec(detailedEstDtl.getSpec());
+              // 単価
+              bgtDtl.setPrice(detailedEstDtl.getPrice());
+              // 数量
+              bgtDtl.setQty(detailedEstDtl.getQty());
+              // 単位区分
+              bgtDtl.setUnitK(detailedEstDtl.getUnitK());
+              // 目標予算金額
+              bgtDtl.setTargetBgtAmt(detailedEstDtl.getDetailedEstAmt());
+              // 増減合計金額
+              bgtDtl.setChgTotalAmt(BigDecimal.ZERO);
+              // 備考
+              bgtDtl.setRemarks(detailedEstDtl.getRemarks());
+
+              bgtDtlList.add(bgtDtl);
+
+              // 大工事コードリスト
+              if (!majorWorkList.contains(detailedEstDtl.getMajorWorkCd())) {
+                majorWorkList.add(detailedEstDtl.getMajorWorkCd());
+              }
+            }
+            // 実行予算明細を保存
+            texecBgtDtlRepository.saveAll(bgtDtlList);
+          }
+        }
+
+        // 概算ヘッダ
+        TRoughEstHdr roughEstHdr =
+            b0030S07Repository.findByProjectCdAndBuildingCd(
+                projectEntity.getProjectCd(), constrSite.getBuildingCd());
+
+        // 概算コードに紐づく出来高シミュレーションデータ
+        List<TEvSim> evSims = tevSimRepository.findByRoughEstHid(roughEstHdr.getId());
+        if (!CollectionUtils.isEmpty(evSims)) {
+          for (TEvSim evSim : evSims) {
+            // 削除フラグ＝”1”（取消）
+            evSim.setDelFlg(CommonConstants.DELETE_FLAG_DELETE);
+          }
+        }
+
+        TEvSim evSim = new TEvSim();
+        // 現場コード
+        evSim.setConstrSiteCd(constrSite.getConstrSiteCd());
+        // 出来高登録日
+        evSim.setEvRegDt(
+            DateUtils.formatDateTime(numberRuleService.getSystemDate(), DateUtils.DATE_FORMAT));
+        // 出来高シミュレーションデータを作成
+        newEvSim = tevSimRepository.save(evSim);
+
+        // 実行予算明細の大工事コードリスト
+        if (!CollectionUtils.isEmpty(majorWorkList)) {
+          List<TEvSimBgt> evSimBgtList = new ArrayList<>();
+
+          for (String majorWork : majorWorkList) {
+            TEvSimBgt evSimBgt = new TEvSimBgt();
+            // 出来高シミュレーションID
+            evSimBgt.setEvSim(newEvSim);
+            // 大工事コード
+            evSimBgt.setMajorWorkCd(majorWork);
+
+            evSimBgtList.add(evSimBgt);
+          }
+
+          tevSimBgtRepository.saveAll(evSimBgtList);
+        }
+      }
+    }
+  }
+
+  /**
+   * 案件情報先行作業明細印刷処理
+   *
+   * @param inDto 案件情報先行作業明細印刷パラメータ
+   * @return pdf
+   */
+  public ApiResult<?> exportReportPreWorkToPdf(B0030PreWorkPrintDto inDto) {
+    try {
+
+      // レポートに渡すパラメータ
+      Map<String, Object> paramsMap =
+        objectMapper.convertValue(inDto, new TypeReference<Map<String, Object>>() {});
+
+      // レポートを生成する
+      byte[] datas = reportService.exportReportToPdf(REPORT_PRE_WORK_FILE_NAME, paramsMap, new JREmptyDataSource());
+
+      return ApiResult.success(datas);
+    } catch (Exception ex) {
+      LOG.error(ex.toString(), ex);
+
+      throw new SystemException(
+        messageSource.getMessage(Message.MSGID_S0000, null, LocaleContextHolder.getLocale()));
+    }
+  }
+
+  /**
+   * 印刷処理
+   *
+   * @param projectCd 案件情報印刷パラメータ
+   * @return pdf
+   */
+  public ApiResult<?> exportReportToPdf(String projectCd, LocalDateTime sysDate) {
+    try {
+
+      // 案件情報を取得
+      ProjectResultDto projectInfo =
+        b0030S01Repository.findAnkenInfo(projectCd).orElseThrow(ConflictException::new);
+      // レポートに渡すパラメータ
+      Map<String, Object> paramsMap =
+        objectMapper.convertValue(projectInfo, new TypeReference<Map<String, Object>>() {});
+
+      // レポートを生成する
+      byte[] datas = reportService.exportReportToPdf(REPORT_FILE_NAME, paramsMap, new JREmptyDataSource());
+
+      return ApiResult.success(datas);
+    } catch (Exception ex) {
+      LOG.error(ex.toString(), ex);
+
+      throw new SystemException(
+        messageSource.getMessage(Message.MSGID_S0000, null, LocaleContextHolder.getLocale()));
     }
   }
 }

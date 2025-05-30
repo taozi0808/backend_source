@@ -17,13 +17,17 @@ public class AnkenInfoDto {
   @Schema(name = "ankenCode", description = "案件コード")
   private String ankenCode;
 
-  /** 案件枝コード */
-  @Schema(name = "ankenEdaCode", description = "案件枝コード")
-  private String ankenEdaCode;
+  /** 歴番 */
+  @Schema(name = "ankenEdaCode", description = "歴番")
+  private Integer hisNo;
 
   /** 案件名 */
   @Schema(name = "ankenName", description = "案件名")
   private String ankenName;
+
+  /** 案件カナ名 */
+  @Schema(name = "ankenKnName", description = "案件カナ名")
+  private String ankenKnName;
 
   /** 顧客コード */
   @Schema(name = "kokyakuCode", description = "顧客コード")
@@ -32,6 +36,10 @@ public class AnkenInfoDto {
   /** 顧客名 */
   @Schema(name = "kokyakuName", description = "顧客名")
   private String kokyakuName;
+
+  /** 顧客カナ名 */
+  @Schema(name = "kokyakuKnName", description = "顧客カナ名")
+  private String kokyakuKnName;
 
   /** 想定金額 */
   @Schema(name = "souteiKingaku", description = "想定金額")
@@ -85,10 +93,12 @@ public class AnkenInfoDto {
    *
    * @param projectId 案件ID
    * @param ankenCode 案件コード
-   * @param ankenEdaCode 案件枝コード
+   * @param hisNo 歴番
    * @param ankenName 案件名
+   * @param ankenKnName 案件カナ名
    * @param kokyakuCode 顧客コード
    * @param kokyakuName 顧客名
+   * @param kokyakuKnName 顧客カナ名
    * @param souteiKingaku 想定金額
    * @param genbaJyuusyo1 現場住所１
    * @param genbaJyuusyo2 現場住所２
@@ -104,10 +114,12 @@ public class AnkenInfoDto {
   public AnkenInfoDto(
       Long projectId,
       String ankenCode,
-      String ankenEdaCode,
+      Integer hisNo,
       String ankenName,
+      String ankenKnName,
       String kokyakuCode,
       String kokyakuName,
+      String kokyakuKnName,
       BigDecimal souteiKingaku,
       String genbaJyuusyo1,
       String genbaJyuusyo2,
@@ -121,10 +133,12 @@ public class AnkenInfoDto {
       String shincyokudo) {
     this.projectId = projectId;
     this.ankenCode = ankenCode;
-    this.ankenEdaCode = ankenEdaCode;
+    this.hisNo = hisNo;
     this.ankenName = ankenName;
+    this.ankenKnName = ankenKnName;
     this.kokyakuCode = kokyakuCode;
     this.kokyakuName = kokyakuName;
+    this.kokyakuKnName = kokyakuKnName;
     this.souteiKingaku = souteiKingaku;
     this.genbaJyuusyo1 = genbaJyuusyo1;
     this.genbaJyuusyo2 = genbaJyuusyo2;
@@ -136,5 +150,23 @@ public class AnkenInfoDto {
     this.eigyouTantousyaShiMei = jyuugyouinShimei;
     this.shincyokudoCode = shincyokudoCode;
     this.shincyokudo = shincyokudo;
+  }
+
+  /**
+   * 現場住所１を取得
+   *
+   * @return 現場住所１
+   */
+  public String getGenbaJyuusyo1() {
+    return genbaJyuusyo1 != null ? genbaJyuusyo1 : "";
+  }
+
+  /**
+   * 現場住所２を取得
+   *
+   * @return 現場住所２
+   */
+  public String getGenbaJyuusyo2() {
+    return genbaJyuusyo2 != null ? genbaJyuusyo2 : "";
   }
 }

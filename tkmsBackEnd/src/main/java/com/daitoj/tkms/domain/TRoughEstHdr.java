@@ -40,10 +40,9 @@ public class TRoughEstHdr extends BaseEntity {
   @Column(name = "rough_est_cd", nullable = false, length = 12)
   private String roughEstCd;
 
-  @Size(max = 2)
   @NotNull
-  @Column(name = "his_no", nullable = false, length = 2)
-  private String hisNo;
+  @Column(name = "his_no", nullable = false)
+  private Integer hisNo;
 
   @NotNull
   @ColumnDefault("'2'")
@@ -65,30 +64,24 @@ public class TRoughEstHdr extends BaseEntity {
   @Column(name = "building_cd", nullable = false, length = 2)
   private String buildingCd;
 
-  @NotNull
   @Column(name = "rough_est_total_amt", nullable = false, precision = 11)
   private BigDecimal roughEstTotalAmt;
 
-  @NotNull
   @Column(name = "rough_est_org_id", nullable = false)
   private Long roughEstOrgId;
 
   @Size(max = 6)
-  @NotNull
   @Column(name = "rough_est_pic_cd", nullable = false, length = 6)
   private String roughEstPicCd;
 
-  @NotNull
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
   @JoinColumn(name = "tantou_office_cd", nullable = false)
   private MOffice tantouOfficeCd;
 
   @Size(max = 3)
-  @NotNull
   @Column(name = "region_cd", nullable = false, length = 3)
   private String regionCd;
 
-  @NotNull
   @Column(name = "constr_site_k", nullable = false, length = Integer.MAX_VALUE)
   private String constrSiteK;
 
@@ -99,5 +92,5 @@ public class TRoughEstHdr extends BaseEntity {
   @NotNull
   @ColumnDefault("'0'")
   @Column(name = "rough_est_create_flg", nullable = false, length = Integer.MAX_VALUE)
-  private String roughEstCreateFlg;
+  private String roughEstCreateFlg = "0";
 }

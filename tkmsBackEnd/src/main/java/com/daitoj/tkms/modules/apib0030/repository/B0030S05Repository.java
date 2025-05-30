@@ -20,7 +20,7 @@ public interface B0030S05Repository extends JpaRepository<TProjectRequestDtl, Lo
       """
           SELECT
               new com.daitoj.tkms.modules.apib0030.service.dto.ProjectRequestDtlDto(
-              tp.projectId,
+              tp.project.id,
               tp.seqNo,
               tp.requestYmd,
               tp.requestContent,
@@ -33,7 +33,7 @@ public interface B0030S05Repository extends JpaRepository<TProjectRequestDtl, Lo
               tp.updUserId,
               tp.updPgId)
            FROM TProjectRequestDtl tp
-          WHERE tp.projectId = :projectId
+          WHERE tp.project.id = :projectId
           """)
   List<ProjectRequestDtlDto> findByProjectId(Long projectId);
 }

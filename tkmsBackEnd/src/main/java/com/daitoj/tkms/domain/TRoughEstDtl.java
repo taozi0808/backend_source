@@ -37,10 +37,6 @@ public class TRoughEstDtl extends BaseEntity implements Serializable {
   @JoinColumn(name = "rough_est_hid", nullable = false)
   private TRoughEstHdr roughEstHid;
 
-  @NotNull
-  @Column(name = "price_id", nullable = false)
-  private Long priceId;
-
   @Size(max = 3)
   @NotNull
   @Column(name = "major_work_cd", nullable = false, length = 3)
@@ -67,8 +63,9 @@ public class TRoughEstDtl extends BaseEntity implements Serializable {
   @Column(name = "price", nullable = false, precision = 10)
   private BigDecimal price;
 
-  @Column(name = "unit", length = Integer.MAX_VALUE)
-  private String unit;
+  @Size(max = 2)
+  @Column(name = "unit_k", length = 2)
+  private String unitK;
 
   @NotNull
   @Column(name = "rough_est_amt", nullable = false, precision = 11)
@@ -77,4 +74,15 @@ public class TRoughEstDtl extends BaseEntity implements Serializable {
   @NotNull
   @Column(name = "remarks", nullable = false, length = Integer.MAX_VALUE)
   private String remarks;
+
+  @Size(max = 14)
+  @Column(name = "vendor_est_no", length = 14)
+  private String vendorEstNo;
+
+  @Size(max = 9)
+  @Column(name = "partner_vendor_cd", length = 9)
+  private String partnerVendorCd;
+
+  @Column(name = "vendor_est_did")
+  private Long vendorEstDid;
 }

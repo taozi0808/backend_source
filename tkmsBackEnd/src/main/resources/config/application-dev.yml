@@ -32,7 +32,8 @@ spring:
       indent-output: true
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:postgresql://10.72.31.123:5432/tkms_dev
+#    url: jdbc:postgresql://10.72.31.123:5432/tkms_dev
+    url: jdbc:postgresql://10.72.31.242:5432/tkms_dev
     username: tkms_user
     password: tkms_user
     hikari:
@@ -47,6 +48,12 @@ spring:
     username: admin@cnc.cn
     password: 123456
     protocol: smtp
+    properties:
+      mail:
+        smtp:
+          timeout: 60000
+          connectiontimeout: 60000
+          writetimeout: 60000
   messages:
     cache-duration: PT1S # 1 second, see the ISO 8601 standard
   thymeleaf:
@@ -66,8 +73,9 @@ server:
 jhipster:
   cache: # Cache configuration
     redis: # Redis configuration
-      expiration: 3600 # By default objects stay 1 hour (in seconds) in the cache
-      server: redis://123456@10.72.31.123:6379
+      expiration: 0 # By default objects stay 1 hour (in seconds) in the cache
+#      server: redis://123456@10.72.31.123:6379
+      server: redis://123456@10.72.31.242:6379
       cluster: false
 
       # server: redis://localhost:6379,redis://localhost:16379,redis://localhost:26379
@@ -114,13 +122,16 @@ jasper:
   template:
     path: classpath:templates/report/
 
-fileStorage:
-  type: minio
-  endpoint: http://192.168.13.171:9001
-  accessKey: yD7aQa25kNjJexWxalkY
-  secretKey: 0GwXNbLWHgSvC6mEzxBt7W7sd6uYl0h2iJftqwo8
-  bucketName: tkms
-  accessPath: http://192.168.13.171:9001
-  expiration: 360
+cloud:
+  type: minio   # minio/aws
+  credentials:
+    accessKey: yD7aQa25kNjJexWxalkY
+    secretKey: 0GwXNbLWHgSvC6mEzxBt7W7sd6uYl0h2iJftqwo8
+  region:
+    static: http://192.168.13.171:9001
+  s3:
+    bucket: tkms
+  url:
+    expiration: 360
 app:
   sys-time: 2025-01-01T12:34:56.789Z

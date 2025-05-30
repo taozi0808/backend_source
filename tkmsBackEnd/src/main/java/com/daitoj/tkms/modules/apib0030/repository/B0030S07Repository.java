@@ -6,4 +6,14 @@ import org.springframework.stereotype.Repository;
 
 /** 概算ヘッダのリポジトリ */
 @Repository
-public interface B0030S07Repository extends JpaRepository<TRoughEstHdr, Long> {}
+public interface B0030S07Repository extends JpaRepository<TRoughEstHdr, Long> {
+
+  /**
+   * 概算ヘッダを取得
+   *
+   * @param projectCd 案件コード
+   * @param buildingCd 棟コード
+   * @return 概算ヘッダ
+   */
+  TRoughEstHdr findByProjectCdAndBuildingCd(String projectCd, String buildingCd);
+}

@@ -28,7 +28,7 @@ public interface C0010Repository extends JpaRepository<TRoughEstHdr, Long> {
              tp.projectNm,
              mc.customerCd,
              CONCAT(mc.customerNm1, mc.customerNm2),
-             tp.estSubmitDueDt,
+             TO_CHAR(tp.estSubmitDueTs, 'YYYYMMDD'),
              treh.roughEstTotalAmt,
              tp.startHopeYmd,
              tp.compHopeYmd,
@@ -68,7 +68,7 @@ public interface C0010Repository extends JpaRepository<TRoughEstHdr, Long> {
               tp.projectNm,
               mc.customerCd,
               CONCAT(mc.customerNm1, mc.customerNm2),
-              tp.estSubmitDueDt,
+              TO_CHAR(tp.estSubmitDueTs, 'YYYYMMDD'),
               treh.roughEstTotalAmt,
               tp.startHopeYmd,
               tp.compHopeYmd,
@@ -89,8 +89,8 @@ public interface C0010Repository extends JpaRepository<TRoughEstHdr, Long> {
             AND (:customerName IS NULL OR mc.customerNm1 LIKE %:customerName%
              OR mc.customerNm2 LIKE %:customerName%
              OR mc.customerKnNm LIKE %:customerName%)
-            AND COALESCE(:estSubmitDueDtStart, tp.estSubmitDueDt) <= tp.estSubmitDueDt
-            AND tp.estSubmitDueDt <= COALESCE(:estSubmitDueDtEnd, tp.estSubmitDueDt)
+            AND COALESCE(:estSubmitDueDtStart, tp.estSubmitDueTs) <= tp.estSubmitDueTs
+            AND tp.estSubmitDueTs <= COALESCE(:estSubmitDueDtEnd, tp.estSubmitDueTs)
             AND (:orgNm IS NULL OR mo.orgNm LIKE %:orgNm%)
             AND (:empNm IS NULL OR me.empNm LIKE %:empNm%)
             AND (:gaisanSakusei = '0' OR treh.roughEstCreateFlg = '1')

@@ -18,7 +18,7 @@ public class GaisanInfoDto {
 
   /** 案件枝コード */
   @Schema(name = "hisNo", description = "案件枝コード")
-  private String hisNo;
+  private Integer hisNo;
 
   /** 概算コード */
   @Schema(name = "roughEstCd", description = "概算コード")
@@ -93,7 +93,7 @@ public class GaisanInfoDto {
   public GaisanInfoDto(
       Long id,
       String projectCd,
-      String hisNo,
+      Integer hisNo,
       String roughEstCd,
       String projectNm,
       String customerCd,

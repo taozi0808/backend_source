@@ -32,10 +32,6 @@ public class ProjectBuildingDtlDto extends BaseDto {
   @Schema(description = "棟番号工事名", requiredMode = Schema.RequiredMode.REQUIRED)
   private String buildingWorkNm;
 
-  /** 概算コード */
-  @Schema(description = "概算コード")
-  private String roughEstCd;
-
   /** コンストラクタ */
   public ProjectBuildingDtlDto() {}
 
@@ -46,7 +42,6 @@ public class ProjectBuildingDtlDto extends BaseDto {
    * @param seqNo 連番
    * @param buildingCd 棟コード
    * @param buildingWorkNm 棟番号工事名
-   * @param roughEstCd 概算コード
    * @param delFlg 削除フラグ
    * @param regTs 登録日時
    * @param regUserId 登録者ID
@@ -60,7 +55,6 @@ public class ProjectBuildingDtlDto extends BaseDto {
       Integer seqNo,
       String buildingCd,
       String buildingWorkNm,
-      String roughEstCd,
       String delFlg,
       Instant regTs,
       String regUserId,
@@ -72,7 +66,6 @@ public class ProjectBuildingDtlDto extends BaseDto {
     this.seqNo = seqNo;
     this.buildingCd = buildingCd;
     this.buildingWorkNm = buildingWorkNm;
-    this.roughEstCd = roughEstCd;
     this.delFlg = delFlg;
     this.regTs = regTs;
     this.regUserId = regUserId;
