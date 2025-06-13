@@ -10,7 +10,6 @@ import java.math.BigDecimal;
 @lombok.Setter
 @Schema(name = "ExecBgtApprInfoDto", description = "検索結果")
 public class ExecBgtApprInfoDto {
-
   /**
    * 現場コード.
    */
@@ -24,14 +23,20 @@ public class ExecBgtApprInfoDto {
   private String constrSiteNm;
 
   /**
+   * 現場カナ名.
+   */
+  @Schema(name = "constrSiteKnNm", description = "現場カナ名")
+  private String constrSiteKnNm;
+
+  /**
    * 請負金額.
-   * */
+   */
   @Schema(name = "inclTaxCoAmt", description = "請負金額")
   private BigDecimal inclTaxCoAmt;
 
   /**
    * 実行予算金額.
-   * */
+   */
   @Schema(name = "execBgtTotalAmt", description = "実行予算金額")
   private BigDecimal execBgtTotalAmt;
 
@@ -60,6 +65,18 @@ public class ExecBgtApprInfoDto {
   private String comment;
 
   /**
+   * 項目コード.
+   */
+  @Schema(name = "itemCd", description = "項目コード")
+  private String itemCd;
+
+  /**
+   * 最終承認日.
+   */
+  @Schema(name = "itemCd", description = "最終承認日")
+  private String finalApprDt;
+
+  /**
    * コンストラクタ.
    */
   public ExecBgtApprInfoDto() {
@@ -70,29 +87,38 @@ public class ExecBgtApprInfoDto {
    *
    * @param constrSiteCd    現場コード
    * @param constrSiteNm    現場名
+   * @param constrSiteKnNm  現場カナ名
    * @param inclTaxCoAmt    請負金額
    * @param execBgtTotalAmt 実行予算金額
    * @param requestTs       申請日
    * @param itemValue       結果
    * @param comment         コメント
+   * @param itemCd          項目コード
+   * @param finalApprDt     最終承認日
    */
   public ExecBgtApprInfoDto(
       String constrSiteCd,
       String constrSiteNm,
+      String constrSiteKnNm,
       BigDecimal inclTaxCoAmt,
       BigDecimal execBgtTotalAmt,
       String requestEmpNm,
       String requestTs,
       String itemValue,
-      String comment) {
+      String comment,
+      String itemCd,
+      String finalApprDt) {
     this.constrSiteCd = constrSiteCd;
     this.constrSiteNm = constrSiteNm;
+    this.constrSiteKnNm = constrSiteKnNm;
     this.inclTaxCoAmt = inclTaxCoAmt;
     this.execBgtTotalAmt = execBgtTotalAmt;
     this.requestEmpNm = requestEmpNm;
     this.requestTs = requestTs;
     this.itemValue = itemValue;
     this.comment = comment;
+    this.itemCd = itemCd;
+    this.finalApprDt = finalApprDt;
   }
 
 }

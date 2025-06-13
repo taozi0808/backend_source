@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 /** 承認一覧（概算管理）コントローラ. */
 @RestController
 @Tag(name = "S0010", description = "承認一覧（概算管理）のAPI")
-@RequestMapping("/api/v1/apprRoughEst")
+@RequestMapping("/api/v1/wf-requests/rough-est")
 public class S0010Resource {
 
   private static final Logger LOG = LoggerFactory.getLogger(S0010Resource.class);

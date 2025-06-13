@@ -10,7 +10,6 @@ import java.math.BigDecimal;
 @lombok.Setter
 @Schema(name = "RoughEstApprInfoDto", description = "検索結果")
 public class RoughEstApprInfoDto {
-
   /**
    * 概算コード.
    */
@@ -108,10 +107,16 @@ public class RoughEstApprInfoDto {
   private String projectKnNm;
 
   /**
-   * 案件名(全角).
+   * 項目コード.
    */
-  @Schema(name = "fullProjectNm", description = "案件名(全角)")
-  private String fullProjectNm;
+  @Schema(name = "itemCd", description = "項目コード")
+  private String itemCd;
+
+  /**
+   * 最終承認日.
+   */
+  @Schema(name = "itemCd", description = "最終承認日")
+  private String finalApprDt;
 
   /**
    * コンストラクタ.
@@ -122,6 +127,7 @@ public class RoughEstApprInfoDto {
   /**
    * コンストラクタ.
    *
+   * @param id               id
    * @param roughEstCd       概算コード
    * @param projectCd        案件コード
    * @param projectNm        案件名
@@ -138,6 +144,7 @@ public class RoughEstApprInfoDto {
    * @param itemValue        結果
    * @param comment          コメント
    * @param projectKnNm      案件カナ名
+   * @param finalApprDt      最終承認日
    */
   public RoughEstApprInfoDto(
       String roughEstCd,
@@ -155,7 +162,9 @@ public class RoughEstApprInfoDto {
       String requestTs,
       String itemValue,
       String comment,
-      String projectKnNm) {
+      String projectKnNm,
+      String itemCd,
+      String finalApprDt) {
     this.roughEstCd = roughEstCd;
     this.projectCd = projectCd;
     this.projectNm = projectNm;
@@ -172,5 +181,7 @@ public class RoughEstApprInfoDto {
     this.itemValue = itemValue;
     this.comment = comment;
     this.projectKnNm = projectKnNm;
+    this.itemCd = itemCd;
+    this.finalApprDt = finalApprDt;
   }
 }

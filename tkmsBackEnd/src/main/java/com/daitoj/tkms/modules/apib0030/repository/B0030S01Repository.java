@@ -85,7 +85,9 @@ public interface B0030S01Repository extends JpaRepository<TProject, Long> {
                             ah.regPgId,
                             ah.updTs,
                             ah.updUserId,
-                            ah.updPgId)
+                            ah.updPgId,
+                            ah.projectSiteCd
+                          )
                     FROM TProject ah
               INNER JOIN MCustomer kh          ON ah.customerBranchCd = kh.customerBranchCd
                LEFT JOIN MOrg si               ON ah.salesOrgId = si.id

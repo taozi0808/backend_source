@@ -470,7 +470,7 @@ public class R0045Service {
       }
 
       // 社員コード
-      String empCd;
+      String empCd = null;
       // 社員情報
       EmpDto empDto = inDto.getEmp();
 
@@ -495,8 +495,18 @@ public class R0045Service {
           // 登録社員コード
           empCd = empDto.getEmpCd();
         } else {
+          List<String> empCdList = mempRepository.findAll().stream().map(MEmp::getEmpCd).toList();
           // 社員コードを採番
-          empCd = numberRuleService.getNextNumberByFieldId(FIELD_ID_EMP_CD, null, null);
+          for (int i = 0; i < 200; i++) {
+            empCd = numberRuleService.getNextNumberByFieldId(FIELD_ID_EMP_CD, null, null);
+            if (!empCdList.contains(empCd)) {
+              break;
+            }
+            if (i == 199) {
+              throw new SystemException(
+                 messageSource.getMessage(Message.MSGID_S0000, null, LocaleContextHolder.getLocale()));
+            }
+          }
         }
 
         // ログインIDが設定されない場合
@@ -958,9 +968,81 @@ public class R0045Service {
       // 社員情報を取得
       MEmp empEntity = r0045Repository.findByEmpCd(empCd).orElseThrow(ConflictException::new);
       EmpResultDto empDto = r0045Mapper.toEmpResultDto(empEntity);
+      R0045PrintDto printDto = new R0045PrintDto();
+
+      List<MPosition> positionList =
+        mpositionRepository.findAll(Sort.by(Sort.Order.asc("positionCd")));
+      // 従業員の異動情報を取得
+      List<MEmpTransferHdr> empTransferHdrList =
+        mempTransferHdrRepository.findByEmp_IdOrderByEffectiveStartDt(empEntity.getId());
+
+      if (!CollectionUtils.isEmpty(empTransferHdrList)) {
+        // 直近従業員の異動情報
+        MEmpTransferHdr transferHdr = null;
+
+        // 適用開始日 > システム日時のデータ
+        List<MEmpTransferHdr> aftList =
+          empTransferHdrList.stream()
+            .filter(item -> item.getEffectiveStartDt().compareTo(sysDate.format(DateTimeFormatter.ofPattern(PDF_DATE_FORMAT))) > 0)
+            .toList();
+
+        if (!CollectionUtils.isEmpty(aftList)) {
+          transferHdr = aftList.get(0);
+        } else {
+          // 適用開始日 <= システム日時のデータ
+          List<MEmpTransferHdr> befList =
+            empTransferHdrList.stream()
+              .filter(item -> item.getEffectiveStartDt().compareTo(sysDate.format(DateTimeFormatter.ofPattern(PDF_DATE_FORMAT))) <= 0)
+              .toList();
+
+          transferHdr = befList.get(befList.size() - 1);
+        }
+
+        // 適用開始日を設定
+        printDto.setStartDate(transferHdr.getEffectiveStartDt());
+        MEmpTransferHdr finalTransferHdr = transferHdr;
+        String postionNm = positionList.stream()
+          .filter(item-> finalTransferHdr.getPositionCd().equals(item.getPositionCd()))
+          .map(item-> item.getPositionNm())
+          .findFirst()
+          .orElse("");
+        // 部署異動役職名を設定
+        printDto.setPositionNm2(postionNm);
+
+        // 従業員異動明細
+        List<MEmpTransferDtl> transferDtls =
+          mempTransferDtlRepository.findByEmpTransferHid_Id(transferHdr.getId());
+
+        if (!CollectionUtils.isEmpty(transferDtls)) {
+          // 部署異動情報
+          List<EmpOrgDto> transferEmpOrgList = new ArrayList<>();
+
+          for (MEmpTransferDtl dtl : transferDtls) {
+            EmpOrgDto empOrgDto = new EmpOrgDto();
+            // 連番
+            empOrgDto.setSeqNo(dtl.getSeqNo());
+
+            OrgDto orgDto = new OrgDto();
+            // 組織ID
+            orgDto.setId(dtl.getOrg().getId());
+            // 組織コード
+            orgDto.setOrgCd(dtl.getOrg().getOrgCd());
+            // 組織名
+            orgDto.setOrgNm(dtl.getOrg().getOrgNm());
+            // 組織情報
+            empOrgDto.setOrg(orgDto);
+
+            // 組織区分
+            empOrgDto.setOrgK(dtl.getOrgK());
+
+            transferEmpOrgList.add(empOrgDto);
+          }
+          // 部署異動情報を設定
+          empDto.setTransferEmpOrgList(transferEmpOrgList);
+        }
+      }
 
       // 顔認証用写真を取得
-      R0045PrintDto printDto = new R0045PrintDto();
       List<EmpPhotoDto> photoList =
           Optional.ofNullable(empDto.getEmpPhotoList()).orElse(Collections.emptyList());
 

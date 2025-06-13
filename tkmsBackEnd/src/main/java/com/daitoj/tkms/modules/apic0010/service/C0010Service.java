@@ -18,6 +18,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.OutputStreamWriter;
 import java.nio.charset.Charset;
+import java.text.DecimalFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
 import net.sf.jasperreports.engine.JRDataSource;
@@ -48,9 +49,25 @@ public class C0010Service {
   /** 帳票日付フォーマット */
   private static final String PDF_DATE_FORMAT = "yyyy年MM年dd日HH:mm:ss";
 
+  /* 金額フォマード */
+  private static final String MONEY_FORMAT = "￥#,##0";
+
   /** CSVヘッダ */
   private static final String[] CSV_HEADER = {
-    "案件コード", "概算コード", "案件名", "顧客コード", "顧客名", "見積提出期限", "概算金額", "着工希望時期", "完工希望時期", "概算部門", "概算担当者"
+    "案件コード",
+    "案件枝コード",
+    "案件名",
+    "概算コード",
+    "顧客コード",
+    "顧客名",
+    "見積提出期限",
+    "概算金額",
+    "着工希望時期",
+    "完工希望時期",
+    "概算担当部門コード",
+    "概算部門",
+    "概算担当者コード",
+    "概算担当者"
   };
 
   /** 概算一覧のクエリ */
@@ -233,15 +250,20 @@ public class C0010Service {
             // 明細行設定
             printer.printRecord(
                 ankenInfo.getProjectCd(),
+                ankenInfo.getHisNo(),
                 ankenInfo.getProjectNm(),
                 ankenInfo.getRoughEstCd(),
                 ankenInfo.getCustomerCd(),
                 ankenInfo.getCustomerName(),
-                DateUtils.formatDateFromYYYYMMDD(ankenInfo.getEstSubmitDueDt(), CSV_DATE_FORMAT),
-                ankenInfo.getRoughEstTotalAmt(),
-                DateUtils.formatDateFromYYYYMMDD(ankenInfo.getStartHopeYmd(), CSV_DATE_FORMAT),
-                DateUtils.formatDateFromYYYYMMDD(ankenInfo.getCompHopeYmd(), CSV_DATE_FORMAT),
+                ankenInfo.getEstSubmitDueDt(),
+                ankenInfo.getRoughEstTotalAmt() != null
+                    ? new DecimalFormat(MONEY_FORMAT).format(ankenInfo.getRoughEstTotalAmt())
+                    : "",
+                ankenInfo.getStartHopeYmd(),
+                ankenInfo.getCompHopeYmd(),
+                ankenInfo.getOrgCd(),
                 ankenInfo.getOrgNm(),
+                ankenInfo.getRoughEstPicCd(),
                 ankenInfo.getEmpNm());
           }
         }

@@ -34,13 +34,14 @@ public interface C0010Repository extends JpaRepository<TRoughEstHdr, Long> {
              tp.compHopeYmd,
              mo.orgCd,
              mo.orgNm,
-             me.empCd,
-             me.empNm)
+             treh.roughEstPicCd,
+             me.empNm
+             )
           FROM TRoughEstHdr treh
     INNER JOIN TProject tp  ON treh.projectCd = tp.projectCd
     INNER JOIN MCustomer mc ON mc.customerBranchCd  = tp.customerBranchCd
-    INNER JOIN MOrg mo      ON mo.id          = treh.roughEstOrgId
-    INNER JOIN MEmp me      ON me.empCd       = treh.roughEstPicCd
+    LEFT  JOIN MOrg mo      ON mo.id          = treh.roughEstOrgId
+    LEFT  JOIN MEmp me      ON me.empCd       = treh.roughEstPicCd
       """)
   Page<GaisanInfoDto> getGaisanInfo(Pageable pageable);
 
@@ -74,13 +75,14 @@ public interface C0010Repository extends JpaRepository<TRoughEstHdr, Long> {
               tp.compHopeYmd,
               mo.orgCd,
               mo.orgNm,
-              me.empCd,
-              me.empNm)
+              treh.roughEstPicCd,
+              me.empNm
+              )
            FROM TRoughEstHdr treh
      INNER JOIN TProject tp  ON treh.projectCd = tp.projectCd
      INNER JOIN MCustomer mc ON mc.customerBranchCd  = tp.customerBranchCd
-     INNER JOIN MOrg mo      ON mo.id          = treh.roughEstOrgId
-     INNER JOIN MEmp me      ON me.empCd       = treh.roughEstPicCd
+     LEFT  JOIN MOrg mo      ON mo.id          = treh.roughEstOrgId
+     LEFT  JOIN MEmp me      ON me.empCd       = treh.roughEstPicCd
           WHERE (:projectCd   IS NULL OR tp.projectCd    LIKE %:projectCd%)
             AND (:projectNm   IS NULL OR tp.projectNm LIKE %:projectNm%
              OR tp.projectKnNm    LIKE %:projectNm%)
@@ -89,8 +91,8 @@ public interface C0010Repository extends JpaRepository<TRoughEstHdr, Long> {
             AND (:customerName IS NULL OR mc.customerNm1 LIKE %:customerName%
              OR mc.customerNm2 LIKE %:customerName%
              OR mc.customerKnNm LIKE %:customerName%)
-            AND COALESCE(:estSubmitDueDtStart, tp.estSubmitDueTs) <= tp.estSubmitDueTs
-            AND tp.estSubmitDueTs <= COALESCE(:estSubmitDueDtEnd, tp.estSubmitDueTs)
+            AND (:estSubmitDueDtStart IS NULL OR :estSubmitDueDtStart <= TO_CHAR(tp.estSubmitDueTs, 'YYYYMMDD'))
+            AND (:estSubmitDueDtEnd IS NULL OR TO_CHAR(tp.estSubmitDueTs, 'YYYYMMDD') <= :estSubmitDueDtEnd)
             AND (:orgNm IS NULL OR mo.orgNm LIKE %:orgNm%)
             AND (:empNm IS NULL OR me.empNm LIKE %:empNm%)
             AND (:gaisanSakusei = '0' OR treh.roughEstCreateFlg = '1')

@@ -32,9 +32,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailSendException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /** ログインビジネスロジック */
 @Service
+@Transactional(rollbackFor = Throwable.class)
 public class A0020Service {
 
   private static final Logger LOG = LoggerFactory.getLogger(A0020Service.class);
@@ -171,21 +173,18 @@ public class A0020Service {
       mloginRepository.save(loginInfo.get());
 
       varMap.put(KeyConstants.A0020_VAR_PASSWORD, password);
-        Long mailResult =
-            customMailService.sendMail(
-                TemplateName.A0020_TEMPLATE,
-                Message.A0020_MAIL_TITLE,
-                to,
-                null,
-                null,
-                varMap,
-                null);
+      Long mailResult =
+          customMailService.sendMail(
+              TemplateName.A0020_TEMPLATE, Message.A0020_MAIL_TITLE, to, null, null, varMap, null);
 
-        if (mailResult == -1L) {
-            throw new SystemException(
-                messageSource.getMessage(
-                    Message.MSGID_A00007, null, LocaleContextHolder.getLocale()));
-        }
+      if (mailResult == -1L) {
+        String msg =
+            messageSource.getMessage(Message.MSGID_A00007, null, LocaleContextHolder.getLocale());
+
+        LOG.warn(msg);
+
+        return ResponseEntity.status(400).body(ApiResult.error(Message.MSGID_A00007, msg));
+      }
       // メッセージ
       String msg =
           messageSource.getMessage(Message.MSGID_A00008, null, LocaleContextHolder.getLocale());

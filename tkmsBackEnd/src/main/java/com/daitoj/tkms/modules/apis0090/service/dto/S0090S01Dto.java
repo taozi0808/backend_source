@@ -28,6 +28,12 @@ public class S0090S01Dto {
   private String workerCd;
 
   /**
+   * 氏名.
+   */
+  @Schema(name = "workerNm", description = "氏名")
+  private String workerNm;
+
+  /**
    * 申請日（開始）.
    */
   @DateTimeFormat(pattern = "yyyyMMdd")

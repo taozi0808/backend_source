@@ -9,7 +9,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 @lombok.Setter
 @Schema(name = "AssessApprInfoDto", description = "検索結果")
 public class AssessApprInfoDto {
-
   /**
    * 現場コード.
    */
@@ -23,27 +22,33 @@ public class AssessApprInfoDto {
   private String constrSiteNm;
 
   /**
+   * 現場カナ名.
+   */
+  @Schema(name = "constrSiteKnNm", description = "現場名")
+  private String constrSiteKnNm;
+
+  /**
    * 現場所長.
-   * */
+   */
   @Schema(name = "constrSiteDirectorNm", description = "現場所長")
   private String constrSiteDirectorNm;
 
   /**
    * 担当部門.
-   * */
+   */
   @Schema(name = "orgNm", description = "担当部門")
   private String orgNm;
 
   /**
    * 工事工程.
-  */
+   */
   @Schema(name = "constrProcessNm", description = "工事工程")
   private String constrProcessNm;
 
   /**
-   * 査定承認日.
+   * 最終承認日.
    */
-  @Schema(name = "finalApprDt", description = "査定承認日")
+  @Schema(name = "finalApprDt", description = "最終承認日")
   private String finalApprDt;
 
   /**
@@ -71,6 +76,12 @@ public class AssessApprInfoDto {
   private String comment;
 
   /**
+   * 項目コード.
+   */
+  @Schema(name = "itemCd", description = "項目コード")
+  private String itemCd;
+
+  /**
    * コンストラクタ.
    */
   public AssessApprInfoDto() {
@@ -81,6 +92,7 @@ public class AssessApprInfoDto {
    *
    * @param constrSiteCd         現場コード
    * @param constrSiteNm         現場名
+   * @param constrSiteKnNm       現場カナ名
    * @param constrSiteDirectorNm 現場所長
    * @param orgNm                担当部門
    * @param constrProcessNm      工事工程
@@ -88,10 +100,12 @@ public class AssessApprInfoDto {
    * @param requestTs            申請日
    * @param itemValue            結果
    * @param comment              コメント
+   * @param itemCd               アイテムコード
    */
   public AssessApprInfoDto(
       String constrSiteCd,
       String constrSiteNm,
+      String constrSiteKnNm,
       String constrSiteDirectorNm,
       String orgNm,
       String constrProcessNm,
@@ -99,9 +113,11 @@ public class AssessApprInfoDto {
       String requestEmpNm,
       String requestTs,
       String itemValue,
-      String comment) {
+      String comment,
+      String itemCd) {
     this.constrSiteCd = constrSiteCd;
     this.constrSiteNm = constrSiteNm;
+    this.constrSiteKnNm = constrSiteKnNm;
     this.constrSiteDirectorNm = constrSiteDirectorNm;
     this.orgNm = orgNm;
     this.constrProcessNm = constrProcessNm;
@@ -110,6 +126,6 @@ public class AssessApprInfoDto {
     this.requestTs = requestTs;
     this.itemValue = itemValue;
     this.comment = comment;
+    this.itemCd = itemCd;
   }
-
 }

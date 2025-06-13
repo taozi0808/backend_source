@@ -30,7 +30,7 @@ public interface M0010Repository extends JpaRepository<TConstrSiteExpHdr, Long> 
                     tc.constrSiteStartYmd,
                     tc.constrSiteDeliveryYmd,
                     ji.empNm,
-                    tbna.requestEmpCd,
+                    tbna.requestAppCd,
                     th.expReqDt,
                     me.empNm,
                     tbna.finalApprEmpCd,
@@ -41,7 +41,7 @@ public interface M0010Repository extends JpaRepository<TConstrSiteExpHdr, Long> 
           INNER JOIN TProjectSite tp          ON tc.projectSite.projectSiteCd = tp.projectSiteCd
           LEFT  JOIN TBusinessNewestAppr tbna ON tbna.businessDataId = th.id
                  AND tbna.businessTblId = "T_CONSTR_SITE_EXP_HDR"
-          LEFT  JOIN MEmp ji                  ON tbna.requestEmpCd   = ji.empCd
+          LEFT  JOIN MEmp ji                  ON tbna.requestAppCd   = ji.empCd
           LEFT  JOIN MEmp me                  ON tbna.finalApprEmpCd = me.empCd
                WHERE (:jigyousyoName  IS NULL  OR tp.icOfficeCd.officeCd = :jigyousyoCode)
             ORDER BY th.constrSiteCd
@@ -73,7 +73,7 @@ public interface M0010Repository extends JpaRepository<TConstrSiteExpHdr, Long> 
                     tc.constrSiteStartYmd,
                     tc.constrSiteDeliveryYmd,
                     ji.empNm,
-                    tbna.requestEmpCd,
+                    tbna.requestAppCd,
                     th.expReqDt,
                     me.empNm,
                     tbna.finalApprEmpCd,
@@ -84,7 +84,7 @@ public interface M0010Repository extends JpaRepository<TConstrSiteExpHdr, Long> 
           INNER JOIN TProjectSite tp       ON tc.projectSite.projectSiteCd = tp.projectSiteCd
           LEFT  JOIN TBusinessNewestAppr tbna ON tbna.businessDataId = th.id
                  AND tbna.businessTblId = "T_CONSTR_SITE_EXP_HDR"
-          LEFT  JOIN MEmp ji                  ON tbna.requestEmpCd   = ji.empCd
+          LEFT  JOIN MEmp ji                  ON tbna.requestAppCd   = ji.empCd
           LEFT  JOIN MEmp me                  ON tbna.finalApprEmpCd = me.empCd
                WHERE (:jigyousyoName  IS NULL  OR tp.icOfficeCd.officeCd = :jigyousyoCode)
                  AND (:genbaCode      IS NULL  OR th.constrSiteCd   LIKE  %:genbaCode%)

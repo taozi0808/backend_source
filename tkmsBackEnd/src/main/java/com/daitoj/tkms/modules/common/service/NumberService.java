@@ -50,7 +50,7 @@ public class NumberService {
    */
   public String getNextNumberByFieldId(String fieldId, String prefix, String number) {
     // 連番
-    int newNumber = 0;
+    long newNumber = 0L;
     // 接頭辞
     String prefixStr = null;
     // 主番
@@ -112,7 +112,7 @@ public class NumberService {
     // データ存在する
     if (mnumber.isPresent()) {
       // 連番
-      int seq = 0;
+      long seq = 0L;
       if (mnumber.get().getSeqNo() != null) {
         seq = mnumber.get().getSeqNo();
       }

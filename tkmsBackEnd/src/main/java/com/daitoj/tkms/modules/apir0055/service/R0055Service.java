@@ -77,7 +77,7 @@ public class R0055Service {
   private final ReportService reportService;
 
   /* レポートファイル名 */
-  public static final String REPORT_FILE_NAME = "WebR0055.jasper";
+  public static final String REPORT_FILE_NAME = "WebR0070.jasper";
 
   /**
    * コンストラクタ.
@@ -161,7 +161,10 @@ public class R0055Service {
     // 顧客情報を取得
     List<CustomerInfoDto> customerList =
         r0055Repository.findCustomerInfo(
-            inDto.getCustomerCd(), inDto.getTradingK(), inDto.getGyousyuGyoutai());
+            inDto.getCustomerCd(),
+            inDto.getTradingNormal(),
+            inDto.getTradingCorporation(),
+            inDto.getGyousyuGyoutai());
 
     // 顧客結果情報
     List<CustomerResultDto> customerResultList = filterByCondition(inDto, customerList);
@@ -172,7 +175,6 @@ public class R0055Service {
 
     // API応答を返却
     return ApiResult.success(returnData);
-
   }
 
   /**
@@ -199,7 +201,10 @@ public class R0055Service {
       // 顧客情報を取得
       List<CustomerInfoDto> customerList =
           r0055Repository.findCustomerInfo(
-              inDto.getCustomerCd(), inDto.getTradingK(), inDto.getGyousyuGyoutai());
+              inDto.getCustomerCd(),
+              inDto.getTradingNormal(),
+              inDto.getTradingCorporation(),
+              inDto.getGyousyuGyoutai());
       // 顧客結果情報
       List<CustomerResultDto> customerResultList = filterByCondition(inDto, customerList);
 
@@ -279,7 +284,10 @@ public class R0055Service {
       // 顧客情報を取得
       List<CustomerInfoDto> customerList =
           r0055Repository.findCustomerInfo(
-              inDto.getCustomerCd(), inDto.getTradingK(), inDto.getGyousyuGyoutai());
+              inDto.getCustomerCd(),
+              inDto.getTradingNormal(),
+              inDto.getTradingCorporation(),
+              inDto.getGyousyuGyoutai());
       // 顧客結果情報
       List<CustomerResultDto> customerResultList = filterByCondition(inDto, customerList);
 
@@ -305,10 +313,12 @@ public class R0055Service {
       printDto.setCustomerCd(inDto.getCustomerCd());
       // 顧客名
       printDto.setCustomerNm(inDto.getCustomerNm());
-      // 取引先区分
-      printDto.setTradingKNm(inDto.getTradingKNm());
+      // 取引先区分_一般
+      printDto.setTradingNormal(inDto.getTradingNormal());
+      // 取引先区分_法人
+      printDto.setTradingCorporation(inDto.getTradingCorporation());
       // 業種・業態
-      printDto.setGyousyuGyoutaiNm(inDto.getGyousyuGyoutaiNm());
+      printDto.setGyousyuGyoutai(inDto.getGyousyuGyoutai());
       // レポートの渡すパラメータ
       Map<String, Object> paramsMap =
           objectMapper.convertValue(printDto, new TypeReference<Map<String, Object>>() {});

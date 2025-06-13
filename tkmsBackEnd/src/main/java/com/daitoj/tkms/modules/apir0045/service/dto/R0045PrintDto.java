@@ -166,4 +166,9 @@ public class R0045PrintDto extends EmpDto {
   /** 部署異動設定（課）Field5*/
   @Schema(description = "部署異動設定（課）Field5")
   private String transEmpOrgKaField5;
+
+  /** 適用開始日付 */
+  @Size(max = 8)
+  @Schema(description = "適用開始日付", maxLength = 8)
+  protected String startDate;
 }

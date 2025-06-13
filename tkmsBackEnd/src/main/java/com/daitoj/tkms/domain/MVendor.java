@@ -14,14 +14,14 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.math.BigDecimal;
 import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.Where;
+import org.hibernate.annotations.SQLRestriction;
 
 /** 業者情報 */
 @lombok.Getter
 @lombok.Setter
 @Entity
 @Table(name = "m_vendor")
-@Where(clause = "del_flg = '0' AND newest_flg ='1'")
+@SQLRestriction("del_flg = '0' AND newest_flg = '1'")
 public class MVendor extends BaseEntity {
 
   @Id

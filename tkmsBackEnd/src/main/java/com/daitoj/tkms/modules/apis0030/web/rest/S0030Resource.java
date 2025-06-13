@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @Tag(name = "S0030", description = "承認一覧（物件管理）のAPI")
-@RequestMapping("/api/v1/apprProjectSite")
+@RequestMapping("/api/v1/wf-requests/project-site")
 public class S0030Resource {
 
   private static final Logger LOG = LoggerFactory.getLogger(S0030Resource.class);

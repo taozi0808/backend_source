@@ -28,8 +28,14 @@ public class S0050S01Dto {
   private String constrSiteCd;
 
   /**
+   * 現場名（ｶﾅ含む）.
+   */
+  @Schema(name = "constrSiteNm", description = "現場名（ｶﾅ含む）")
+  private String constrSiteNm;
+
+  /**
    * 現場所長.
-   * */
+   */
   @Schema(name = "constrSiteDirectorNm", description = "現場所長")
   private String constrSiteDirectorNm;
 

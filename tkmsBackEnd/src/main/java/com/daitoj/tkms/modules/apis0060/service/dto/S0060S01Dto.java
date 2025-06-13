@@ -22,10 +22,16 @@ public class S0060S01Dto {
   private String empCd;
 
   /**
-   * 現場コード.
+   * 現場/案件コード.
    */
-  @Schema(name = "constrSiteCd", description = "現場コード")
-  private String constrSiteCd;
+  @Schema(name = "constrSiteOrProjectCd", description = "現場コード")
+  private String constrSiteOrProjectCd;
+
+  /**
+   * 現場/案件名（ｶﾅ含む）.
+   */
+  @Schema(name = "constrSiteOrProjectNm", description = " 現場/案件名")
+  private String constrSiteOrProjectNm;
 
   /**
    * 申請日（開始）.

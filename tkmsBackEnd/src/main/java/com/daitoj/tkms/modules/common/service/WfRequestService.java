@@ -75,7 +75,8 @@ public class WfRequestService {
    *
    * @param businessTypeCd 業務種類コード
    * @param businessDataId 業務データID
-   * @param requestEmpCd 申請者従業員コード
+   * @param requestAppCd 申請者コード
+   * @param appAccountK 申請者アカウント区分
    * @param fileList 申請ファイルIDリスト
    * @param apprEmpCdList 承認者従業員コードリスト
    * @return 申請ID
@@ -83,7 +84,8 @@ public class WfRequestService {
   public Long wfRequest(
       String businessTypeCd,
       Long businessDataId,
-      String requestEmpCd,
+      String requestAppCd,
+      String appAccountK,
       List<UUID> fileList,
       List<String> apprEmpCdList) {
     // システム日付
@@ -97,7 +99,7 @@ public class WfRequestService {
 
     // WF申請情報
     TWfRequest wfRequest =
-        getTwfRequest(businessDataId, requestEmpCd, businessTypeEntity, systemDate);
+        getTwfRequest(businessDataId, requestAppCd, appAccountK, businessTypeEntity, systemDate);
 
     // WF申請情報を登録
     TWfRequest newWfRequest = twfRequestRepository.save(wfRequest);
@@ -109,7 +111,7 @@ public class WfRequestService {
 
     // 業務データ最新承認情報を新規作成または更新する
     createOrUpdateBusinessNewestAppr(
-        apprData, newWfRequest, businessTypeEntity, businessDataId, requestEmpCd, systemDate);
+        apprData, newWfRequest, businessTypeEntity, businessDataId, requestAppCd, appAccountK, systemDate);
 
     if (!CollectionUtils.isEmpty(fileList)) {
       List<TWfRequestFiles> requestFilesEntityList = new ArrayList<>();
@@ -284,7 +286,8 @@ public class WfRequestService {
    * @param newWfRequest 申請ID
    * @param businessTypeEntity 業務テーブルID
    * @param businessDataId 業務データID
-   * @param requestEmpCd 申請者の従業員コード
+   * @param requestAppCd 申請者コード
+   * @param appAccountK 申請者アカウント区分
    * @param systemDate システム日時
    */
   private void createOrUpdateBusinessNewestAppr(
@@ -292,7 +295,8 @@ public class WfRequestService {
       TWfRequest newWfRequest,
       MBusinessType businessTypeEntity,
       Long businessDataId,
-      String requestEmpCd,
+      String requestAppCd,
+      String appAccountK,
       Instant systemDate) {
     TBusinessNewestAppr apprEntity = apprData.orElseGet(TBusinessNewestAppr::new);
 
@@ -303,7 +307,9 @@ public class WfRequestService {
     // 業務データID：引数.業務データID
     apprEntity.setBusinessDataId(businessDataId);
     // 申請者従業員コード：引数.申請者従業員コード
-    apprEntity.setRequestEmpCd(requestEmpCd);
+    apprEntity.setRequestAppCd(requestAppCd);
+    // 申請者アカウント区分：引数.申請者アカウント区分
+    apprEntity.setAppAccountK(appAccountK);
     // 申請日時：システム日時（共通部品）
     apprEntity.setRequestTs(systemDate);
     // 業務データステータス：'2'(申請中)
@@ -323,14 +329,16 @@ public class WfRequestService {
    * WF申請情報を作成
    *
    * @param businessDataId 業務データID
-   * @param requestEmpCd 申請者従業員コード
+   * @param requestAppCd 申請者コード
+   * @param appAccountK 申請者アカウント区分
    * @param businessTypeEntity 業務種類情報
    * @param systemDate システム日時
    * @return WF申請情報
    */
   private TWfRequest getTwfRequest(
       Long businessDataId,
-      String requestEmpCd,
+      String requestAppCd,
+      String appAccountK,
       MBusinessType businessTypeEntity,
       Instant systemDate) {
     TWfRequest wfRequest = new TWfRequest();
@@ -342,7 +350,9 @@ public class WfRequestService {
     // 業務データID：引数.業務データID
     wfRequest.setBusinessDataId(businessDataId);
     // 申請者従業員コード：引数.申請者従業員コード
-    wfRequest.setRequestEmpCd(requestEmpCd);
+    wfRequest.setRequestAppCd(requestAppCd);
+    // 申請者アカウント区分：引数.申請者アカウント区分
+    wfRequest.setAppAccountK(appAccountK);
     // 承認待順序：1
     wfRequest.setCurrentStep(1);
     // 申請日時：システム日時（共通部品）

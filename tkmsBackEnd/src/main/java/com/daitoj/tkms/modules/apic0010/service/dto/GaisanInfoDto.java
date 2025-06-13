@@ -52,7 +52,7 @@ public class GaisanInfoDto {
   @Schema(name = "compHopeYmd", description = "完工希望日")
   private String compHopeYmd;
 
-  /** 概算部門ID */
+  /** 概算部門コード */
   @Schema(name = "orgCd", description = "概算部門コード")
   private String orgCd;
 

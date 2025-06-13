@@ -28,6 +28,12 @@ public class S0120S01Dto {
   private String customerCd;
 
   /**
+   * 顧客名（ｶﾅ含む）.
+   */
+  @Schema(name = "customerNm", description = "顧客名（ｶﾅ含む）")
+  private String customerNm;
+
+  /**
    * 申請日（開始）.
    */
   @DateTimeFormat(pattern = "yyyyMMdd")

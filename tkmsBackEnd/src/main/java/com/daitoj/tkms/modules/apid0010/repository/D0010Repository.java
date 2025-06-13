@@ -42,8 +42,8 @@ public interface D0010Repository extends JpaRepository<TDetailedEstHdr, Long> {
         INNER JOIN TProject               tp ON tdeh.projectCd              = tp.projectCd
         INNER JOIN TRoughEstHdr         treh ON tp.projectCd                = treh.projectCd
         INNER JOIN MCustomer              mc ON SUBSTRING(tp.customerBranchCd, 1, 6) = mc.customerCd
-        INNER JOIN MOrg                   mo ON tdeh.detailedEstOrgId       = mo.id
-        INNER JOIN MEmp                   me ON tdeh.detailedEstPicCd       = me.empCd
+         LEFT JOIN MOrg                   mo ON tdeh.detailedEstOrgId       = mo.id
+         LEFT JOIN MEmp                   me ON tdeh.detailedEstPicCd       = me.empCd
          LEFT JOIN TBusinessNewestAppr    tb ON tdeh.id = tb.businessDataId
                                             AND tb.businessTblId = 'T_DETAILED_EST_HDR'
              WHERE tdeh.detailedEstCreateFlg = :detailedEstCreateFlg
@@ -85,20 +85,20 @@ public interface D0010Repository extends JpaRepository<TDetailedEstHdr, Long> {
                      me.empCd,
                      me.empNm)
               FROM TDetailedEstHdr tdeh
-        INNER JOIN TProject               tp ON tdeh.projectCd              = tp.projectCd
-        INNER JOIN TRoughEstHdr         treh ON tp.projectCd                = treh.projectCd
-        INNER JOIN MCustomer              mc ON SUBSTRING(tp.customerBranchCd, 1, 6) = mc.customerCd
-        INNER JOIN MOrg                   mo ON tdeh.detailedEstOrgId       = mo.id
-        INNER JOIN MEmp                   me ON tdeh.detailedEstPicCd       = me.empCd
-         LEFT JOIN TBusinessNewestAppr    tb ON tdeh.id = tb.businessDataId
-                                            AND tb.businessTblId = 'T_DETAILED_EST_HDR'
+        INNER JOIN TProject               tp  ON tdeh.projectCd              = tp.projectCd
+        INNER JOIN TRoughEstHdr         treh  ON tp.projectCd                = treh.projectCd
+        INNER JOIN MCustomer              mc  ON SUBSTRING(tp.customerBranchCd, 1, 6) = mc.customerCd
+         LEFT JOIN MOrg                   mo  ON tdeh.detailedEstOrgId       = mo.id
+         LEFT JOIN MEmp                   me  ON tdeh.detailedEstPicCd       = me.empCd
+         LEFT JOIN TBusinessNewestAppr    tb  ON tdeh.id = tb.businessDataId
+                                             AND tb.businessTblId = 'T_DETAILED_EST_HDR'
              WHERE tdeh.detailedEstCreateFlg = :detailedEstCreateFlg
-               AND (:projectCd IS NULL OR tp.projectCd LIKE %:projectCd%)
-               AND (:customerCd IS NULL OR mc.customerCd LIKE %:customerCd%)
-               AND (:roughEstCd IS NULL OR treh.roughEstCd LIKE %:roughEstCd%)
-               AND (:detailedEstCd IS NULL OR tdeh.detailedEstCd LIKE %:detailedEstCd%)
-               AND (:detailedEstOrgNm IS NULL OR mo.orgNm LIKE %:detailedEstOrgNm%)
-               AND (:detailedEstPicNm IS NULL OR me.empNm LIKE %:detailedEstPicNm%)
+               AND (:projectCd        IS NULL OR :projectCd        = '' OR tp.projectCd LIKE %:projectCd%)
+               AND (:customerCd       IS NULL OR :customerCd       = '' OR mc.customerCd LIKE %:customerCd%)
+               AND (:roughEstCd       IS NULL OR :roughEstCd       = '' OR treh.roughEstCd LIKE %:roughEstCd%)
+               AND (:detailedEstCd    IS NULL OR :detailedEstCd    = '' OR tdeh.detailedEstCd LIKE %:detailedEstCd%)
+               AND (:detailedEstOrgNm IS NULL OR :detailedEstOrgNm = '' OR mo.orgNm LIKE %:detailedEstOrgNm%)
+               AND (:detailedEstPicNm IS NULL OR :detailedEstPicNm = '' OR me.empNm LIKE %:detailedEstPicNm%)
           ORDER BY tdeh.projectCd, tdeh.detailedEstCd
         """)
   List<DetailedEstInfoDto> findDetailedEstInfo(

@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @Tag(name = "S0070", description = "承認一覧（工事予実管理）のAPI")
-@RequestMapping("/api/v1/apprConstrWbs")
+@RequestMapping("/api/v1/wf-requests/constr-wbs")
 public class S0070Resource {
 
   private static final Logger LOG = LoggerFactory.getLogger(S0070Resource.class);

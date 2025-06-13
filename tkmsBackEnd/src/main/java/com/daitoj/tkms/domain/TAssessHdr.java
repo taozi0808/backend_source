@@ -1,22 +1,21 @@
 package com.daitoj.tkms.domain;
 
-
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import java.math.BigDecimal;
+import java.time.OffsetDateTime;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Where;
 
-import java.math.BigDecimal;
-import java.time.OffsetDateTime;
-
-/** 査定ヘッダス */
+/** 査定ヘッダ情報 */
 @lombok.Getter
 @lombok.Setter
 @Entity
 @Table(name = "t_assess_hdr")
-@Where(clause = "del_flg = '0'")
+@Where(clause = "del_flg = '0' AND newest_flg ='1'")
 public class TAssessHdr {
+
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE)
   @Column(name = "assess_hid", nullable = false)

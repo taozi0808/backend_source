@@ -28,6 +28,12 @@ public class S0040S01Dto {
   private String constrSiteCd;
 
   /**
+   * 現場名（ｶﾅ含む）.
+   */
+  @Schema(name = "constrSiteNm", description = "現場名（ｶﾅ含む）")
+  private String constrSiteNm;
+
+  /**
    * 申請日（開始）.
    */
   @DateTimeFormat(pattern = "yyyyMMdd")

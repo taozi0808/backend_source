@@ -32,4 +32,5 @@ public class CustomerResultDto extends CustomerInfoDto {
   public String getFullWidthCustomerKnNm() {
     return EnhancedFullWidthConverterUtils.convert(Optional.ofNullable(customerKnNm).orElse(""));
   }
+
 }

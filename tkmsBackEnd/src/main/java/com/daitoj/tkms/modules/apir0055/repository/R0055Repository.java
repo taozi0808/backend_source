@@ -51,7 +51,8 @@ public interface R0055Repository extends JpaRepository<MCustomer, Long> {
    * 顧客情報データを取得.
    *
    * @param customerCd 顧客コード
-   * @param tradingK 取引区分
+   * @param tradingNormal 取引区分_一般
+   * @param tradingCorporation 取引区分_法人
    * @param gyousyuGyoutai 業種・業態
    * @return 顧客情報データ
    */
@@ -77,17 +78,19 @@ public interface R0055Repository extends JpaRepository<MCustomer, Long> {
                   mc.customerTelNo,
                   mc.ceoNm)
                FROM MCustomer mc
-          LEFT JOIN MItemListSetting  mis    ON mis.id.itemClassCd = 'D0019'
-                                            AND mis.id.itemCd = mc.gyousyuGyoutai
-          LEFT JOIN MItemListSetting  mis2   ON mis2.id.itemClassCd = 'D0018'
-                                            AND mis2.id.itemCd = mc.tradingK
-              WHERE (:customerCd     IS NULL OR mc.customerCd               LIKE %:customerCd%)
-                AND (:tradingK       IS NULL OR mc.tradingK                 LIKE %:tradingK%)
-                AND (:gyousyuGyoutai IS NULL OR mc.gyousyuGyoutai           LIKE %:gyousyuGyoutai%)
+          LEFT JOIN MItemListSetting  mis           ON mis.id.itemClassCd = 'D0019'
+                                                   AND mis.id.itemCd = mc.gyousyuGyoutai
+          LEFT JOIN MItemListSetting  mis2          ON mis2.id.itemClassCd = 'D0018'
+                                                   AND mis2.id.itemCd = mc.tradingK
+              WHERE (:customerCd     IS NULL        OR mc.customerCd  LIKE %:customerCd%)
+                AND ((:tradingNormal      = '1'    AND mc.tradingK    = '1')
+                    OR  (:tradingCorporation = '1' AND mc.tradingK    = '2'))
+                AND (:gyousyuGyoutai IS NULL        OR mis.itemValue  LIKE %:gyousyuGyoutai%)
            ORDER BY mc.customerCd
       """)
   List<CustomerInfoDto> findCustomerInfo(
       @Param("customerCd") String customerCd,
-      @Param("tradingK") String tradingK,
+      @Param("tradingNormal") String tradingNormal,
+      @Param("tradingCorporation") String tradingCorporation,
       @Param("gyousyuGyoutai") String gyousyuGyoutai);
 }

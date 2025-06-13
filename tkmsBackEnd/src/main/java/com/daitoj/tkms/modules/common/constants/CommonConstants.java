@@ -18,6 +18,9 @@ public final class CommonConstants {
   /** 権限あり */
   public static final String HAS_PERMISSION = "1";
 
+  /** 1:制御あり 2:制御なし */
+  public static final String USE_TIME_CONTROL_FLG = "2";
+
   /** アカウント区分:社員 */
   public static final String ACCOUNT_K_EMP = "1";
 
@@ -52,10 +55,10 @@ public final class CommonConstants {
   public static final String POSITION_MGR_NAME = "長";
 
   /** 部署:部 */
-  public static final Integer ORG_LVL_BU = 2;
+  public static final Integer ORG_LVL_BU = 3;
 
   /** 部署:部課 */
-  public static final Integer ORG_LVL_KA = 4;
+  public static final Integer ORG_LVL_KA = 5;
 
   /** 業務データステータス：'2'(申請中) */
   public static final String BUSINESS_DATA_ST_REQ = "2";

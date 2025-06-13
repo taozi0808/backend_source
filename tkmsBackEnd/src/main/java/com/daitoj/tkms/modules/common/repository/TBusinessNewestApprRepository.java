@@ -20,6 +20,17 @@ public interface TBusinessNewestApprRepository extends JpaRepository<TBusinessNe
       String businessTblId, Long businessDataId);
 
   /**
+   * 業務テーブルID、業務データIDをキーに、業務データ最新承認情報テーブルを検索
+   *
+   * @param businessTblId 業務テーブルID
+   * @param businessDataId 業務データID
+   * @param businessDataId 業務データステータス
+   * @return 業務データ最新承認情報
+   */
+  Optional<TBusinessNewestAppr> findByBusinessTblIdAndBusinessDataIdAndBusinessDataSt(
+      String businessTblId, Long businessDataId, String businessDataSt);
+
+  /**
    * 最新申請IDをキーに、業務データ最新承認情報テーブルを検索
    *
    * @param newestWfRequestId 最新申請ID

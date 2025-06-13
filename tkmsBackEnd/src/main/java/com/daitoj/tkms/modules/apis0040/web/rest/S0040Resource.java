@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @Tag(name = "S0040", description = "承認一覧（実行予算管理）のAPI")
-@RequestMapping("/api/v1/apprExecBgt")
+@RequestMapping("/api/v1/wf-requests/exec-bgt")
 public class S0040Resource {
 
   private static final Logger LOG = LoggerFactory.getLogger(S0040Resource.class);

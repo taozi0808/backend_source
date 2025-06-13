@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @Tag(name = "S0080", description = "承認一覧（協力業者管理）のAPI")
-@RequestMapping("/api/v1/apprPartnerVendor")
+@RequestMapping("/api/v1/wf-requests/vendor")
 public class S0080Resource {
 
   private static final Logger LOG = LoggerFactory.getLogger(S0080Resource.class);

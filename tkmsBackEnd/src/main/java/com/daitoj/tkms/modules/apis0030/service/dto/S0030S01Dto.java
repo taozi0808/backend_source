@@ -28,6 +28,12 @@ public class S0030S01Dto {
   private String projectSiteCd;
 
   /**
+   * 物件名（ｶﾅ含む）.
+   */
+  @Schema(name = "projectSiteNm", description = "物件名")
+  private String projectSiteNm;
+
+  /**
    * 申請日（開始）.
    */
   @DateTimeFormat(pattern = "yyyyMMdd")

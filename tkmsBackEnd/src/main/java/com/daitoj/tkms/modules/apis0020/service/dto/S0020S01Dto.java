@@ -28,6 +28,18 @@ public class S0020S01Dto {
   private String detailedEstCd;
 
   /**
+   * 案件コード.
+   */
+  @Schema(name = "projectCd", description = "案件コード")
+  private String projectCd;
+
+  /**
+   * 案件名（ｶﾅ含む）.
+   */
+  @Schema(name = "projectNm", description = "案件名（ｶﾅ含む）")
+  private String projectNm;
+
+  /**
    * 申請日（開始）.
    */
   @DateTimeFormat(pattern = "yyyyMMdd")

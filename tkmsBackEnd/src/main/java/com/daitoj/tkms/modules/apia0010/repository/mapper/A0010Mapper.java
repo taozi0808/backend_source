@@ -53,7 +53,6 @@ public interface A0010Mapper {
    * @param worker 作業員情報
    * @return 作業員Dto
    */
-  @Mapping(source = "jobTypeCd.jobTypeCd", target = "jobTypeCd")
   WorkerDto toWorkerDto(MWorker worker);
 
   /**

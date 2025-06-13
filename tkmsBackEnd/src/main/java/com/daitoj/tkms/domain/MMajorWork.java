@@ -5,14 +5,14 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.Where;
+import org.hibernate.annotations.SQLRestriction;
 
 /** 大工事情報 */
 @Getter
 @Setter
 @Entity
 @Table(name = "m_major_work")
-@Where(clause = "del_flg = '0'")
+@SQLRestriction("del_flg = '0'")
 public class MMajorWork extends BaseEntity {
 
   @Id

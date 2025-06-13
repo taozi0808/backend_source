@@ -10,14 +10,14 @@ import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import org.hibernate.annotations.Where;
+import org.hibernate.annotations.SQLRestriction;
 
-/** 先行作業明細 */
+/** 工事工程情報 */
 @lombok.Getter
 @lombok.Setter
 @Entity
 @Table(name = "m_constr_process")
-@Where(clause = "del_flg = '0'")
+@SQLRestriction("del_flg = '0'")
 public class MConstrProcess extends BaseEntity {
   @Id
   @Size(max = 6)

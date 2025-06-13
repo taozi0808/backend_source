@@ -1,0 +1,312 @@
+<!-- Created with Jaspersoft Studio version 7.0.2.final using JasperReports Library version 7.0.2-31532122640f516c6d17238ae0e41a08113d5ac0  -->
+<jasperReport name="H0010" language="java" columnCount="1" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="531f66c4-8f01-4873-90b7-b6336393df04">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<style name="tableHeader" mode="Opaque" backcolor="#E0E0E0" hTextAlign="Center" vTextAlign="Middle" fontName="ＭＳ ゴシック">
+		<box>
+			<topPen lineWidth="0.75"/>
+			<leftPen lineWidth="0.75"/>
+			<bottomPen lineWidth="0.75"/>
+			<rightPen lineWidth="0.75"/>
+		</box>
+	</style>
+	<style name="tableFieldLeft" hTextAlign="Left" vTextAlign="Middle" fontName="ＭＳ ゴシック">
+		<box leftPadding="2">
+			<topPen lineWidth="0.75"/>
+			<leftPen lineWidth="0.75"/>
+			<bottomPen lineWidth="0.75"/>
+			<rightPen lineWidth="0.75"/>
+		</box>
+	</style>
+	<style name="tableFieldRight" hTextAlign="Right" vTextAlign="Middle" fontName="ＭＳ ゴシック">
+		<box rightPadding="2">
+			<topPen lineWidth="0.75"/>
+			<leftPen lineWidth="0.75"/>
+			<bottomPen lineWidth="0.75"/>
+			<rightPen lineWidth="0.75"/>
+		</box>
+	</style>
+	<parameter name="sysDate" class="java.lang.String"/>
+	<parameter name="constrSiteCd" class="java.lang.String"/>
+	<parameter name="constrSiteNm" class="java.lang.String"/>
+	<parameter name="execBgtCd" class="java.lang.String"/>
+	<parameter name="bgtYmRegDt" class="java.lang.String"/>
+	<parameter name="orgNm" class="java.lang.String"/>
+	<parameter name="empNm" class="java.lang.String"/>
+	<parameter name="poAmt" class="java.lang.String"/>
+	<parameter name="finalApprDt" class="java.lang.String"/>
+	<field name="constrSiteCd" class="java.lang.String"/>
+	<field name="constrSiteNm" class="java.lang.String"/>
+	<field name="execBgtCd" class="java.lang.String"/>
+	<field name="bgtYmRegDt" class="java.lang.String"/>
+	<field name="finalApprDt" class="java.lang.String"/>
+	<field name="orgNm" class="java.lang.String"/>
+	<field name="empNm" class="java.lang.String"/>
+	<field name="execBgtTotalAmt" class="java.math.BigDecimal"/>
+	<field name="poAmt" class="java.math.BigDecimal"/>
+	<field name="unpaid" class="java.math.BigDecimal"/>
+	<field name="assessTotalAmt" class="java.math.BigDecimal"/>
+	<field name="unidentified" class="java.math.BigDecimal"/>
+	<group name="PageGroup" startNewPage="true">
+		<expression><![CDATA[(($V{REPORT_COUNT} - 1) / 10)  ]]></expression>
+	</group>
+	<background splitType="Stretch"/>
+	<pageHeader height="95" splitType="Stretch">
+		<element kind="staticText" uuid="64d933d6-e482-413c-a439-ebee866e8cc8" x="5" y="2" width="150" height="42" fontName="ＭＳ ゴシック" fontSize="24.0" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[実行予算一覧]]></text>
+			<box>
+				<topPen lineWidth="1.0"/>
+				<leftPen lineWidth="1.0"/>
+				<bottomPen lineWidth="1.0"/>
+				<rightPen lineWidth="1.0"/>
+			</box>
+		</element>
+		<element kind="textField" uuid="1dbcaac2-db60-41bb-b9e9-66f781f25def" x="633" y="78" width="165" height="15" fontName="ＭＳ ゴシック" linkType="None" linkTarget="Self" hTextAlign="Right" vTextAlign="Middle">
+			<expression><![CDATA["印刷日付：" + $P{sysDate}]]></expression>
+			<property name="com.jaspersoft.studio.unit.width" value="px"/>
+			<box rightPadding="2">
+				<bottomPen lineWidth="1.0"/>
+			</box>
+		</element>
+		<element kind="textField" uuid="396ba4f4-c0db-47cf-96a9-a13b03838127" x="206" y="22" width="150" height="15" fontName="ＭＳ ゴシック" linkType="None" linkTarget="Self" blankWhenNull="true" underline="false" vTextAlign="Middle">
+			<expression><![CDATA["現場名: " + ($P{constrSiteNm} == null ? "" :  $P{constrSiteNm})]]></expression>
+			<property name="com.jaspersoft.studio.unit.width" value="px"/>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<box rightPadding="2">
+				<bottomPen lineWidth="0.0"/>
+			</box>
+		</element>
+		<element kind="textField" uuid="f43c743b-5e87-4c66-8297-fd442ee35e29" x="206" y="2" width="150" height="15" fontName="ＭＳ ゴシック" linkType="None" linkTarget="Self" blankWhenNull="true" underline="false" vTextAlign="Middle">
+			<expression><![CDATA["現場コード:" +  ( $P{constrSiteCd} == null ? "" : $P{constrSiteCd})]]></expression>
+			<property name="com.jaspersoft.studio.unit.width" value="px"/>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<box rightPadding="2">
+				<bottomPen lineWidth="0.0"/>
+			</box>
+		</element>
+		<element kind="textField" uuid="09ed92b8-523d-4365-a35d-1f4deac95147" x="206" y="43" width="150" height="15" fontName="ＭＳ ゴシック" linkType="None" linkTarget="Self" blankWhenNull="true" underline="false" vTextAlign="Middle">
+			<expression><![CDATA["実行予算コード: " +($P{execBgtCd} == null ? "" :  $P{execBgtCd})]]></expression>
+			<property name="com.jaspersoft.studio.unit.width" value="px"/>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<box rightPadding="2">
+				<bottomPen lineWidth="0.0"/>
+			</box>
+		</element>
+		<element kind="textField" uuid="e4b1f2af-3a2e-491a-ba2f-be62b6195c02" x="376" y="2" width="190" height="15" fontName="ＭＳ ゴシック" linkType="None" linkTarget="Self" blankWhenNull="true" underline="false" vTextAlign="Middle">
+			<expression><![CDATA["予算申請日: " + (  $P{bgtYmRegDt} == null ? "" :  $P{bgtYmRegDt})]]></expression>
+			<property name="com.jaspersoft.studio.unit.width" value="px"/>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<box rightPadding="2">
+				<bottomPen lineWidth="0.0"/>
+			</box>
+		</element>
+		<element kind="textField" uuid="4596f8e4-6e36-4cfb-88aa-73045c5dcef2" x="376" y="22" width="190" height="15" fontName="ＭＳ ゴシック" linkType="None" linkTarget="Self" blankWhenNull="true" underline="false" vTextAlign="Middle">
+			<expression><![CDATA["予算承認日: " + ($P{finalApprDt} == null ? "" :  $P{finalApprDt})]]></expression>
+			<property name="com.jaspersoft.studio.unit.width" value="px"/>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<box rightPadding="2">
+				<bottomPen lineWidth="0.0"/>
+			</box>
+		</element>
+		<element kind="textField" uuid="96d96a97-96f1-40db-88ba-e94949e18b91" x="376" y="43" width="150" height="15" fontName="ＭＳ ゴシック" linkType="None" linkTarget="Self" blankWhenNull="true" underline="false" vTextAlign="Middle">
+			<expression><![CDATA["予算作成部門: " + ($P{orgNm} == null ? "" :  $P{orgNm})]]></expression>
+			<property name="com.jaspersoft.studio.unit.width" value="px"/>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<box rightPadding="2">
+				<bottomPen lineWidth="0.0"/>
+			</box>
+		</element>
+		<element kind="textField" uuid="e8a3a5cd-be91-4089-9e00-38bdde25a387" x="376" y="63" width="150" height="15" fontName="ＭＳ ゴシック" linkType="None" linkTarget="Self" blankWhenNull="true" underline="false" vTextAlign="Middle">
+			<expression><![CDATA["予算作成者: " + ($P{empNm} == null ? "" :  $P{empNm})]]></expression>
+			<property name="com.jaspersoft.studio.unit.width" value="px"/>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<box rightPadding="2">
+				<bottomPen lineWidth="0.0"/>
+			</box>
+		</element>
+	</pageHeader>
+	<columnHeader height="28" splitType="Stretch">
+		<element kind="staticText" uuid="67f9f832-48ec-418d-bf90-4728d5472dff" mode="Opaque" x="3" y="0" width="25" height="28" fontName="ＭＳ ゴシック" fontSize="10.0" style="tableHeader">
+			<text><![CDATA[No]]></text>
+			<property name="com.jaspersoft.studio.unit.width" value="px"/>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</element>
+		<element kind="staticText" uuid="ab3e58d1-1341-4f00-bc8f-ec3f0f6e7ab9" mode="Opaque" x="28" y="0" width="110" height="14" fontName="ＭＳ ゴシック" fontSize="10.0" style="tableHeader">
+			<text><![CDATA[現場コード]]></text>
+			<property name="com.jaspersoft.studio.unit.x" value="px"/>
+			<property name="com.jaspersoft.studio.unit.width" value="px"/>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</element>
+		<element kind="staticText" uuid="7355aca2-9321-4ced-92f6-bc0354594cd6" mode="Opaque" x="28" y="14" width="220" height="14" fontName="ＭＳ ゴシック" fontSize="10.0" style="tableHeader">
+			<text><![CDATA[現場名]]></text>
+			<property name="com.jaspersoft.studio.unit.x" value="px"/>
+			<property name="com.jaspersoft.studio.unit.width" value="px"/>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</element>
+		<element kind="staticText" uuid="755bdfeb-f8fc-4be9-ad58-ffb5b7934972" mode="Opaque" x="138" y="0" width="110" height="14" fontName="ＭＳ ゴシック" fontSize="10.0" style="tableHeader">
+			<text><![CDATA[実行予算コード]]></text>
+			<property name="com.jaspersoft.studio.unit.width" value="px"/>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</element>
+		<element kind="staticText" uuid="9a7218f8-a6f1-4c2c-bf60-690b07ad1b26" mode="Opaque" x="248" y="0" width="110" height="14" fontName="ＭＳ ゴシック" fontSize="10.0" style="tableHeader">
+			<text><![CDATA[予算申請日]]></text>
+			<property name="com.jaspersoft.studio.unit.width" value="px"/>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</element>
+		<element kind="staticText" uuid="c52a675f-9ed8-4e1e-ae02-1d86b0718d75" mode="Opaque" x="358" y="0" width="110" height="14" fontName="ＭＳ ゴシック" fontSize="10.0" style="tableHeader">
+			<text><![CDATA[予算作成部門]]></text>
+			<property name="com.jaspersoft.studio.unit.width" value="px"/>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</element>
+		<element kind="staticText" uuid="6db18255-0a29-47bc-b353-e72fc98f6c75" mode="Opaque" x="358" y="14" width="110" height="14" fontName="ＭＳ ゴシック" fontSize="10.0" style="tableHeader">
+			<text><![CDATA[予算作成者]]></text>
+			<property name="com.jaspersoft.studio.unit.width" value="px"/>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</element>
+		<element kind="staticText" uuid="81c51ebf-8281-4388-a38e-6fb5aca63a64" mode="Opaque" x="468" y="0" width="110" height="14" fontName="ＭＳ ゴシック" fontSize="10.0" style="tableHeader">
+			<text><![CDATA[実行予算金額]]></text>
+			<property name="com.jaspersoft.studio.unit.width" value="px"/>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</element>
+		<element kind="staticText" uuid="5daff414-1bee-43c4-9c52-beaa0a6622a5" mode="Opaque" x="468" y="14" width="110" height="14" fontName="ＭＳ ゴシック" fontSize="10.0" style="tableHeader">
+			<text><![CDATA[]]></text>
+			<property name="com.jaspersoft.studio.unit.width" value="px"/>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</element>
+		<element kind="staticText" uuid="fbc7bbd1-838b-4a41-9ee3-593b8ef1d0f4" mode="Opaque" x="578" y="0" width="110" height="14" fontName="ＭＳ ゴシック" fontSize="10.0" style="tableHeader">
+			<text><![CDATA[発注金額]]></text>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</element>
+		<element kind="staticText" uuid="f5b1f372-5b2e-44ce-9c01-995d8755b1e2" mode="Opaque" x="578" y="14" width="110" height="14" fontName="ＭＳ ゴシック" fontSize="10.0" style="tableHeader">
+			<text><![CDATA[未発注額]]></text>
+			<property name="com.jaspersoft.studio.unit.width" value="px"/>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</element>
+		<element kind="staticText" uuid="88bfe7e9-cedd-4728-8dc6-55a348b1923d" mode="Opaque" x="248" y="14" width="110" height="14" fontName="ＭＳ ゴシック" fontSize="10.0" style="tableHeader">
+			<text><![CDATA[予算承認日]]></text>
+			<property name="com.jaspersoft.studio.unit.width" value="px"/>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</element>
+		<element kind="staticText" uuid="a3f7e88d-624b-4430-85fa-d98c1c49f6f1" mode="Opaque" x="688" y="0" width="110" height="14" fontName="ＭＳ ゴシック" fontSize="10.0" style="tableHeader">
+			<text><![CDATA[査定済金額]]></text>
+			<property name="com.jaspersoft.studio.unit.width" value="px"/>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</element>
+		<element kind="staticText" uuid="db72ba24-d0f1-4275-baba-c07eb1066444" mode="Opaque" x="688" y="14" width="110" height="14" fontName="ＭＳ ゴシック" fontSize="10.0" style="tableHeader">
+			<text><![CDATA[未査定金額]]></text>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</element>
+	</columnHeader>
+	<detail>
+		<band height="30" splitType="Stretch">
+			<element kind="textField" uuid="811cebbd-72d5-4e27-8da5-d4df7133582b" x="28" y="15" width="220" height="15" fontName="ＭＳ ゴシック" fontSize="10.0" blankWhenNull="true" style="tableFieldLeft">
+				<expression><![CDATA[$F{constrSiteNm}]]></expression>
+				<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			</element>
+			<element kind="textField" uuid="4de9cb4c-8b99-4523-9477-3f7795d663be" x="138" y="0" width="110" height="15" fontName="ＭＳ ゴシック" fontSize="10.0" blankWhenNull="true" style="tableFieldLeft">
+				<expression><![CDATA[$F{execBgtCd}]]></expression>
+				<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			</element>
+			<element kind="textField" uuid="ec21394f-6931-45ea-9ecd-b8ff314f5dc3" x="248" y="0" width="110" height="15" fontName="ＭＳ ゴシック" fontSize="10.0" blankWhenNull="true" style="tableFieldRight">
+				<expression><![CDATA[new java.text.SimpleDateFormat("yyyy年MM月dd日").format(
+    new java.text.SimpleDateFormat("yyyyMMdd").parse($F{bgtYmRegDt})
+)]]></expression>
+				<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			</element>
+			<element kind="textField" uuid="ee235ed1-d3a0-4ae4-bb46-6ad3b21c2b04" x="248" y="15" width="110" height="15" fontName="ＭＳ ゴシック" fontSize="10.0" blankWhenNull="true" style="tableFieldRight">
+				<expression><![CDATA[new java.text.SimpleDateFormat("yyyy年MM月dd日").format(
+    new java.text.SimpleDateFormat("yyyyMMdd").parse($F{finalApprDt})
+)]]></expression>
+				<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			</element>
+			<element kind="textField" uuid="b1aba580-6014-4fa7-991f-85b98790c023" x="358" y="0" width="110" height="15" fontName="ＭＳ ゴシック" fontSize="10.0" blankWhenNull="true" style="tableFieldLeft">
+				<expression><![CDATA[$F{orgNm}]]></expression>
+				<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			</element>
+			<element kind="textField" uuid="67397c87-9e9e-4f42-a6f3-d048ef1ce734" x="358" y="15" width="110" height="15" fontName="ＭＳ ゴシック" fontSize="10.0" blankWhenNull="true" style="tableFieldLeft">
+				<expression><![CDATA[$F{empNm}]]></expression>
+				<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			</element>
+			<element kind="textField" uuid="ead0d347-753f-4bbd-9a71-c223e105069a" x="468" y="0" width="110" height="15" fontName="ＭＳ ゴシック" fontSize="10.0" blankWhenNull="true" style="tableFieldLeft">
+				<expression><![CDATA[$F{execBgtTotalAmt}]]></expression>
+				<patternExpression><![CDATA["¥#,##0"]]></patternExpression>
+				<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			</element>
+			<element kind="textField" uuid="324a429c-ea8c-4e5f-9223-1fc25c15fcdc" x="468" y="15" width="110" height="15" fontName="ＭＳ ゴシック" fontSize="10.0" blankWhenNull="true" style="tableFieldLeft">
+				<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			</element>
+			<element kind="textField" uuid="e50855cc-07ed-4eaf-8668-a9fdc1046fe5" x="578" y="0" width="110" height="15" fontName="ＭＳ ゴシック" fontSize="10.0" blankWhenNull="true" style="tableFieldRight">
+				<expression><![CDATA[$F{poAmt}]]></expression>
+				<patternExpression><![CDATA["¥#,##0"]]></patternExpression>
+				<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			</element>
+			<element kind="textField" uuid="fd792739-4938-4e15-909a-babde81813b9" x="578" y="15" width="110" height="15" fontName="ＭＳ ゴシック" fontSize="10.0" blankWhenNull="true" style="tableFieldRight">
+				<expression><![CDATA[$F{unpaid}]]></expression>
+				<patternExpression><![CDATA["¥#,##0"]]></patternExpression>
+				<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			</element>
+			<element kind="textField" uuid="9a424ffa-30bb-4a26-8164-6a93bc184e2a" x="688" y="0" width="110" height="15" fontName="ＭＳ ゴシック" fontSize="10.0" blankWhenNull="true" style="tableFieldRight">
+				<expression><![CDATA[$F{assessTotalAmt}]]></expression>
+				<patternExpression><![CDATA["¥#,##0"]]></patternExpression>
+				<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			</element>
+			<element kind="textField" uuid="380e3bc7-8f61-4993-9d92-c31fca14ac98" x="688" y="15" width="110" height="15" fontName="ＭＳ ゴシック" fontSize="10.0" blankWhenNull="true" style="tableFieldRight">
+				<expression><![CDATA[$F{unidentified}]]></expression>
+				<patternExpression><![CDATA["¥#,##0"]]></patternExpression>
+				<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			</element>
+			<element kind="textField" uuid="b9fab0b0-4e22-4262-aa0d-11920a72658e" x="3" y="0" width="25" height="30" fontName="ＭＳ ゴシック" fontSize="10.0" hTextAlign="Center" vTextAlign="Middle">
+				<expression><![CDATA[$V{REPORT_COUNT}]]></expression>
+				<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				<box>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+			</element>
+			<element kind="textField" uuid="497c746a-712a-483f-92a9-d339aebbd3e3" x="28" y="0" width="110" height="15" fontName="ＭＳ ゴシック" fontSize="10.0" blankWhenNull="true" style="tableFieldLeft">
+				<expression><![CDATA[$F{constrSiteCd}]]></expression>
+				<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			</element>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</band>
+	</detail>
+	<pageFooter height="65" splitType="Stretch">
+		<element kind="textField" uuid="275ac2f8-c77d-46ef-a7d7-31df6b4396ce" x="707" y="40" width="40" height="20" fontName="ＭＳ ゴシック" hTextAlign="Right">
+			<expression><![CDATA[$V{PAGE_NUMBER}]]></expression>
+		</element>
+		<element kind="textField" uuid="90e774b8-302e-42de-aa15-85d858e06963" x="747" y="40" width="35" height="20" fontName="ＭＳ ゴシック" evaluationTime="Report" hTextAlign="Left">
+			<expression><![CDATA[" / " + $V{PAGE_NUMBER}]]></expression>
+		</element>
+	</pageFooter>
+</jasperReport>

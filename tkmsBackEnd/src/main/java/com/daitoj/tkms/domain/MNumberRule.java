@@ -28,11 +28,15 @@ public class MNumberRule extends BaseEntity {
   @Column(name = "prefix", length = 20)
   private String prefix;
 
-  @NotNull
-  @Column(name = "seq_from", nullable = false)
-  private Integer seqFrom;
+    @NotNull
+    @Column(name = "seq_from", nullable = false)
+    private Long seqFrom;
 
-  @NotNull
-  @Column(name = "seq_to", nullable = false)
-  private Integer seqTo;
+    @NotNull
+    @Column(name = "seq_to", nullable = false)
+    private Long seqTo;
+
+    @Column(name = "remarks", length = Integer.MAX_VALUE)
+    private String remarks;
+
 }

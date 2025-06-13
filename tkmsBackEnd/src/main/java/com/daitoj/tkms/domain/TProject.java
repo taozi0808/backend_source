@@ -21,7 +21,6 @@ import org.hibernate.annotations.Where;
 @Table(name = "t_project")
 @Where(clause = "del_flg = '0' AND newest_flg ='1'")
 public class TProject extends BaseEntity {
-
   @Id
   @GeneratedValue(
       strategy = GenerationType.SEQUENCE,
@@ -37,10 +36,6 @@ public class TProject extends BaseEntity {
   @NotNull
   @Column(name = "project_cd", nullable = false, length = 9)
   private String projectCd;
-
-  @NotNull
-  @Column(name = "his_no", nullable = false)
-  private Integer hisNo;
 
   @NotNull
   @ColumnDefault("'2'")
@@ -212,4 +207,13 @@ public class TProject extends BaseEntity {
 
   @Column(name = "rejection_reason", length = Integer.MAX_VALUE)
   private String rejectionReason;
+
+  @NotNull
+  @Column(name = "his_no", nullable = false)
+  private Integer hisNo;
+
+  @Size(max = 7)
+  @Column(name = "project_site_cd", length = 7)
+  private String projectSiteCd;
+
 }

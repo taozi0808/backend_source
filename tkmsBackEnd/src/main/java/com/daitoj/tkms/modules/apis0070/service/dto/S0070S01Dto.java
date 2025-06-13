@@ -27,6 +27,14 @@ public class S0070S01Dto {
   @Schema(name = "constrSiteCd", description = "現場コード")
   private String constrSiteCd;
 
+
+  /**
+   * 現場名（ｶﾅ含む）.
+   */
+  @Schema(name = "constrSiteNm", description = "現場名（ｶﾅ含む）")
+  private String constrSiteNm;
+
+
   /**
    * 申請日（開始）.
    */

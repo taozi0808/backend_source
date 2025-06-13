@@ -74,6 +74,10 @@ public class ProjectResultDto extends ProjectDto {
   @Schema(name = "paymentKNm", description = "支払区分項目内容")
   private String paymentKNm;
 
+  /** 建託物件コード */
+  @Schema(name = "projectSiteCd", description = "建託物件コード")
+  private String projectSiteCd;
+
   /**
    * コンストラクタ
    *
@@ -144,6 +148,7 @@ public class ProjectResultDto extends ProjectDto {
    * @param updTs 更新日時
    * @param updUserId 更新者ID
    * @param updPgId 更新PG
+   * @param projectSiteCd 建託物件コード
    */
   public ProjectResultDto(
       Long id,
@@ -212,7 +217,8 @@ public class ProjectResultDto extends ProjectDto {
       String regPgId,
       Instant updTs,
       String updUserId,
-      String updPgId) {
+      String updPgId,
+      String projectSiteCd) {
     this.id = id;
     this.projectCd = projectCd;
     this.hisNo = hisNo;
@@ -280,5 +286,6 @@ public class ProjectResultDto extends ProjectDto {
     this.updTs = updTs;
     this.updUserId = updUserId;
     this.updPgId = updPgId;
+    this.projectSiteCd = projectSiteCd;
   }
 }

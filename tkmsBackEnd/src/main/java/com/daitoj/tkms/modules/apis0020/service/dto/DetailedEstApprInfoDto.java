@@ -54,9 +54,9 @@ public class DetailedEstApprInfoDto {
   private String detailedEstYmd;
 
   /**
-   * 承認日.
+   * 最終承認日.
    */
-  @Schema(name = "finalApprDt", description = "承認日")
+  @Schema(name = "finalApprDt", description = "最終承認日")
   private String finalApprDt;
 
   /**
@@ -96,6 +96,18 @@ public class DetailedEstApprInfoDto {
   private String comment;
 
   /**
+   * 案件カナ名.
+   */
+  @Schema(name = "projectKnNm", description = "案件カナ名")
+  private String projectKnNm;
+
+  /**
+   * 項目コード.
+   */
+  @Schema(name = "itemCd", description = "項目コード")
+  private String itemCd;
+
+  /**
    * コンストラクタ.
    */
   public DetailedEstApprInfoDto() {
@@ -111,7 +123,7 @@ public class DetailedEstApprInfoDto {
    * @param roughEstTotalAmt    概算金額
    * @param detailedEstTotalAmt 精積算金額
    * @param detailedEstYmd      作成日/修正日
-   * @param finalApprDt         承認日
+   * @param finalApprDt         最終承認日
    * @param orgNm               担当部門
    * @param detailedEstEmpNm    担当者
    * @param requestEmpNm        申請者
@@ -133,7 +145,9 @@ public class DetailedEstApprInfoDto {
       String requestEmpNm,
       String requestTs,
       String itemValue,
-      String comment) {
+      String comment,
+      String projectKnNm,
+      String itemCd) {
     this.detailedEstCd = detailedEstCd;
     this.projectNm = projectNm;
     this.customerBranchCd = customerBranchCd;
@@ -148,6 +162,8 @@ public class DetailedEstApprInfoDto {
     this.requestTs = requestTs;
     this.itemValue = itemValue;
     this.comment = comment;
+    this.projectKnNm = projectKnNm;
+    this.itemCd = itemCd;
   }
 
 }

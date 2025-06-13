@@ -15,4 +15,11 @@ public interface MOrgRevRepository extends JpaRepository<MOrgRev, Long> {
    * @return 適用開始日リスト
    */
   List<MOrgRev> findByEffectiveStartDtGreaterThanOrderByEffectiveStartDt(String effectiveStartDt);
+
+  /**
+   * 適用開始日リストを取得
+   *
+   * @return 適用開始日リスト
+   */
+  List<MOrgRev> findAllByOrderByEffectiveStartDtDesc();
 }

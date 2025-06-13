@@ -25,12 +25,12 @@ public class MOrgMenuItem extends BaseEntity implements Serializable {
 
   @EmbeddedId private MOrgMenuItemId id;
 
-  @MapsId
+  @MapsId("mOrgId")
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
   @JoinColumn(name = "org_id", nullable = false)
   private MOrg mOrg;
 
-  @MapsId
+  @MapsId("menuItemId")
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
   @JoinColumn(name = "menu_item_id", nullable = false)
   private MMenuItem menuItem;

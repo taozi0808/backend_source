@@ -21,7 +21,7 @@ import org.hibernate.annotations.Where;
 @lombok.Setter
 @Entity
 @Table(name = "t_constr_site_exp_hdr")
-@Where(clause = "del_flg = '0'")
+@Where(clause = "del_flg = '0' AND newest_flg ='1'")
 public class TConstrSiteExpHdr extends BaseEntity {
 
   @Id

@@ -2,6 +2,7 @@ package com.daitoj.tkms.modules.apir0055.service.dto;
 
 import com.daitoj.tkms.modules.common.service.dto.BasePageRequest;
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.List;
 
 /** 顧客一覧初期パラメータ. */
 @lombok.Getter
@@ -25,12 +26,12 @@ public class R0055S01Dto extends BasePageRequest {
   @Schema(name = "gyousyuGyoutaiNm", description = "業種・業態名")
   private String gyousyuGyoutaiNm;
 
-  /* 取引先区分 */
-  @Schema(name = "tradingK", description = "取引先区分")
-  private String tradingK;
+  /* 取引区分_一般 */
+  @Schema(name = "tradingNormal", description = "取引区分_一般")
+  private String tradingNormal;
 
-  /* 取引先区分名 */
-  @Schema(name = "tradingKNm", description = "取引先区分名")
-  private String tradingKNm;
+  /* 取引区分_法人 */
+  @Schema(name = "tradingCorporation", description = "取引区分_法人")
+  private String tradingCorporation;
 
 }

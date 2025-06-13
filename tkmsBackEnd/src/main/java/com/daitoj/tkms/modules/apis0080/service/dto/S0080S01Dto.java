@@ -28,6 +28,12 @@ public class S0080S01Dto {
   private String partnerVendorCd;
 
   /**
+   * 協力業者名（ｶﾅ含む）.
+   */
+  @Schema(name = "partnerVendorNm", description = "協力業者名（ｶﾅ含む）")
+  private String partnerVendorNm;
+
+  /**
    * 申請日（開始）.
    */
   @DateTimeFormat(pattern = "yyyyMMdd")

@@ -9,7 +9,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 @lombok.Setter
 @Schema(name = "ProjectSiteApprInfoDto", description = "検索結果")
 public class ProjectSiteApprInfoDto {
-
   /**
    * 物件コード.
    */
@@ -21,6 +20,12 @@ public class ProjectSiteApprInfoDto {
    */
   @Schema(name = "projectSiteNm", description = "物件名")
   private String projectSiteNm;
+
+  /**
+   * 物件カナ名.
+   */
+  @Schema(name = "projectSiteKnNm", description = "物件カナ名")
+  private String projectSiteKnNm;
 
   /**
    * 顧客名.
@@ -65,6 +70,18 @@ public class ProjectSiteApprInfoDto {
   private String comment;
 
   /**
+   * 項目コード.
+   */
+  @Schema(name = "itemCd", description = "項目コード")
+  private String itemCd;
+
+  /**
+   * 最終承認日.
+   */
+  @Schema(name = "itemCd", description = "最終承認日")
+  private String finalApprDt;
+
+  /**
    * コンストラクタ.
    */
   public ProjectSiteApprInfoDto() {
@@ -85,15 +102,19 @@ public class ProjectSiteApprInfoDto {
   public ProjectSiteApprInfoDto(
       String projectSiteCd,
       String projectSiteNm,
+      String projectSiteKnNm,
       String customerNm,
       String constrStartYmd,
       String constrCompYmd,
       String requestEmpNm,
       String requestTs,
       String itemValue,
-      String comment) {
+      String comment,
+      String itemCd,
+      String finalApprDt) {
     this.projectSiteCd = projectSiteCd;
     this.projectSiteNm = projectSiteNm;
+    this.projectSiteKnNm = projectSiteKnNm;
     this.customerNm = customerNm;
     this.constrStartYmd = constrStartYmd;
     this.constrCompYmd = constrCompYmd;
@@ -101,6 +122,8 @@ public class ProjectSiteApprInfoDto {
     this.requestTs = requestTs;
     this.itemValue = itemValue;
     this.comment = comment;
+    this.itemCd = itemCd;
+    this.finalApprDt = finalApprDt;
   }
 
 }

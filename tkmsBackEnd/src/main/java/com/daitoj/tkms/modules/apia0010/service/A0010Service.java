@@ -22,6 +22,7 @@ import com.daitoj.tkms.modules.common.repository.MNoticeRepository;
 import com.daitoj.tkms.modules.common.repository.MSystemConfigRepository;
 import com.daitoj.tkms.modules.common.repository.MVendorRepository;
 import com.daitoj.tkms.modules.common.service.InvalidUserException;
+import com.daitoj.tkms.modules.common.service.NumberService;
 import com.daitoj.tkms.modules.common.service.SystemException;
 import com.daitoj.tkms.modules.common.service.dto.ApiResult;
 import com.daitoj.tkms.modules.common.service.dto.CustomUserDetails;
@@ -32,6 +33,7 @@ import com.daitoj.tkms.modules.common.service.dto.VendorDto;
 import com.daitoj.tkms.modules.common.service.dto.WorkerDto;
 import com.daitoj.tkms.modules.common.utils.DateUtils;
 import java.time.LocalTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -62,6 +64,8 @@ public class A0010Service {
   /** システム設定情報リポジトリ */
   private final MSystemConfigRepository msystemConfigRepository;
 
+  private final NumberService numberRuleService;
+
   /** 従業員情報リポジトリ */
   private final MEmpRepository mempRepository;
 
@@ -88,6 +92,7 @@ public class A0010Service {
       A0010S01Repository a0010S01Repository,
       A0010S02Repository a0010S02Repository,
       MSystemConfigRepository msystemConfigRepository,
+      NumberService numberRuleService,
       MEmpRepository mempRepository,
       MVendorRepository vendorRepository,
       MMenuItemRepository menuItemRepository,
@@ -98,6 +103,7 @@ public class A0010Service {
     this.a0010S01Repository = a0010S01Repository;
     this.a0010S02Repository = a0010S02Repository;
     this.msystemConfigRepository = msystemConfigRepository;
+    this.numberRuleService = numberRuleService;
     this.mempRepository = mempRepository;
     this.vendorRepository = vendorRepository;
     this.menuItemRepository = menuItemRepository;
@@ -117,40 +123,6 @@ public class A0010Service {
     try {
       // メニュー情報
       List<MMenuItem> menuItemList = null;
-
-      // システム利用可能時間
-      List<MSystemConfig> configList =
-          msystemConfigRepository.findById_SysCd(SystemConfig.SYS_CD_USETM);
-
-      if (!CollectionUtils.isEmpty(configList)) {
-        // システム利用可能時間-開始時間
-        MSystemConfig startTime =
-            configList.stream()
-                .filter(
-                    item -> item.getId().getConfigKey().equals(SystemConfig.SYS_USABLE_START_TIME))
-                .findFirst()
-                .orElse(null);
-
-        // システム利用可能時間-終了時間
-        MSystemConfig endTime =
-            configList.stream()
-                .filter(
-                    item -> item.getId().getConfigKey().equals(SystemConfig.SYS_USABLE_END_TIME))
-                .findFirst()
-                .orElse(null);
-
-        // 利用時間チェック
-        if (!checkWorkTime(startTime, endTime)) {
-          // メッセージ
-          String msg =
-              messageSource.getMessage(Message.MSGID_A0004, null, LocaleContextHolder.getLocale());
-
-          LOG.warn(msg);
-
-          // 結果情報
-          return ApiResult.error(Message.MSGID_A0004, msg);
-        }
-      }
 
       // 戻り値
       A0010S01ReturnData returnData = new A0010S01ReturnData();
@@ -172,6 +144,42 @@ public class A0010Service {
 
           // 結果情報
           throw new InvalidUserException(Message.MSGID_A0003, msg);
+        }
+        // システム利用可能時間
+        List<MSystemConfig> configList =
+            msystemConfigRepository.findById_SysCd(SystemConfig.SYS_CD_USETM);
+
+        if (!CollectionUtils.isEmpty(configList)
+            && !CommonConstants.USE_TIME_CONTROL_FLG.equals(empInfo.getUseTimeControlFlg())) {
+          // システム利用可能時間-開始時間
+          MSystemConfig startTime =
+              configList.stream()
+                  .filter(
+                      item ->
+                          item.getId().getConfigKey().equals(SystemConfig.SYS_USABLE_START_TIME))
+                  .findFirst()
+                  .orElse(null);
+
+          // システム利用可能時間-終了時間
+          MSystemConfig endTime =
+              configList.stream()
+                  .filter(
+                      item -> item.getId().getConfigKey().equals(SystemConfig.SYS_USABLE_END_TIME))
+                  .findFirst()
+                  .orElse(null);
+
+          // 利用時間チェック
+          if (!checkWorkTime(startTime, endTime)) {
+            // メッセージ
+            String msg =
+                messageSource.getMessage(
+                    Message.MSGID_A0004, null, LocaleContextHolder.getLocale());
+
+            LOG.warn(msg);
+
+            // 結果情報
+            return ApiResult.error(Message.MSGID_A0004, msg);
+          }
         }
 
         // 参照権限がない場合
@@ -391,7 +399,7 @@ public class A0010Service {
     // フォーマット
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("H:mm");
     // システム時間
-    LocalTime now = LocalTime.now();
+    LocalTime now = LocalTime.ofInstant(numberRuleService.getSystemDate(), ZoneId.systemDefault());
 
     if (startTime != null && StringUtils.isNotBlank(startTime.getConfigValue())) {
       LocalTime start = LocalTime.parse(startTime.getConfigValue(), formatter);

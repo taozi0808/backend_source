@@ -18,7 +18,6 @@ public interface A0010S02Repository extends JpaRepository<MWorker, Long> {
       """
               SELECT wk
                 FROM MWorker wk
-          INNER JOIN wk.vendor vhd
                WHERE wk.login.loginId = :loginId
           """)
   MWorker findWorkerInfo(String loginId);

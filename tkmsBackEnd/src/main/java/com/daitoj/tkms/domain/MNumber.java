@@ -16,7 +16,8 @@ public class MNumber extends BaseEntity {
 
   @EmbeddedId private MNumberId id;
 
-  @NotNull
-  @Column(name = "seq_no", nullable = false)
-  private Integer seqNo;
+    @NotNull
+    @Column(name = "seq_no", nullable = false)
+    private Long seqNo;
+
 }
