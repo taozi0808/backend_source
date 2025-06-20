@@ -71,4 +71,10 @@ public final class CommonConstants {
 
   /** 承認状態：'9'(差戻) */
   public static final String APPR_ST_RETURN = "9";
+
+  /** 支払データ作成フラグ：'1'(作成済) */
+  public static final String HAS_CREATE_FLG = "1";
+
+  /** 支払データ作成フラグ：'0'(未作成) */
+  public static final String  NO_CREATE_FLG= "0";
 }

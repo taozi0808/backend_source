@@ -36,6 +36,12 @@ public class Message {
   /** 入力されたパスワードは違います。 */
   public static final String MSGID_A00009 = "A00009";
 
+  /** 出来高シミュレーションデータの登録が正常に完了しました。出来高シミュレーション画面に遷移します。 */
+  public static final String MSGID_C00004 = "C00004";
+
+  /** 未承認の概算データのため、出来高シミュレーションのデータを作成出来ませんでした。 */
+  public static final String MSGID_C00007 = "C00007";
+
   /** 該当件数が０件でした。検索条件を変更してください。 */
   public static final String MSGID_K00001 = "K00001";
 
@@ -44,6 +50,9 @@ public class Message {
 
   /** 対象機能の権限がありません。システム管理者にお問い合わせください。 */
   public static final String MSGID_K00006 = "K00006";
+
+  /** 保存先のデータがありません。 システム管理者にお問い合わせください。。 */
+  public static final String MSGID_K00020 = "K00020";
 
   /** 半角英数字で入力してください。 */
   public static final String MSGID_K00021 = "K00021";
@@ -59,6 +68,9 @@ public class Message {
 
   /** パスワード再通知致しました。 */
   public static final String MSGID_U00020 = "U00020";
+
+  /** 使用中の役職または初期役職は削除できません。 */
+  public static final String MSGID_R00001 = "R00001";
 
   /** 【重要】パスワードの再通知 */
   public static final String A0020_MAIL_TITLE = "webA0020.reset.title";

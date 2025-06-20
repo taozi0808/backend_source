@@ -135,6 +135,7 @@ public class G0010Service {
             String.format(
                 "%s-%s-%s",
                 paddedCd.substring(0, 7), paddedCd.substring(7, 10), paddedCd.substring(10));
+        finaljikkouyosan.setRealExecBgtCd(finaljikkouyosan.getExecBgtCd());
         String padded = String.format("%12s", finaljikkouyosan.getExecBgtCd()).replace(' ', '0');
         String execBgtCd =
             String.format(

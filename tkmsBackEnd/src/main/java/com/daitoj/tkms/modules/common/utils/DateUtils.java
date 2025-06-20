@@ -1,9 +1,6 @@
 package com.daitoj.tkms.modules.common.utils;
 
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import org.apache.commons.lang3.StringUtils;
 
@@ -85,5 +82,34 @@ public class DateUtils {
         .atStartOfDay()
         .atZone(ZoneId.systemDefault())
         .toInstant();
+  }
+
+  /**
+   * YYYYMMDD日付はOffsetDateTimeに変換.
+   *
+   * @param dateString 日付
+   * @return 変換後の日付
+   */
+  public static OffsetDateTime stringToOffsetDateTime(String dateString) {
+    if (dateString == null || dateString.isEmpty()) {
+      return null;
+    }
+    return LocalDate.parse(dateString, DateTimeFormatter.ofPattern(DATE_FORMAT))
+        .atStartOfDay()
+        .atOffset(ZonedDateTime.now().getOffset());
+  }
+    /**
+     * YYYYMMDD日付はEndOfDayOffsetDateTimeに変換.
+     *
+     * @param dateString 日付
+     * @return 変換後の日付
+     */
+  public static OffsetDateTime stringToEndOfDayOffsetDateTime(String dateString) {
+    if (dateString == null || dateString.isEmpty()) {
+      return null;
+    }
+    return LocalDate.parse(dateString, DateTimeFormatter.ofPattern(DATE_FORMAT))
+        .atTime(23, 59, 59, 999000000) // 23:59:59.999
+        .atOffset(ZonedDateTime.now().getOffset());
   }
 }

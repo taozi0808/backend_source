@@ -40,7 +40,8 @@ public interface D0010Repository extends JpaRepository<TDetailedEstHdr, Long> {
                      me.empNm)
               FROM TDetailedEstHdr tdeh
         INNER JOIN TProject               tp ON tdeh.projectCd              = tp.projectCd
-        INNER JOIN TRoughEstHdr         treh ON tp.projectCd                = treh.projectCd
+        INNER JOIN TRoughEstHdr         treh ON tdeh.projectCd              = treh.projectCd
+                                            AND treh.buildingCd             = tdeh.buildingCd
         INNER JOIN MCustomer              mc ON SUBSTRING(tp.customerBranchCd, 1, 6) = mc.customerCd
          LEFT JOIN MOrg                   mo ON tdeh.detailedEstOrgId       = mo.id
          LEFT JOIN MEmp                   me ON tdeh.detailedEstPicCd       = me.empCd
@@ -85,8 +86,9 @@ public interface D0010Repository extends JpaRepository<TDetailedEstHdr, Long> {
                      me.empCd,
                      me.empNm)
               FROM TDetailedEstHdr tdeh
-        INNER JOIN TProject               tp  ON tdeh.projectCd              = tp.projectCd
-        INNER JOIN TRoughEstHdr         treh  ON tp.projectCd                = treh.projectCd
+        INNER JOIN TProject               tp  ON tdeh.projectCd  = tp.projectCd
+        INNER JOIN TRoughEstHdr         treh  ON tdeh.projectCd  = treh.projectCd
+                                             AND treh.buildingCd = tdeh.buildingCd
         INNER JOIN MCustomer              mc  ON SUBSTRING(tp.customerBranchCd, 1, 6) = mc.customerCd
          LEFT JOIN MOrg                   mo  ON tdeh.detailedEstOrgId       = mo.id
          LEFT JOIN MEmp                   me  ON tdeh.detailedEstPicCd       = me.empCd

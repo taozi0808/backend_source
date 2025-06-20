@@ -9,6 +9,7 @@ import com.daitoj.tkms.domain.MEmpTransferDtl;
 import com.daitoj.tkms.domain.MEmpTransferHdr;
 import com.daitoj.tkms.domain.MItemListSetting;
 import com.daitoj.tkms.domain.MLogin;
+import com.daitoj.tkms.domain.MOffice;
 import com.daitoj.tkms.domain.MOrg;
 import com.daitoj.tkms.domain.MOrgRev;
 import com.daitoj.tkms.domain.MPosition;
@@ -41,6 +42,7 @@ import com.daitoj.tkms.modules.common.repository.MEmpTransferDtlRepository;
 import com.daitoj.tkms.modules.common.repository.MEmpTransferHdrRepository;
 import com.daitoj.tkms.modules.common.repository.MItemListSettingRepository;
 import com.daitoj.tkms.modules.common.repository.MLoginRepository;
+import com.daitoj.tkms.modules.common.repository.MOfficeRepository;
 import com.daitoj.tkms.modules.common.repository.MOrgRepository;
 import com.daitoj.tkms.modules.common.repository.MOrgRevRepository;
 import com.daitoj.tkms.modules.common.repository.MPositionRepository;
@@ -172,6 +174,8 @@ public class R0045Service {
   /** 採番サービス */
   private final NumberService numberRuleService;
 
+  private final MOfficeRepository mOfficeRepository;
+
   /** 採番項目ID(社員コード) */
   private static final String FIELD_ID_EMP_CD = "EMP_CD";
 
@@ -189,32 +193,32 @@ public class R0045Service {
 
   /** コンストラクタ */
   public R0045Service(
-      R0045Repository r0045Repository,
-      MLoginRepository loginRepository,
-      MItemListSettingRepository mitemListSettingRepository,
-      MEmpRepository mempRepository,
-      MEmpOrgRepository mempOrgRepository,
-      MEmpCertRepository mempCertRepository,
-      MEmpPhotoRepository mempPhotoRepository,
-      MPositionRepository mpositionRepository,
-      MOrgRepository morgRepository,
-      MOrgRevRepository morgRevRepository,
-      MCertRepository mcertRepository,
-      MEmpTransferHdrRepository mempTransferHdrRepository,
-      MEmpTransferDtlRepository mempTransferDtlRepository,
-      R0045Mapper r0045Mapper,
-      CustomMailService customMailService,
-      ItemListSettingService itemListSettingService,
-      ObjectMapper objectMapper,
-      ReportService reportService,
-      MessageSource messageSource,
-      NumberService numberRuleService,
-      CloudStorageService cloudStorageService,
-      MItemSettingMapper itemSettingMapper,
-      MPositionMapper mpositionMapper,
-      MCertMapper mcertMapper,
-      MOrgRevMapper morgRevMapper,
-      MOrgMapper morgMapper) {
+    R0045Repository r0045Repository,
+    MLoginRepository loginRepository,
+    MItemListSettingRepository mitemListSettingRepository,
+    MEmpRepository mempRepository,
+    MEmpOrgRepository mempOrgRepository,
+    MEmpCertRepository mempCertRepository,
+    MEmpPhotoRepository mempPhotoRepository,
+    MPositionRepository mpositionRepository,
+    MOrgRepository morgRepository,
+    MOrgRevRepository morgRevRepository,
+    MCertRepository mcertRepository,
+    MEmpTransferHdrRepository mempTransferHdrRepository,
+    MEmpTransferDtlRepository mempTransferDtlRepository,
+    R0045Mapper r0045Mapper,
+    CustomMailService customMailService,
+    ItemListSettingService itemListSettingService,
+    ObjectMapper objectMapper,
+    ReportService reportService,
+    MessageSource messageSource,
+    NumberService numberRuleService,
+    CloudStorageService cloudStorageService,
+    MItemSettingMapper itemSettingMapper,
+    MPositionMapper mpositionMapper,
+    MCertMapper mcertMapper,
+    MOrgRevMapper morgRevMapper,
+    MOrgMapper morgMapper, MOfficeRepository mOfficeRepository) {
     this.r0045Repository = r0045Repository;
     this.loginRepository = loginRepository;
     this.mitemListSettingRepository = mitemListSettingRepository;
@@ -241,6 +245,7 @@ public class R0045Service {
     this.mcertMapper = mcertMapper;
     this.morgMapper = morgMapper;
     this.morgRevMapper = morgRevMapper;
+    this.mOfficeRepository = mOfficeRepository;
   }
 
   /**
@@ -309,6 +314,11 @@ public class R0045Service {
       List<MCert> certList = mcertRepository.findByOrderByDisplayOrder();
       // 資格リストを設定
       ret.setCertList(mcertMapper.toCertSearchList(certList));
+
+      // 事業所情報を取得
+      List<MOffice> officeList = mOfficeRepository.findAll();
+      // 事業所情報リストを設定
+      ret.setOfficeList(officeList);
 
       // 適用開始日リストを取得
       List<MOrgRev> orgRevList =

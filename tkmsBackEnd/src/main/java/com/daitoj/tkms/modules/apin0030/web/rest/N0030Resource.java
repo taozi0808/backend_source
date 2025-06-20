@@ -36,29 +36,29 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-/** 工事予実入力コントローラ */
+/** 工事予実入力コントローラ. */
 @RestController
 @Tag(name = "N0030", description = "工事予実入力情報取得API")
 @RequestMapping("/api/v1/constr-wbs")
 public class N0030Resource {
   private static final Logger LOG = LoggerFactory.getLogger(N0030Resource.class);
 
-  /** PDF拡張子 */
+  /** PDF拡張子. */
   private static final String PDF_EXT = ".pdf";
 
-  /** CSV日付フォーマット */
+  /** CSV日付フォーマット. */
   private static final String CSV_DATE_FORMAT = "yyyyMMddHHmmss";
 
-  /** 工事予実入力サービス */
+  /** 工事予実入力サービス. */
   private final N0030Service n0030Service;
 
-  /** コンストラクタ */
+  /** コンストラクタ. */
   public N0030Resource(N0030Service n0030Service) {
     this.n0030Service = n0030Service;
   }
 
   /**
-   * 選択項目取得
+   * 選択項目取得.
    *
    * @return 選択項目情報
    */
@@ -91,7 +91,7 @@ public class N0030Resource {
   }
 
   /**
-   * 工事予実入力情報取得
+   * 工事予実入力情報取得.
    *
    * @param constrSiteCd 現場コード
    * @return 工事予実入力情報
@@ -103,6 +103,13 @@ public class N0030Resource {
         @ApiResponse(
             responseCode = "200",
             description = "成功",
+            content =
+                @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = N0030S02ApiResult.class))),
+        @ApiResponse(
+            responseCode = "201",
+            description = "工事予実情報が存在しませんでした",
             content =
                 @Content(
                     mediaType = "application/json",
@@ -130,11 +137,14 @@ public class N0030Resource {
     ApiResult<N0030S02ReturnData> result = n0030Service.getKoujiYojitsuInfo(constrSiteCd);
 
     // 成功の場合
-    return ResponseEntity.ok().body(result);
+    return result == null
+        ? ResponseEntity.status(HttpStatus.CREATED)
+            .body(ApiResult.success(new N0030S02ReturnData()))
+        : ResponseEntity.ok().body(result);
   }
 
   /**
-   * 印刷処理
+   * 印刷処理.
    *
    * @param inDto パラメータ
    */
@@ -181,7 +191,7 @@ public class N0030Resource {
   }
 
   /**
-   * 工事予実入力情報保存
+   * 工事予実入力情報保存.
    *
    * @param inDto パラメータ
    * @return 工事予実情報

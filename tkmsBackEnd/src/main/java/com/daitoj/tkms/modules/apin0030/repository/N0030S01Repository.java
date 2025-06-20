@@ -6,11 +6,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-/** 工事予実のリポジトリ */
+/** 工事予実のリポジトリ. */
 @Repository
 public interface N0030S01Repository extends JpaRepository<TConstrWbsHdr, Long> {
   /**
-   * 工事予実データ取得
+   * 工事予実データ取得.
    *
    * @param constrSiteCd 現場コード
    * @return 工事予実データ
@@ -21,7 +21,8 @@ public interface N0030S01Repository extends JpaRepository<TConstrWbsHdr, Long> {
             cwh.id,
             cwh.constrSiteCd,
             cwh.createPicCd,
-            cwh.wbsCreateDt,
+            e.empNm,
+            cwh.wbsCreateTs,
             cs.constrSiteNm,
             cs.constrSiteKnNm,
             cs.constrSiteStartYmd,
@@ -32,6 +33,7 @@ public interface N0030S01Repository extends JpaRepository<TConstrWbsHdr, Long> {
           FROM
             TConstrWbsHdr cwh
             INNER JOIN TConstrSite cs ON cs.constrSiteCd = cwh.constrSiteCd
+            INNER JOIN MEmp e ON e.empCd = cwh.createPicCd
           WHERE
             cwh.constrSiteCd = :constrSiteCd
       """)

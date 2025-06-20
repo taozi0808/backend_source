@@ -11,12 +11,13 @@ import java.util.List;
 @Schema(name = "N0030S04Dto", description = "工事予実保存パラメータ")
 public class N0030S04Dto extends N0030S02ReturnData {
   /**
-   * コンストラクタ
+   * コンストラクタ.
    *
    * @param id 工事予実ヘッダID
    * @param constrSiteCd 現場コード
    * @param createPicCd 入力担当者コード
-   * @param wbsCreateDt 予実作成日
+   * @param empNm 入力担当者名
+   * @param wbsCreateTs 予実作成日
    * @param constrSiteNm 現場名
    * @param constrSiteKnNm 現場カナ名
    * @param constrSiteStartYmd 現場着手日
@@ -29,7 +30,8 @@ public class N0030S04Dto extends N0030S02ReturnData {
       Long id,
       String constrSiteCd,
       String createPicCd,
-      String wbsCreateDt,
+      String empNm,
+      Instant wbsCreateTs,
       String constrSiteNm,
       String constrSiteKnNm,
       String constrSiteStartYmd,
@@ -41,7 +43,8 @@ public class N0030S04Dto extends N0030S02ReturnData {
         id,
         constrSiteCd,
         createPicCd,
-        wbsCreateDt,
+        empNm,
+        wbsCreateTs,
         constrSiteNm,
         constrSiteKnNm,
         constrSiteStartYmd,

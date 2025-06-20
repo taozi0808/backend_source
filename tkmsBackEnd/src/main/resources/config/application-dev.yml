@@ -32,8 +32,8 @@ spring:
       indent-output: true
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-#    url: jdbc:postgresql://10.72.31.123:5432/tkms_dev
-    url: jdbc:postgresql://10.72.31.242:5432/tkms_dev
+    url: jdbc:postgresql://10.72.31.123:5432/tkms_dev
+    # url: jdbc:postgresql://10.72.31.242:5432/tkms_dev
     username: tkms_user
     password: tkms_user
     hikari:
@@ -42,6 +42,7 @@ spring:
   liquibase:
     # Remove 'faker' if you do not want the sample data to be loaded automatically
     contexts: dev, faker
+    enabled: false
   mail:
     host: 192.168.13.171
     port: 25
@@ -74,8 +75,8 @@ jhipster:
   cache: # Cache configuration
     redis: # Redis configuration
       expiration: 0 # By default objects stay 1 hour (in seconds) in the cache
-#      server: redis://123456@10.72.31.123:6379
-      server: redis://123456@10.72.31.242:6379
+      server: redis://123456@10.72.31.123:6379
+      # server: redis://123456@10.72.31.242:6379
       cluster: false
 
       # server: redis://localhost:6379,redis://localhost:16379,redis://localhost:26379

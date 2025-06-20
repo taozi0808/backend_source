@@ -3,7 +3,7 @@ package com.daitoj.tkms.modules.apis0080.repository;
 import com.daitoj.tkms.domain.TProject;
 import com.daitoj.tkms.modules.apis0080.service.dto.PartnerVendorApprInfoDto;
 import jakarta.validation.constraints.NotNull;
-import java.time.Instant;
+import java.time.OffsetDateTime;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -48,15 +48,15 @@ public interface S0080Repository extends JpaRepository<TProject, Long> {
         INNER JOIN TBusinessNewestAppr bn ON bn.businessDataId = wr.businessDataId
                                           AND bn.businessTblId = 'M_VENDOR'
         INNER JOIN MVendor mv             ON wr.businessDataId = mv.id
-        INNER JOIN MLogin ml              ON mv.updUserId = ml.loginId
         INNER JOIN MVendorIwPerm vi       ON mv.id = vi.vendor.id
                                           AND vi.seqNo = 1
         INNER JOIN MEmp me                ON wr.requestAppCd = me.empCd
         INNER JOIN MItemListSetting il    ON wa.apprSt = il.id.itemCd
                                           AND il.id.itemClassCd = :itemClassCd
-             WHERE wr.businessTypeCd.businessTypeCd = :businessTypeCd
-               AND wa.apprSt                        = :apprSt
-               AND wa.apprEmpCd                     = :empCd
+             WHERE wr.businessTypeCd.businessTypeCd    = :businessTypeCd
+               AND wa.apprSt                           = :apprSt
+               AND wr.requestAppCd                     = :empCd
+               AND wr.appAccountK                      = '1'
           ORDER BY mv.partnerVendorCd
       """)
   List<PartnerVendorApprInfoDto> findInitInfo(
@@ -102,16 +102,16 @@ public interface S0080Repository extends JpaRepository<TProject, Long> {
         INNER JOIN TBusinessNewestAppr bn ON bn.businessDataId = wr.businessDataId
                                           AND bn.businessTblId = 'M_VENDOR'
         INNER JOIN MVendor mv             ON wr.businessDataId = mv.id
-        INNER JOIN MLogin ml              ON mv.updUserId = ml.loginId
          LEFT JOIN MVendorIwPerm vi       ON mv.id = vi.vendor.id
                                           AND vi.seqNo = 1
         INNER JOIN MEmp me                ON wr.requestAppCd = me.empCd
         INNER JOIN MOffice mof            ON me.belongOfficeCd.officeCd = mof.officeCd
         INNER JOIN MItemListSetting il    ON wa.apprSt = il.id.itemCd
                                           AND il.id.itemClassCd = :itemClassCd
-             WHERE wr.businessTypeCd.businessTypeCd = :businessTypeCd
-               AND wa.apprSt                        = :apprSt
-               AND wa.apprEmpCd                     = :empCd
+             WHERE wr.businessTypeCd.businessTypeCd    = :businessTypeCd
+               AND wa.apprSt                           = :apprSt
+               AND wr.requestAppCd                     = :empCd
+               AND wr.appAccountK                      = '1'
                AND (:partnerVendorCd IS NULL      OR :partnerVendorCd = ''
                                                   OR mv.partnerVendorCd LIKE %:partnerVendorCd%)
                AND COALESCE(:requestDateFrom, wr.requestTs) <= wr.requestTs
@@ -125,8 +125,8 @@ public interface S0080Repository extends JpaRepository<TProject, Long> {
   List<PartnerVendorApprInfoDto> findPartnerVendorInfo(
       @NotNull @Param("empCd") String empCd,
       @Param("partnerVendorCd") String partnerVendorCd,
-      @Param("requestDateFrom") Instant requestDateFrom,
-      @Param("requestDateTo") Instant requestDateTo,
+      @Param("requestDateFrom") OffsetDateTime requestDateFrom,
+      @Param("requestDateTo") OffsetDateTime requestDateTo,
       @Param("requestOfficeNm") String requestOfficeNm,
       @Param("requestEmpNm") String requestEmpNm,
       @Param("itemClassCd") String itemClassCd,
@@ -169,15 +169,15 @@ public interface S0080Repository extends JpaRepository<TProject, Long> {
         INNER JOIN TBusinessNewestAppr bn ON bn.businessDataId = wr.businessDataId
                                           AND bn.businessTblId = 'M_VENDOR'
         INNER JOIN MVendor mv             ON wr.businessDataId = mv.id
-        INNER JOIN MLogin ml              ON mv.updUserId = ml.loginId
          LEFT JOIN MVendorIwPerm vi       ON mv.id = vi.vendor.id
                                           AND vi.seqNo = 1
         INNER JOIN MEmp me                ON wr.requestAppCd = me.empCd
         INNER JOIN MOffice mof            ON me.belongOfficeCd.officeCd = mof.officeCd
         INNER JOIN MItemListSetting il    ON wa.apprSt = il.id.itemCd
                                          AND il.id.itemClassCd = :itemClassCd
-             WHERE wr.businessTypeCd.businessTypeCd = :businessTypeCd
-               AND wa.apprEmpCd                     = :empCd
+             WHERE wr.businessTypeCd.businessTypeCd    = :businessTypeCd
+               AND wr.requestAppCd                     = :empCd
+               AND wr.appAccountK                      = '1'
                AND wa.apprSt IN :listApprStatus
                AND (:partnerVendorCd IS NULL      OR :partnerVendorCd = ''
                                                   OR mv.partnerVendorCd LIKE %:partnerVendorCd%)
@@ -193,8 +193,8 @@ public interface S0080Repository extends JpaRepository<TProject, Long> {
       @Param("listApprStatus") List<String> listApprStatus,
       @NotNull @Param("empCd") String empCd,
       @Param("partnerVendorCd") String partnerVendorCd,
-      @Param("requestDateFrom") Instant requestDateFrom,
-      @Param("requestDateTo") Instant requestDateTo,
+      @Param("requestDateFrom") OffsetDateTime requestDateFrom,
+      @Param("requestDateTo") OffsetDateTime requestDateTo,
       @Param("requestOfficeNm") String requestOfficeNm,
       @Param("requestEmpNm") String requestEmpNm,
       @Param("itemClassCd") String itemClassCd,

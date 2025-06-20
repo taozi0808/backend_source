@@ -1,10 +1,9 @@
 package com.daitoj.tkms.modules.apis0110.repository;
 
 import com.daitoj.tkms.domain.TProject;
-import com.daitoj.tkms.modules.apis0100.service.dto.SubConLedgerApprInfoDto;
 import com.daitoj.tkms.modules.apis0110.service.dto.SubconNotifApprInfoDto;
 import jakarta.validation.constraints.NotNull;
-import java.time.Instant;
+import java.time.OffsetDateTime;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -56,7 +55,6 @@ public interface S0110Repository extends JpaRepository<TProject, Long> {
                AND wr.appAccountK                   = '1'
                AND wa.apprSt                        = :apprSt
                AND wr.requestAppCd                  = :empCd
-
           ORDER BY sn.parentPartnerVendorCd,sn.childPartnerVendorCd
       """)
   List<SubconNotifApprInfoDto> findInitInfo(
@@ -111,26 +109,26 @@ public interface S0110Repository extends JpaRepository<TProject, Long> {
                AND wr.appAccountK                   = '1'
                AND wa.apprSt                        = :apprSt
                AND wr.requestAppCd                  = :empCd
-               AND (:parentPartnerVendorCd IS NULL
-                     OR :parentPartnerVendorCd = ''
-                     OR sn.parentPartnerVendorCd LIKE %:parentPartnerVendorCd%)
-               AND (:childPartnerVendorCd IS NULL
-                     OR :childPartnerVendorCd = ''
-                     OR sn.childPartnerVendorCd LIKE %:childPartnerVendorCd%)
+               AND (:parentPartnerVendorCd          IS NULL
+                     OR :parentPartnerVendorCd      = ''
+                     OR sn.parentPartnerVendorCd    LIKE %:parentPartnerVendorCd%)
+               AND (:childPartnerVendorCd           IS NULL
+                     OR :childPartnerVendorCd       = ''
+                     OR sn.childPartnerVendorCd     LIKE %:childPartnerVendorCd%)
                AND COALESCE(:requestDateFrom, wr.requestTs) <= wr.requestTs
                AND COALESCE(:requestDateTo, wr.requestTs) >= wr.requestTs
-               AND (:requestOfficeNm IS NULL   OR :requestOfficeNm = ''
-                                               OR mo.officeNm LIKE %:requestOfficeNm%)
-               AND (:requestEmpNm IS NULL      OR :requestEmpNm = ''
-                                               OR me.empNm LIKE %:requestEmpNm%)
+               AND (:requestOfficeNm IS NULL        OR :requestOfficeNm = ''
+                                                    OR mo.officeNm LIKE %:requestOfficeNm%)
+               AND (:requestEmpNm IS NULL           OR :requestEmpNm = ''
+                                                    OR me.empNm LIKE %:requestEmpNm%)
           ORDER BY sn.parentPartnerVendorCd,sn.childPartnerVendorCd
       """)
   List<SubconNotifApprInfoDto> findRequestSubconNotifInfo(
       @NotNull @Param("empCd") String empCd,
       @Param("parentPartnerVendorCd") String parentPartnerVendorCd,
       @Param("childPartnerVendorCd") String childPartnerVendorCd,
-      @Param("requestDateFrom") Instant requestDateFrom,
-      @Param("requestDateTo") Instant requestDateTo,
+      @Param("requestDateFrom") OffsetDateTime requestDateFrom,
+      @Param("requestDateTo") OffsetDateTime requestDateTo,
       @Param("requestOfficeNm") String requestOfficeNm,
       @Param("requestEmpNm") String requestEmpNm,
       @Param("itemClassCd") String itemClassCd,
@@ -181,18 +179,18 @@ public interface S0110Repository extends JpaRepository<TProject, Long> {
                AND wr.appAccountK                   = '1'
                AND wa.apprSt                        IN :listApprStatus
                AND wr.requestAppCd                  = :empCd
-               AND (:parentPartnerVendorCd IS NULL
-                     OR :parentPartnerVendorCd = ''
-                     OR sn.parentPartnerVendorCd LIKE %:parentPartnerVendorCd%)
-               AND (:childPartnerVendorCd IS NULL
-                     OR :childPartnerVendorCd = ''
-                     OR sn.childPartnerVendorCd LIKE %:childPartnerVendorCd%)
+               AND (:parentPartnerVendorCd          IS NULL
+                     OR :parentPartnerVendorCd      = ''
+                     OR sn.parentPartnerVendorCd    LIKE %:parentPartnerVendorCd%)
+               AND (:childPartnerVendorCd           IS NULL
+                     OR :childPartnerVendorCd       = ''
+                     OR sn.childPartnerVendorCd     LIKE %:childPartnerVendorCd%)
                AND COALESCE(:requestDateFrom, wr.requestTs) <= wr.requestTs
                AND COALESCE(:requestDateTo, wr.requestTs) >= wr.requestTs
-               AND (:requestOfficeNm IS NULL   OR :requestOfficeNm = ''
-                                               OR mo.officeNm LIKE %:requestOfficeNm%)
-               AND (:requestEmpNm IS NULL      OR :requestEmpNm = ''
-                                               OR me.empNm LIKE %:requestEmpNm%)
+               AND (:requestOfficeNm IS NULL        OR :requestOfficeNm = ''
+                                                    OR mo.officeNm LIKE %:requestOfficeNm%)
+               AND (:requestEmpNm IS NULL           OR :requestEmpNm = ''
+                                                    OR me.empNm LIKE %:requestEmpNm%)
           ORDER BY sn.parentPartnerVendorCd,sn.childPartnerVendorCd
        """)
   List<SubconNotifApprInfoDto> findRequestSubconNotifEndInfo(
@@ -200,8 +198,8 @@ public interface S0110Repository extends JpaRepository<TProject, Long> {
       @NotNull @Param("empCd") String empCd,
       @Param("parentPartnerVendorCd") String parentPartnerVendorCd,
       @Param("childPartnerVendorCd") String childPartnerVendorCd,
-      @Param("requestDateFrom") Instant requestDateFrom,
-      @Param("requestDateTo") Instant requestDateTo,
+      @Param("requestDateFrom") OffsetDateTime requestDateFrom,
+      @Param("requestDateTo") OffsetDateTime requestDateTo,
       @Param("requestOfficeNm") String requestOfficeNm,
       @Param("requestEmpNm") String requestEmpNm,
       @Param("itemClassCd") String itemClassCd,

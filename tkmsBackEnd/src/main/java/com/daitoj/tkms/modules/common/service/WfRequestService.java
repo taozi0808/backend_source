@@ -15,6 +15,7 @@ import com.daitoj.tkms.modules.common.repository.TWfRequestFilesRepository;
 import com.daitoj.tkms.modules.common.repository.TWfRequestRepository;
 import com.daitoj.tkms.modules.common.utils.DateUtils;
 import java.time.Instant;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -25,34 +26,34 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
-/** WF申請処理ビジネスロジック */
+/** WF申請処理ビジネスロジック. */
 @Service
 @Transactional(rollbackFor = Throwable.class)
 public class WfRequestService {
   private static final Logger LOG = LoggerFactory.getLogger(WfRequestService.class);
 
-  /** WF申請情報リポジトリ */
+  /** WF申請情報リポジトリ. */
   private final TWfRequestRepository twfRequestRepository;
 
-  /** WF申請添付ファイル情報リポジトリ */
+  /** WF申請添付ファイル情報リポジトリ. */
   private final TWfRequestFilesRepository twfRequestFilesRepository;
 
-  /** WF承認添付ファイル情報リポジトリ */
+  /** WF承認添付ファイル情報リポジトリ. */
   private final TWfApprStepFilesRepository twfApprStepFilesRepository;
 
-  /** 業務種類情報リポジトリ */
+  /** 業務種類情報リポジトリ. */
   private final MBusinessTypeRepository mbusinessTypeRepository;
 
-  /** 業務データ最新承認情報リポジトリ */
+  /** 業務データ最新承認情報リポジトリ. */
   private final TBusinessNewestApprRepository tbusinessNewestApprRepository;
 
-  /** WF承認ステップ情報リポジトリ */
+  /** WF承認ステップ情報リポジトリ. */
   private final TWfApprStepRepository twfApprStepRepository;
 
-  /** 採番サービス */
+  /** 採番サービス. */
   private final NumberService numberRuleService;
 
-  /** コンストラクタ */
+  /** コンストラクタ. */
   public WfRequestService(
       TWfRequestRepository twfRequestRepository,
       TWfRequestFilesRepository twfRequestFilesRepository,
@@ -71,12 +72,13 @@ public class WfRequestService {
   }
 
   /**
-   * WF申請処理
+   * WF申請処理.
    *
    * @param businessTypeCd 業務種類コード
    * @param businessDataId 業務データID
    * @param requestAppCd 申請者コード
    * @param appAccountK 申請者アカウント区分
+   * @param requestComment 申請コメント
    * @param fileList 申請ファイルIDリスト
    * @param apprEmpCdList 承認者従業員コードリスト
    * @return 申請ID
@@ -86,6 +88,7 @@ public class WfRequestService {
       Long businessDataId,
       String requestAppCd,
       String appAccountK,
+      String requestComment,
       List<UUID> fileList,
       List<String> apprEmpCdList) {
     // システム日付
@@ -99,7 +102,13 @@ public class WfRequestService {
 
     // WF申請情報
     TWfRequest wfRequest =
-        getTwfRequest(businessDataId, requestAppCd, appAccountK, businessTypeEntity, systemDate);
+        getTwfRequest(
+            businessDataId,
+            requestAppCd,
+            appAccountK,
+            requestComment,
+            businessTypeEntity,
+            systemDate);
 
     // WF申請情報を登録
     TWfRequest newWfRequest = twfRequestRepository.save(wfRequest);
@@ -111,7 +120,14 @@ public class WfRequestService {
 
     // 業務データ最新承認情報を新規作成または更新する
     createOrUpdateBusinessNewestAppr(
-        apprData, newWfRequest, businessTypeEntity, businessDataId, requestAppCd, appAccountK, systemDate);
+        apprData,
+        newWfRequest,
+        businessTypeEntity,
+        businessDataId,
+        requestAppCd,
+        appAccountK,
+        requestComment,
+        systemDate);
 
     if (!CollectionUtils.isEmpty(fileList)) {
       List<TWfRequestFiles> requestFilesEntityList = new ArrayList<>();
@@ -251,7 +267,7 @@ public class WfRequestService {
         // 業務データステータス:承認済
         wfRequest.setBusinessDataSt(CommonConstants.APPR_ST_PASS);
         // 最終承認日時
-        wfRequest.setFinalApprTs(systemDate);
+        wfRequest.setFinalApprTs(OffsetDateTime.from(systemDate));
         // 最終承認者従業員コード
         wfRequest.setFinalApprEmpCd(apprEmpCd);
 
@@ -288,6 +304,7 @@ public class WfRequestService {
    * @param businessDataId 業務データID
    * @param requestAppCd 申請者コード
    * @param appAccountK 申請者アカウント区分
+   * @param requestComment 申請コメント
    * @param systemDate システム日時
    */
   private void createOrUpdateBusinessNewestAppr(
@@ -297,6 +314,7 @@ public class WfRequestService {
       Long businessDataId,
       String requestAppCd,
       String appAccountK,
+      String requestComment,
       Instant systemDate) {
     TBusinessNewestAppr apprEntity = apprData.orElseGet(TBusinessNewestAppr::new);
 
@@ -310,6 +328,8 @@ public class WfRequestService {
     apprEntity.setRequestAppCd(requestAppCd);
     // 申請者アカウント区分：引数.申請者アカウント区分
     apprEntity.setAppAccountK(appAccountK);
+    // 申請コメント：引数.申請コメント
+    apprEntity.setRequestComment(requestComment);
     // 申請日時：システム日時（共通部品）
     apprEntity.setRequestTs(systemDate);
     // 業務データステータス：'2'(申請中)
@@ -331,6 +351,7 @@ public class WfRequestService {
    * @param businessDataId 業務データID
    * @param requestAppCd 申請者コード
    * @param appAccountK 申請者アカウント区分
+   * @param requestComment 申請コメント
    * @param businessTypeEntity 業務種類情報
    * @param systemDate システム日時
    * @return WF申請情報
@@ -339,6 +360,7 @@ public class WfRequestService {
       Long businessDataId,
       String requestAppCd,
       String appAccountK,
+      String requestComment,
       MBusinessType businessTypeEntity,
       Instant systemDate) {
     TWfRequest wfRequest = new TWfRequest();
@@ -353,10 +375,12 @@ public class WfRequestService {
     wfRequest.setRequestAppCd(requestAppCd);
     // 申請者アカウント区分：引数.申請者アカウント区分
     wfRequest.setAppAccountK(appAccountK);
+    // 申請コメント：引数申請コメント
+    wfRequest.setRequestComment(requestComment);
     // 承認待順序：1
     wfRequest.setCurrentStep(1);
     // 申請日時：システム日時（共通部品）
-    wfRequest.setRequestTs(systemDate);
+    wfRequest.setRequestTs(OffsetDateTime.from(systemDate));
     // 業務データステータス：'2'(申請中)
     wfRequest.setBusinessDataSt(CommonConstants.BUSINESS_DATA_ST_REQ);
     return wfRequest;

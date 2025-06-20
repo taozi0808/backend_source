@@ -45,6 +45,7 @@
 	<parameter name="constrCost" class="java.lang.String"/>
 	<parameter name="orderExpectedYmd" class="java.lang.String"/>
 	<parameter name="sonota" class="java.lang.String"/>
+	<parameter name="ceoNm" class="java.lang.String"/>
 	<group name="PageGroup" startNewPage="true">
 		<expression><![CDATA[(($V{REPORT_COUNT} - 1) / 9)  ]]></expression>
 	</group>
@@ -96,7 +97,7 @@
 				</box>
 			</element>
 			<element kind="textField" uuid="6163ad68-55f0-45d0-b373-b3c079a9e1fd" x="390" y="58" width="165" height="15" backcolor="#FFFFFF" fontName="ＭＳ ゴシック" fontSize="10.0" hTextAlign="Left" vTextAlign="Middle" style="tableHeader">
-				<expression><![CDATA["代表取締役  "
+				<expression><![CDATA["代表取締役  " + $P{ceoNm} + "（印）"
 ]]></expression>
 				<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				<box rightPadding="2" style="tableHeader">
@@ -118,7 +119,7 @@
 				</box>
 			</element>
 			<element kind="textField" uuid="424fcaa7-18bc-4add-ae78-574fc8eff6a3" x="0" y="160" width="554" height="68" backcolor="#FFFFFF" fontName="ＭＳ ゴシック" fontSize="10.0" blankWhenNull="true" hTextAlign="Left" vTextAlign="Top" style="tableHeader">
-				<expression><![CDATA[ "  貴社より受領済の末尾記載工事（以下「本工事」という）の"+  $P{estYmd}+ "日付見積書に基づき、本工事の正式契約書締結前に先行して、" + $P{preConstrContent} + "を着手する為、下記の通り先行工事を内示発注いたします。"]]></expression>
+				<expression><![CDATA[ "  貴社より受領済の末尾記載工事（以下「本工事」という）の"+  $P{estYmd}+ "付見積書に基づき、本工事の正式契約書締結前に先行して、" + $P{preConstrContent} + "を着手する為、下記の通り先行工事を内示発注いたします。"]]></expression>
 				<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				<box rightPadding="2" style="tableHeader">
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -205,7 +206,7 @@
 				</box>
 			</element>
 			<element kind="textField" uuid="53590c6d-3c3c-450d-97d7-a2036fcf1c68" x="0" y="538" width="555" height="30" backcolor="#FFFFFF" fontName="ＭＳ ゴシック" fontSize="10.0" hTextAlign="Left" vTextAlign="Middle" style="tableHeader">
-				<expression><![CDATA["７．正式契約時期    " + $P{orderExpectedYmd}]]></expression>
+				<expression><![CDATA["７．正式契約時期    " + $P{orderExpectedYmd} + "頃予定"]]></expression>
 				<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				<box rightPadding="2" style="tableHeader">

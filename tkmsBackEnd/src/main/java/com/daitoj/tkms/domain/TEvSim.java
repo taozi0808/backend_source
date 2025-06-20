@@ -34,8 +34,12 @@ public class TEvSim extends BaseEntity {
   private String constrSiteCd;
 
   @Size(max = 8)
-  @Column(name = "ev_reg_dt", nullable = false, length = 8)
+  @Column(name = "ev_reg_dt", length = 8)
   private String evRegDt;
+
+  @Size(max = 12)
+  @Column(name = "rough_est_cd", length = 12)
+  private String roughEstCd;
 
   @OneToMany(mappedBy = "evSim")
   private Set<TEvSimBgt> tEvSimBgts = new LinkedHashSet<>();

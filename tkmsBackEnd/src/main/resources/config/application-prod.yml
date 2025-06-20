@@ -42,6 +42,7 @@ spring:
   # Replace by 'prod, faker' to add the faker context and have sample data loaded in production
   liquibase:
     contexts: prod
+    enabled: false
   mail:
     host: localhost
     port: 25
@@ -125,3 +126,18 @@ jhipster:
 # ===================================================================
 
 # application:
+cloud:
+  type: aws                 #aws
+  credentials:
+    accessKey: QUVSAOC4CCJJWUEUF6EI
+    secretKey: r90FbQuHbtaPNqvrCYSDauAUwlPTUIX5hWKeEuhg
+  region:
+    #    static:  https://tkms-ct-bucket.jp-tyo-1.linodeobjects.com
+    static: jp-tyo-1
+  s3:
+    bucket: tkms-ct-bucket
+  url:
+    expiration: 360
+  aws:
+    endpoint: https://jp-tyo-1.linodeobjects.com
+    pathStyleAccessEnabled: true

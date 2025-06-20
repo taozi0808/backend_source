@@ -31,14 +31,20 @@ public class RoughEstApprInfoDto {
   /**
    * 顧客コード.
    */
-  @Schema(name = "customerBranchCd", description = "顧客コード")
-  private String customerBranchCd;
+  @Schema(name = "customerCd", description = "顧客コード")
+  private String customerCd;
 
   /**
-   * 顧客名.
+   * 顧客名1.
    */
-  @Schema(name = "customerNm", description = "顧客名")
-  private String customerNm;
+  @Schema(name = "customerNm1", description = "顧客名")
+  private String customerNm1;
+
+  /**
+   * 顧客名2.
+   */
+  @Schema(name = "customerNm2", description = "顧客名")
+  private String customerNm2;
 
   /**
    * 見積提出期限.
@@ -127,12 +133,12 @@ public class RoughEstApprInfoDto {
   /**
    * コンストラクタ.
    *
-   * @param id               id
    * @param roughEstCd       概算コード
    * @param projectCd        案件コード
    * @param projectNm        案件名
-   * @param customerBranchCd 顧客コード
-   * @param customerNm       顧客名
+   * @param customerCd       顧客コード
+   * @param customerNm1      顧客名1
+   * @param customerNm2      顧客名2
    * @param estSubmitDueTs   見積提出期限
    * @param roughEstTotalAmt 概算金額
    * @param startHopeYmd     着工希望日
@@ -150,8 +156,9 @@ public class RoughEstApprInfoDto {
       String roughEstCd,
       String projectCd,
       String projectNm,
-      String customerBranchCd,
-      String customerNm,
+      String customerCd,
+      String customerNm1,
+      String customerNm2,
       String estSubmitDueTs,
       BigDecimal roughEstTotalAmt,
       String startHopeYmd,
@@ -168,8 +175,9 @@ public class RoughEstApprInfoDto {
     this.roughEstCd = roughEstCd;
     this.projectCd = projectCd;
     this.projectNm = projectNm;
-    this.customerBranchCd = customerBranchCd;
-    this.customerNm = customerNm;
+    this.customerCd = customerCd;
+    this.customerNm1 = customerNm1;
+    this.customerNm2 = customerNm2;
     this.estSubmitDueTs = estSubmitDueTs;
     this.roughEstTotalAmt = roughEstTotalAmt;
     this.startHopeYmd = startHopeYmd;

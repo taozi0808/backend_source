@@ -36,6 +36,10 @@ public class R0010S02Dto {
   @Schema(name = "referPerm", description = "参照権限(表示のみ)")
   private String referPerm;
 
+  /** 注文書権限 */
+  @Schema(name = "poPerm", description = "注文書権限(表示のみ)")
+  private String poPerm;
+
   /** コンストラクタ */
   public R0010S02Dto() {}
 
@@ -49,6 +53,7 @@ public class R0010S02Dto {
    * @param deletePerm 削除権限
    * @param editPerm 編集権限
    * @param referPerm 参照権限
+   * @param poPerm 注文書権限
    */
   public R0010S02Dto(
       String positionCd,
@@ -57,7 +62,8 @@ public class R0010S02Dto {
       String confirmPerm,
       String deletePerm,
       String editPerm,
-      String referPerm) {
+      String referPerm,
+      String poPerm) {
     this.positionCd = positionCd;
     this.positionNm = positionNm;
     this.initPositionK = initPositionK;
@@ -65,5 +71,6 @@ public class R0010S02Dto {
     this.deletePerm = deletePerm;
     this.editPerm = editPerm;
     this.referPerm = referPerm;
+    this.poPerm = poPerm;
   }
 }

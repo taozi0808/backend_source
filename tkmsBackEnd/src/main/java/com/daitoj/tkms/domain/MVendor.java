@@ -13,12 +13,14 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.math.BigDecimal;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.SQLRestriction;
 
 /** 業者情報 */
-@lombok.Getter
-@lombok.Setter
+@Getter
+@Setter
 @Entity
 @Table(name = "m_vendor")
 @SQLRestriction("del_flg = '0' AND newest_flg = '1'")
@@ -43,11 +45,6 @@ public class MVendor extends BaseEntity {
   @NotNull
   @Column(name = "partner_vendor_cd", nullable = false, length = 9)
   private String partnerVendorCd;
-
-  @Size(max = 2)
-  @NotNull
-  @Column(name = "his_no", nullable = false, length = 2)
-  private String hisNo;
 
   @NotNull
   @ColumnDefault("'2'")
@@ -148,7 +145,7 @@ public class MVendor extends BaseEntity {
   @Column(name = "office_no", length = Integer.MAX_VALUE)
   private String officeNo;
 
-  @Column(name = "insurance_rate", precision = 3)
+  @Column(name = "insurance_rate", precision = 5, scale = 2)
   private BigDecimal insuranceRate;
 
   @Column(name = "employee_number", length = Integer.MAX_VALUE)
@@ -171,16 +168,12 @@ public class MVendor extends BaseEntity {
   private String demolPermFlg;
 
   @NotNull
-  @Column(name = "demol_perm_pref", nullable = false, length = Integer.MAX_VALUE)
-  private String demolPermPref;
+  @Column(name = "demol_perm_org", nullable = false, length = Integer.MAX_VALUE)
+  private String demolPermOrg;
 
   @NotNull
-  @Column(name = "demol_perm_no1", nullable = false, length = Integer.MAX_VALUE)
-  private String demolPermNo1;
-
-  @NotNull
-  @Column(name = "demol_perm_no2", nullable = false, length = Integer.MAX_VALUE)
-  private String demolPermNo2;
+  @Column(name = "demol_perm_no", nullable = false, length = Integer.MAX_VALUE)
+  private String demolPermNo;
 
   @Size(max = 8)
   @NotNull
@@ -192,8 +185,8 @@ public class MVendor extends BaseEntity {
   private String securityCertFlg;
 
   @NotNull
-  @Column(name = "security_cert_pref", nullable = false, length = Integer.MAX_VALUE)
-  private String securityCertPref;
+  @Column(name = "security_cert_org", nullable = false, length = Integer.MAX_VALUE)
+  private String securityCertOrg;
 
   @NotNull
   @Column(name = "security_cert_no", nullable = false, length = Integer.MAX_VALUE)
@@ -211,4 +204,43 @@ public class MVendor extends BaseEntity {
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
   @JoinColumn(name = "login_id", nullable = false)
   private MLogin login;
+
+  @NotNull
+  @Column(name = "his_no", nullable = false)
+  private Integer hisNo;
+
+  @Column(name = "ehi_type_k", length = Integer.MAX_VALUE)
+  private String ehiTypeK;
+
+  @Column(name = "ehi_no", length = Integer.MAX_VALUE)
+  private String ehiNo;
+
+  @Column(name = "ehi_deselect_reason_k", length = Integer.MAX_VALUE)
+  private String ehiDeselectReasonK;
+
+  @Column(name = "wpi_type_k", length = Integer.MAX_VALUE)
+  private String wpiTypeK;
+
+  @Column(name = "wpi_no", length = Integer.MAX_VALUE)
+  private String wpiNo;
+
+  @Column(name = "wpi_deselect_reason_k", length = Integer.MAX_VALUE)
+  private String wpiDeselectReasonK;
+
+  @Column(name = "eis_type_k", length = Integer.MAX_VALUE)
+  private String eisTypeK;
+
+  @Column(name = "eis_no", length = Integer.MAX_VALUE)
+  private String eisNo;
+
+  @Column(name = "eis_deselect_reason_k", length = Integer.MAX_VALUE)
+  private String eisDeselectReasonK;
+
+  @Size(max = 6)
+  @Column(name = "fka_vendor_cd", length = 6)
+  private String fkaVendorCd;
+
+  @Size(max = 3)
+  @Column(name = "fka_branch_cd", length = 3)
+  private String fkaBranchCd;
 }

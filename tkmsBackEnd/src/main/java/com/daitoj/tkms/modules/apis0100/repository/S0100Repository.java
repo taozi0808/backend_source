@@ -3,7 +3,7 @@ package com.daitoj.tkms.modules.apis0100.repository;
 import com.daitoj.tkms.domain.TProject;
 import com.daitoj.tkms.modules.apis0100.service.dto.SubConLedgerApprInfoDto;
 import jakarta.validation.constraints.NotNull;
-import java.time.Instant;
+import java.time.OffsetDateTime;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -44,7 +44,7 @@ public interface S0100Repository extends JpaRepository<TProject, Long> {
                                          AND wr.currentStep = wa.apprStepOrder
         INNER JOIN TSubConLedger scl      ON wr.businessDataId = scl.subConLedgerId
         INNER JOIN TBusinessNewestAppr bn ON wr.businessDataId = bn.businessDataId
-                                         AND wr.businessTblId = :businessTblId
+                                         AND bn.businessTblId = :businessTblId
         INNER JOIN TProjectSite ps        ON ps.projectSiteCd = scl.projectSiteCd
         INNER JOIN MEmp me                ON wr.requestAppCd = me.empCd
         INNER JOIN MItemListSetting il    ON wa.apprSt = il.id.itemCd
@@ -52,7 +52,7 @@ public interface S0100Repository extends JpaRepository<TProject, Long> {
              WHERE wr.businessTypeCd.businessTypeCd = :businessTypeCd
                AND wr.appAccountK                   = '1'
                AND wa.apprSt                        = :apprSt
-               AND wr.requestAppCd                     = :empCd
+               AND wr.requestAppCd                  = :empCd
 
           ORDER BY scl.subConLedgerId
       """)
@@ -68,7 +68,6 @@ public interface S0100Repository extends JpaRepository<TProject, Long> {
    *
    * @param empCd                従業員コード
    * @param projectSiteCd        物件コード
-
    * @param requestDateFrom      申請日（開始）
    * @param requestDateTo        申請日（終了）
    * @param requestOfficeNm      申請事業所
@@ -97,7 +96,7 @@ public interface S0100Repository extends JpaRepository<TProject, Long> {
                                          AND wr.currentStep = wa.apprStepOrder
         INNER JOIN TSubConLedger scl      ON wr.businessDataId = scl.subConLedgerId
         INNER JOIN TBusinessNewestAppr bn ON wr.businessDataId = bn.businessDataId
-                                         AND wr.businessTblId = :businessTblId
+                                         AND bn.businessTblId = :businessTblId
         INNER JOIN TProjectSite ps        ON ps.projectSiteCd = scl.projectSiteCd
         INNER JOIN MEmp me                ON wr.requestAppCd = me.empCd
         INNER JOIN MOffice mo             ON mo.officeCd = me.belongOfficeCd.officeCd
@@ -106,7 +105,7 @@ public interface S0100Repository extends JpaRepository<TProject, Long> {
              WHERE wr.businessTypeCd.businessTypeCd = :businessTypeCd
                AND wr.appAccountK                   = '1'
                AND wa.apprSt                        = :apprSt
-               AND wr.requestAppCd                     = :empCd
+               AND wr.requestAppCd                  = :empCd
                AND (:projectSiteCd IS NULL     OR :projectSiteCd = ''
                                                OR scl.projectSiteCd LIKE %:projectSiteCd%)
                AND COALESCE(:requestDateFrom, wr.requestTs) <= wr.requestTs
@@ -120,8 +119,8 @@ public interface S0100Repository extends JpaRepository<TProject, Long> {
   List<SubConLedgerApprInfoDto> findRequestSubConLedgerInfo(
       @NotNull @Param("empCd") String empCd,
       @Param("projectSiteCd") String projectSiteCd,
-      @Param("requestDateFrom") Instant requestDateFrom,
-      @Param("requestDateTo") Instant requestDateTo,
+      @Param("requestDateFrom") OffsetDateTime requestDateFrom,
+      @Param("requestDateTo") OffsetDateTime requestDateTo,
       @Param("requestOfficeNm") String requestOfficeNm,
       @Param("requestEmpNm") String requestEmpNm,
       @Param("itemClassCd") String itemClassCd,
@@ -160,7 +159,7 @@ public interface S0100Repository extends JpaRepository<TProject, Long> {
         INNER JOIN TWfApprStep wa         ON wr.id = wa.id
         INNER JOIN TSubConLedger scl      ON wr.businessDataId = scl.subConLedgerId
         INNER JOIN TBusinessNewestAppr bn ON wr.businessDataId = bn.businessDataId
-                                         AND wr.businessTblId = :businessTblId
+                                         AND bn.businessTblId = :businessTblId
         INNER JOIN TProjectSite ps        ON ps.projectSiteCd = scl.projectSiteCd
         INNER JOIN MEmp me                ON wr.requestAppCd = me.empCd
         INNER JOIN MOffice mo             ON mo.officeCd = me.belongOfficeCd.officeCd
@@ -168,8 +167,8 @@ public interface S0100Repository extends JpaRepository<TProject, Long> {
                                          AND il.id.itemClassCd = :itemClassCd
              WHERE wr.businessTypeCd.businessTypeCd = :businessTypeCd
                AND wr.appAccountK                   = '1'
-               AND wa.apprSt IN :listApprStatus
-               AND wr.requestAppCd                     = :empCd
+               AND wa.apprSt                        IN :listApprStatus
+               AND wr.requestAppCd                  = :empCd
                AND (:projectSiteCd IS NULL     OR :projectSiteCd = ''
                                                OR scl.projectSiteCd LIKE %:projectSiteCd%)
                AND COALESCE(:requestDateFrom, wr.requestTs) <= wr.requestTs
@@ -184,8 +183,8 @@ public interface S0100Repository extends JpaRepository<TProject, Long> {
       @Param("listApprStatus") List<String> listApprStatus,
       @NotNull @Param("empCd") String empCd,
       @Param("projectSiteCd") String projectSiteCd,
-      @Param("requestDateFrom") Instant requestDateFrom,
-      @Param("requestDateTo") Instant requestDateTo,
+      @Param("requestDateFrom") OffsetDateTime requestDateFrom,
+      @Param("requestDateTo") OffsetDateTime requestDateTo,
       @Param("requestOfficeNm") String requestOfficeNm,
       @Param("requestEmpNm") String requestEmpNm,
       @Param("itemClassCd") String itemClassCd,

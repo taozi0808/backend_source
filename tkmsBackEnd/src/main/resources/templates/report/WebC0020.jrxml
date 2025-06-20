@@ -47,7 +47,7 @@
 	<parameter name="gaisanSakusei" class="java.lang.String"/>
 	<parameter name="estSubmitDueDtEnd" class="java.lang.String"/>
 	<field name="projectCd" class="java.lang.String"/>
-	<field name="hisNo" class="java.lang.String"/>
+	<field name="hisNo" class="java.lang.Integer"/>
 	<field name="projectNm" class="java.lang.String"/>
 	<field name="customerName" class="java.lang.String"/>
 	<field name="roughEstTotalAmt" class="java.math.BigDecimal"/>
@@ -275,7 +275,7 @@
 				<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			</element>
 			<element kind="textField" uuid="12e3026f-655b-4030-b1e7-97620b0e6c2e" x="410" y="0" width="130" height="20" style="tableFieldRight">
-				<expression><![CDATA[new java.text.SimpleDateFormat("yyyy年MM月dd日").format(
+				<expression><![CDATA[$F{estSubmitDueDt}.isBlank() ? ' ' :  new java.text.SimpleDateFormat("yyyy年MM月dd日").format(
     new java.text.SimpleDateFormat("yyyyMMdd").parse($F{estSubmitDueDt})
 )]]></expression>
 				<patternExpression><![CDATA["¥#,##0"]]></patternExpression>
@@ -283,14 +283,14 @@
 				<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			</element>
 			<element kind="textField" uuid="24e8a102-0db1-437f-8d84-cde170a0c620" x="540" y="0" width="130" height="20" style="tableFieldRight">
-				<expression><![CDATA[new java.text.SimpleDateFormat("yyyy年MM月dd日").format(
+				<expression><![CDATA[$F{startHopeYmd}.isBlank()? ' ' : new java.text.SimpleDateFormat("yyyy年MM月dd日").format(
     new java.text.SimpleDateFormat("yyyyMMdd").parse($F{startHopeYmd})
 )]]></expression>
 				<property name="com.jaspersoft.studio.unit.y" value="px"/>
 				<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			</element>
 			<element kind="textField" uuid="f7b24e3c-78e9-4938-ab72-a777e0c82366" x="540" y="20" width="130" height="20" style="tableFieldRight">
-				<expression><![CDATA[new java.text.SimpleDateFormat("yyyy年MM月dd日").format(
+				<expression><![CDATA[$F{compHopeYmd}.isBlank() ? ' ' : new java.text.SimpleDateFormat("yyyy年MM月dd日").format(
     new java.text.SimpleDateFormat("yyyyMMdd").parse($F{compHopeYmd})
 )]]></expression>
 				<property name="com.jaspersoft.studio.unit.height" value="px"/>

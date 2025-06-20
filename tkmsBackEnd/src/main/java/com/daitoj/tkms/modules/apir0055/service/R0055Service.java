@@ -2,9 +2,7 @@ package com.daitoj.tkms.modules.apir0055.service;
 
 import com.daitoj.tkms.domain.MItemListSetting;
 import com.daitoj.tkms.modules.apir0055.repository.R0055Repository;
-import com.daitoj.tkms.modules.apir0055.repository.mapper.R0055Mapper;
 import com.daitoj.tkms.modules.apir0055.service.dto.CustomerInfoDto;
-import com.daitoj.tkms.modules.apir0055.service.dto.CustomerResultDto;
 import com.daitoj.tkms.modules.apir0055.service.dto.R0055ReturnData;
 import com.daitoj.tkms.modules.apir0055.service.dto.R0055S01Dto;
 import com.daitoj.tkms.modules.apir0055.service.dto.R0055S02Dto;
@@ -17,7 +15,7 @@ import com.daitoj.tkms.modules.common.service.ReportService;
 import com.daitoj.tkms.modules.common.service.SystemException;
 import com.daitoj.tkms.modules.common.service.dto.ApiResult;
 import com.daitoj.tkms.modules.common.utils.DateUtils;
-import com.daitoj.tkms.modules.common.utils.EnhancedFullWidthConverterUtils;
+import com.daitoj.tkms.modules.common.utils.TextUtils;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletResponse;
@@ -49,7 +47,7 @@ public class R0055Service {
 
   /* CSVヘッダ */
   private static final String[] CSV_HEADER = {
-    "顧客コード", "顧客名", "取引先区分", "取引先区分名", "業種・業態コード", "業種・業態", "住所", "電話番号", "代表者名"
+    "顧客コード", "顧客名", "取引区分", "取引区分名", "業種・業態", "住所", "電話番号", "代表者名"
   };
 
   /* 帳票日付フォーマット */
@@ -70,9 +68,6 @@ public class R0055Service {
   /* fasterxml.jackson@ObjectMapper */
   private final ObjectMapper objectMapper;
 
-  /* 顧客情報マッピング */
-  private final R0055Mapper r0055Mapper;
-
   /* レポートサービス */
   private final ReportService reportService;
 
@@ -86,7 +81,6 @@ public class R0055Service {
    * @param messageSource メッセージ
    * @param objectMapper jackson mapper
    * @param reportService レポートサービス
-   * @param r0055Mapper 顧客情報マッピング
    * @param mitemListSettingRepository スタデータリポジトリ
    */
   public R0055Service(
@@ -94,13 +88,11 @@ public class R0055Service {
       MItemListSettingRepository mitemListSettingRepository,
       MessageSource messageSource,
       ObjectMapper objectMapper,
-      R0055Mapper r0055Mapper,
       ReportService reportService) {
     this.r0055Repository = r0055Repository;
     this.mitemListSettingRepository = mitemListSettingRepository;
     this.messageSource = messageSource;
     this.objectMapper = objectMapper;
-    this.r0055Mapper = r0055Mapper;
     this.reportService = reportService;
   }
 
@@ -115,8 +107,6 @@ public class R0055Service {
 
       // 顧客情報を取得
       List<CustomerInfoDto> customerList = r0055Repository.findInitInfo();
-      // 顧客結果情報
-      List<CustomerResultDto> customerResultList = r0055Mapper.toCustomerResultDto(customerList);
 
       // 取引先区分リスト取得
       List<MItemListSetting> tradingkList =
@@ -133,7 +123,7 @@ public class R0055Service {
       // 戻り値
       R0055ReturnData returnData = new R0055ReturnData();
       // 顧客情報リスト
-      returnData.setListCustomerResultInfo(customerResultList);
+      returnData.setListCustomerResultInfo(customerList);
       // 取引先区分リスト
       returnData.setTradingKList(tradingkList);
       // 業種・業態リスト
@@ -165,13 +155,11 @@ public class R0055Service {
             inDto.getTradingNormal(),
             inDto.getTradingCorporation(),
             inDto.getGyousyuGyoutai());
-
-    // 顧客結果情報
-    List<CustomerResultDto> customerResultList = filterByCondition(inDto, customerList);
+    customerList = filterByCondition(inDto, customerList);
 
     // 戻り値
     R0055ReturnData returnData = new R0055ReturnData();
-    returnData.setListCustomerResultInfo(customerResultList);
+    returnData.setListCustomerResultInfo(customerList);
 
     // API応答を返却
     return ApiResult.success(returnData);
@@ -206,7 +194,7 @@ public class R0055Service {
               inDto.getTradingCorporation(),
               inDto.getGyousyuGyoutai());
       // 顧客結果情報
-      List<CustomerResultDto> customerResultList = filterByCondition(inDto, customerList);
+      List<CustomerInfoDto> customerResultList = filterByCondition(inDto, customerList);
 
       // 最大件数を超えた場合
       if (!CollectionUtils.isEmpty(customerResultList)
@@ -236,29 +224,27 @@ public class R0055Service {
         if (!CollectionUtils.isEmpty(customerResultList)) {
 
           // 顧客結果レコードをCSVに書き出し
-          for (CustomerResultDto customerResult : customerResultList) {
+          for (CustomerInfoDto customer : customerResultList) {
 
             /* CSVレコード構成
              * 1. 顧客コード
              * 2. 顧客名
              * 3. 取引先区分
              * 4. 取引先区分名
-             * 5. 業種・業態コード
-             * 6. 業種・業態
-             * 7. 住所
-             * 8. 電話番号
-             * 9. 代表者名
+             * 5. 業種・業態
+             * 6. 住所
+             * 7. 電話番号
+             * 8. 代表者名
              */
             printer.printRecord(
-                customerResult.getCustomerCd(),
-                customerResult.getCustomerNm(),
-                customerResult.getTradingK(),
-                customerResult.getTradingKNm(),
-                customerResult.getGyousyuGyoutai(),
-                customerResult.getGyousyuGyoutaiNm(),
-                customerResult.getCustomerAddr(),
-                customerResult.getCustomerTelNo(),
-                customerResult.getCeoNm());
+                customer.getCustomerCd(),
+                customer.getCustomerNm(),
+                customer.getTradingK(),
+                customer.getTradingKNm(),
+                customer.getGyousyuGyoutaiNm(),
+                customer.getCustomerAddr(),
+                customer.getCustomerTelNo(),
+                customer.getCeoNm());
           }
         }
       }
@@ -288,12 +274,11 @@ public class R0055Service {
               inDto.getTradingNormal(),
               inDto.getTradingCorporation(),
               inDto.getGyousyuGyoutai());
-      // 顧客結果情報
-      List<CustomerResultDto> customerResultList = filterByCondition(inDto, customerList);
+      customerList = filterByCondition(inDto, customerList);
 
       // 最大件数を超えた場合
-      if (!CollectionUtils.isEmpty(customerResultList)
-          && customerResultList.size() > CommonConstants.SEARCH_MAX_COUNT) {
+      if (!CollectionUtils.isEmpty(customerList)
+          && customerList.size() > CommonConstants.SEARCH_MAX_COUNT) {
         // メッセージ
         String msg =
             messageSource.getMessage(
@@ -324,7 +309,7 @@ public class R0055Service {
           objectMapper.convertValue(printDto, new TypeReference<Map<String, Object>>() {});
 
       // データソースを生成する
-      JRDataSource dataSource = new JRBeanCollectionDataSource(customerResultList);
+      JRDataSource dataSource = new JRBeanCollectionDataSource(customerList);
 
       // レポートを生成する
       byte[] datas = reportService.exportReportToPdf(REPORT_FILE_NAME, paramsMap, dataSource);
@@ -346,33 +331,23 @@ public class R0055Service {
    * @param customerList 顧客情報リスト
    * @return 顧客結果情報
    */
-  private List<CustomerResultDto> filterByCondition(
+  private List<CustomerInfoDto> filterByCondition(
       R0055S01Dto inDto, List<CustomerInfoDto> customerList) {
-
-    // 顧客結果情報に変換する
-    List<CustomerResultDto> customerResultList = r0055Mapper.toCustomerResultDto(customerList);
 
     // 半角全角を区別しない
     if (StringUtils.isNotEmpty(inDto.getCustomerNm())) {
-      customerResultList =
-          customerResultList.stream()
+      customerList =
+        customerList.stream()
               .filter(
-                  customer -> {
-                    if (StringUtils.isEmpty(customer.getCustomerNm())) {
-                      return false;
-                    }
-
-                    String inputCustomerNm =
-                        EnhancedFullWidthConverterUtils.convert(inDto.getCustomerNm());
-
-                    return customer.getFullWidthCustomerNm().contains(inputCustomerNm)
-                        || customer.getFullWidthCustomerRyakusyou().contains(inputCustomerNm)
-                        || customer.getFullWidthCustomerKnNm().contains(inputCustomerNm);
-                  })
+                  customer ->
+                      (TextUtils.matchesIgnoringKanaWidth(
+                              customer.getCustomerNm(), inDto.getCustomerNm())
+                          || TextUtils.matchesIgnoringKanaWidth(
+                              customer.getCustomerKnNm(), inDto.getCustomerNm())))
               .collect(Collectors.toList());
     }
 
-    return customerResultList;
+    return customerList;
   }
 
 }

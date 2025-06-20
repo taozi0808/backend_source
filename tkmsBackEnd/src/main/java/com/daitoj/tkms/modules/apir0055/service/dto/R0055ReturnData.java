@@ -16,7 +16,7 @@ public class R0055ReturnData {
       name = "listCustomerResultInfo",
       description = "顧客情報リスト",
       requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-  private List<CustomerResultDto> listCustomerResultInfo = new ArrayList<>();
+  private List<CustomerInfoDto> listCustomerResultInfo = new ArrayList<>();
 
   /* 取引先区分 */
   @Schema(

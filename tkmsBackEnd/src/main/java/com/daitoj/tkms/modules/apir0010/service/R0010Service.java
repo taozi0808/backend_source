@@ -2,7 +2,6 @@ package com.daitoj.tkms.modules.apir0010.service;
 
 import com.daitoj.tkms.domain.MOrgMenuItem;
 import com.daitoj.tkms.domain.MOrgMenuItemId;
-import com.daitoj.tkms.domain.MPosition;
 import com.daitoj.tkms.modules.apir0010.repository.R0010Repository;
 import com.daitoj.tkms.modules.apir0010.repository.mapper.R0010Mapper;
 import com.daitoj.tkms.modules.apir0010.service.dto.*;
@@ -15,7 +14,6 @@ import com.daitoj.tkms.modules.common.repository.mapper.MOrgRevMapper;
 import com.daitoj.tkms.modules.common.repository.mapper.MPositionMapper;
 import com.daitoj.tkms.modules.common.service.ReportService;
 import com.daitoj.tkms.modules.common.service.dto.ApiResult;
-import com.daitoj.tkms.modules.common.utils.DateUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.ArrayList;
@@ -25,7 +23,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
 import com.daitoj.tkms.domain.MOrgRev;
 import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -108,12 +105,21 @@ public class R0010Service {
               effectiveStartDt == null
                   ? orgRevList.get(0).getEffectiveStartDt()
                   : effectiveStartDt);
+      // 役職リストを取得
+      List<MPositionDto> positionList =
+          r0010Repository.findByDelFlgOrderByPositionCd(CommonConstants.DELETE_FLAG_VALID);
+      List<R0010S01Dto> mOrgMenuItemInfofoList =
+          r0010Repository.getMOrgMenuItemInfoDto(orgRevList.get(0).getEffectiveStartDt());
       // 戻り値
       R0010ReturnData returnData = new R0010ReturnData();
       // 適用開始日リストを設定
       returnData.setStartDtInfo(morgRevMapper.toOrgRevSearchDtoList(orgRevList));
       // 部署選択肢
       returnData.setMorGInfoDtoInfo(morGInfoList);
+      // 役職リストを設定
+      returnData.setR0010S02DtoInfo(r0010Mapper.toR0010S02DtoList(positionList));
+      // 部署権限リスト
+      returnData.setR0010S01DtoInfo(mOrgMenuItemInfofoList);
       return ApiResult.success(returnData);
 
     } catch (Exception ex) {
@@ -132,8 +138,8 @@ public class R0010Service {
   public ApiResult<R0020ReturnData> getkengenInfo(String effectiveStartDt) {
     try {
       // 役職リストを取得
-      List<MPosition> positionList =
-          mpositionRepository.findAll(Sort.by(Sort.Order.asc("positionCd")));
+      List<MPositionDto> positionList =
+          r0010Repository.findByDelFlgOrderByPositionCd(CommonConstants.DELETE_FLAG_VALID);
       List<R0010S01Dto> mOrgMenuItemInfofoList =
           r0010Repository.getMOrgMenuItemInfoDto(effectiveStartDt);
       // 戻り値
@@ -170,13 +176,48 @@ public class R0010Service {
       mOrgMenuItemRepository.deleteAllById(mOrgMenuItemIdList1);
 
       mOrgMenuItemRepository.saveAll(mOrgMenuItemList1);
-      // 保存前に削除を実施する
-      mpositionRepository.deleteAll();
+      // パラメータ.役職情報リストに存在しないデータについて、削除フラグのUpdateを行う。
+      List<R0010S04Dto> r0010S04DtoList = r0010Repository.findGetFlg();
 
-      List<MPosition> MPositionList = r0010Mapper.toMPositionList(inDto.getR0010S02DtoInfo());
-
+      List<MPositionDto> MPositionList = r0010Mapper.toMPositionList(inDto.getR0010S02DtoInfo());
+      for (int i = 0; i < MPositionList.size(); i++) {
+        for (int x = 0; x < r0010S04DtoList.size(); x++) {
+          if (MPositionList.get(i).getPositionCd().equals(r0010S04DtoList.get(x).getPositionCd())) {
+            MPositionList.get(i).setRegUserId(r0010S04DtoList.get(x).getRegUserId());
+            MPositionList.get(i).setRegTs(r0010S04DtoList.get(x).getRegTs());
+          }
+        }
+      }
       // 権限管理画面の情報を役職情報TBLに保存する。
-      mpositionRepository.saveAll(MPositionList);
+      r0010Repository.saveAll(MPositionList);
+
+      List<String> positionCdList = new ArrayList<>();
+      List<R0010S04Dto> difference =
+          r0010S04DtoList.stream()
+              .filter(element -> !inDto.getR0010S02DtoInfo().contains(element.getPositionCd()))
+              .toList();
+      boolean flg = false;
+      for (int i = 0; i < difference.size(); i++) {
+        if (difference.get(i).getFlg().equals("1")) {
+          flg = true;
+        }
+        positionCdList.add(difference.get(i).getPositionCd());
+      }
+      if (flg) {
+        String msg =
+            messageSource.getMessage(Message.MSGID_R00001, null, LocaleContextHolder.getLocale());
+
+        LOG.info(msg);
+
+        // 結果情報
+        return ApiResult.error(Message.MSGID_R00001, msg);
+      }
+
+      List<MPositionDto> mPositionDtoList = r0010Repository.findAllById(positionCdList);
+
+      mPositionDtoList.forEach(itme -> itme.setDelFlg(CommonConstants.DELETE_FLAG_DELETE));
+      r0010Repository.saveAll(mPositionDtoList);
+      // パラメータ.役職情報リストに存在しないデータについて、削除フラグのUpdateを行う。
 
       String msg =
           messageSource.getMessage(Message.MSGID_K00003, null, LocaleContextHolder.getLocale());

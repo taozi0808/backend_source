@@ -276,11 +276,8 @@ public class B0030Resource {
   @PostMapping("/printPreWork")
   public ResponseEntity<?> generatePreWorkReport(@Valid @RequestBody B0030PreWorkPrintDto inDto) {
 
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern(PARAM_DATE_FORMAT);
-
-    LocalDateTime dateTime = LocalDateTime.parse(inDto.getSysDate(), formatter);
     // ファイル名
-    String fileName = dateTime + PDF_EXT;
+    String fileName = LocalDateTime.now().format(DateTimeFormatter.ofPattern(PARAM_DATE_FORMAT)) + PDF_EXT;
     // 出力ファイル名
     String encodedFileName = URLEncoder.encode(fileName, StandardCharsets.UTF_8);
     // pdfファイル
@@ -302,7 +299,8 @@ public class B0030Resource {
   /**
    * 案件登録印刷処理
    *
-   * @param inDto パラメータ
+   * @param ankenCode 案件コード
+   * @param sysDate 利用PCのシステム日付
    */
   @Operation(
       summary = "案件登録の印刷処理",

@@ -1,15 +1,6 @@
 <!-- Created with Jaspersoft Studio version 7.0.2.final using JasperReports Library version 7.0.2-31532122640f516c6d17238ae0e41a08113d5ac0  -->
-<jasperReport name="N0030" language="java" columnCount="1" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="e272dd93-e2a5-442d-b3aa-98cb48526c9f">
+<jasperReport name="N0030" language="java" columnCount="1" pageWidth="1191" pageHeight="842" columnWidth="1151" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="e272dd93-e2a5-442d-b3aa-98cb48526c9f">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
-	<property name="com.jaspersoft.studio.unit." value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
 	<style name="reportHeader" mode="Opaque" backcolor="#E0E0E0" hTextAlign="Center" vTextAlign="Middle" fontName="ＭＳ ゴシック">
 		<box>
 			<topPen lineWidth="0.75"/>
@@ -50,26 +41,1660 @@
 			<rightPen lineWidth="0.75"/>
 		</box>
 	</style>
-	<style name="planStartDtColor" hTextAlign="Center" vTextAlign="Middle" fontName="ＭＳ ゴシック">
+	<style name="planDtEarly0" hTextAlign="Center" vTextAlign="Middle" fontName="ＭＳ ゴシック">
 		<box rightPadding="2">
 			<topPen lineWidth="0.75"/>
 			<leftPen lineWidth="0.75"/>
 			<bottomPen lineWidth="0.75"/>
 			<rightPen lineWidth="0.75"/>
 		</box>
-		<conditionalStyle backcolor="#A9D08E">
-			<conditionExpression><![CDATA[1==1]]></conditionExpression>
+		<conditionalStyle mode="Opaque" backcolor="#A9D08E">
+			<conditionExpression><![CDATA[
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(0) + "01").compareTo($F{planStartDt}) <= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(0) + "10").compareTo($F{planStartDt}) >= 0
+				)
+				|| 
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(0) + "01").compareTo($F{planStartDt}) >= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(0) + "01").compareTo($F{planEndDt}) <= 0
+				)
+			]]></conditionExpression>
 		</conditionalStyle>
 	</style>
-	<style name="actStartDtColor" hTextAlign="Right" vTextAlign="Middle" fontName="ＭＳ ゴシック">
+	<style name="planDtEarly1" hTextAlign="Center" vTextAlign="Middle" fontName="ＭＳ ゴシック">
 		<box rightPadding="2">
 			<topPen lineWidth="0.75"/>
 			<leftPen lineWidth="0.75"/>
 			<bottomPen lineWidth="0.75"/>
 			<rightPen lineWidth="0.75"/>
 		</box>
-		<conditionalStyle backcolor="#F4B084">
-			<conditionExpression><![CDATA[1==1]]></conditionExpression>
+		<conditionalStyle mode="Opaque" backcolor="#A9D08E">
+			<conditionExpression><![CDATA[
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(1) + "01").compareTo($F{planStartDt}) <= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(1) + "10").compareTo($F{planStartDt}) >= 0
+				)
+				|| 
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(1) + "01").compareTo($F{planStartDt}) >= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(1) + "01").compareTo($F{planEndDt}) <= 0
+				)
+			]]></conditionExpression>
+		</conditionalStyle>
+	</style>
+	<style name="planDtEarly2" hTextAlign="Center" vTextAlign="Middle" fontName="ＭＳ ゴシック">
+		<box rightPadding="2">
+			<topPen lineWidth="0.75"/>
+			<leftPen lineWidth="0.75"/>
+			<bottomPen lineWidth="0.75"/>
+			<rightPen lineWidth="0.75"/>
+		</box>
+		<conditionalStyle mode="Opaque" backcolor="#A9D08E">
+			<conditionExpression><![CDATA[
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(2) + "01").compareTo($F{planStartDt}) <= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(2) + "10").compareTo($F{planStartDt}) >= 0
+				)
+				|| 
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(2) + "01").compareTo($F{planStartDt}) >= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(2) + "01").compareTo($F{planEndDt}) <= 0
+				)
+			]]></conditionExpression>
+		</conditionalStyle>
+	</style>
+	<style name="planDtEarly3" hTextAlign="Center" vTextAlign="Middle" fontName="ＭＳ ゴシック">
+		<box rightPadding="2">
+			<topPen lineWidth="0.75"/>
+			<leftPen lineWidth="0.75"/>
+			<bottomPen lineWidth="0.75"/>
+			<rightPen lineWidth="0.75"/>
+		</box>
+		<conditionalStyle mode="Opaque" backcolor="#A9D08E">
+			<conditionExpression><![CDATA[
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(3) + "01").compareTo($F{planStartDt}) <= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(3) + "10").compareTo($F{planStartDt}) >= 0
+				)
+				|| 
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(3) + "01").compareTo($F{planStartDt}) >= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(3) + "01").compareTo($F{planEndDt}) <= 0
+				)
+			]]></conditionExpression>
+		</conditionalStyle>
+	</style>
+	<style name="planDtEarly4" hTextAlign="Center" vTextAlign="Middle" fontName="ＭＳ ゴシック">
+		<box rightPadding="2">
+			<topPen lineWidth="0.75"/>
+			<leftPen lineWidth="0.75"/>
+			<bottomPen lineWidth="0.75"/>
+			<rightPen lineWidth="0.75"/>
+		</box>
+		<conditionalStyle mode="Opaque" backcolor="#A9D08E">
+			<conditionExpression><![CDATA[
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(4) + "01").compareTo($F{planStartDt}) <= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(4) + "10").compareTo($F{planStartDt}) >= 0
+				)
+				|| 
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(4) + "01").compareTo($F{planStartDt}) >= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(4) + "01").compareTo($F{planEndDt}) <= 0
+				)
+			]]></conditionExpression>
+		</conditionalStyle>
+	</style>
+	<style name="planDtEarly5" hTextAlign="Center" vTextAlign="Middle" fontName="ＭＳ ゴシック">
+		<box rightPadding="2">
+			<topPen lineWidth="0.75"/>
+			<leftPen lineWidth="0.75"/>
+			<bottomPen lineWidth="0.75"/>
+			<rightPen lineWidth="0.75"/>
+		</box>
+		<conditionalStyle mode="Opaque" backcolor="#A9D08E">
+			<conditionExpression><![CDATA[
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(5) + "01").compareTo($F{planStartDt}) <= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(5) + "10").compareTo($F{planStartDt}) >= 0
+				)
+				|| 
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(5) + "01").compareTo($F{planStartDt}) >= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(5) + "01").compareTo($F{planEndDt}) <= 0
+				)
+			]]></conditionExpression>
+		</conditionalStyle>
+	</style>
+	<style name="planDtEarly6" hTextAlign="Center" vTextAlign="Middle" fontName="ＭＳ ゴシック">
+		<box rightPadding="2">
+			<topPen lineWidth="0.75"/>
+			<leftPen lineWidth="0.75"/>
+			<bottomPen lineWidth="0.75"/>
+			<rightPen lineWidth="0.75"/>
+		</box>
+		<conditionalStyle mode="Opaque" backcolor="#A9D08E">
+			<conditionExpression><![CDATA[
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(6) + "01").compareTo($F{planStartDt}) <= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(6) + "10").compareTo($F{planStartDt}) >= 0
+				)
+				|| 
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(6) + "01").compareTo($F{planStartDt}) >= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(6) + "01").compareTo($F{planEndDt}) <= 0
+				)
+			]]></conditionExpression>
+		</conditionalStyle>
+	</style>
+	<style name="planDtEarly7" hTextAlign="Center" vTextAlign="Middle" fontName="ＭＳ ゴシック">
+		<box rightPadding="2">
+			<topPen lineWidth="0.75"/>
+			<leftPen lineWidth="0.75"/>
+			<bottomPen lineWidth="0.75"/>
+			<rightPen lineWidth="0.75"/>
+		</box>
+		<conditionalStyle mode="Opaque" backcolor="#A9D08E">
+			<conditionExpression><![CDATA[
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(7) + "01").compareTo($F{planStartDt}) <= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(7) + "10").compareTo($F{planStartDt}) >= 0
+				)
+				|| 
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(7) + "01").compareTo($F{planStartDt}) >= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(7) + "01").compareTo($F{planEndDt}) <= 0
+				)
+			]]></conditionExpression>
+		</conditionalStyle>
+	</style>
+	<style name="planDtEarly8" hTextAlign="Center" vTextAlign="Middle" fontName="ＭＳ ゴシック">
+		<box rightPadding="2">
+			<topPen lineWidth="0.75"/>
+			<leftPen lineWidth="0.75"/>
+			<bottomPen lineWidth="0.75"/>
+			<rightPen lineWidth="0.75"/>
+		</box>
+		<conditionalStyle mode="Opaque" backcolor="#A9D08E">
+			<conditionExpression><![CDATA[
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(8) + "01").compareTo($F{planStartDt}) <= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(8) + "10").compareTo($F{planStartDt}) >= 0
+				)
+				|| 
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(8) + "01").compareTo($F{planStartDt}) >= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(8) + "01").compareTo($F{planEndDt}) <= 0
+				)
+			]]></conditionExpression>
+		</conditionalStyle>
+	</style>
+	<style name="planDtEarly9" hTextAlign="Center" vTextAlign="Middle" fontName="ＭＳ ゴシック">
+		<box rightPadding="2">
+			<topPen lineWidth="0.75"/>
+			<leftPen lineWidth="0.75"/>
+			<bottomPen lineWidth="0.75"/>
+			<rightPen lineWidth="0.75"/>
+		</box>
+		<conditionalStyle mode="Opaque" backcolor="#A9D08E">
+			<conditionExpression><![CDATA[
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(9) + "01").compareTo($F{planStartDt}) <= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(9) + "10").compareTo($F{planStartDt}) >= 0
+				)
+				|| 
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(9) + "01").compareTo($F{planStartDt}) >= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(9) + "01").compareTo($F{planEndDt}) <= 0
+				)
+			]]></conditionExpression>
+		</conditionalStyle>
+	</style>
+	<style name="planDtEarly10" hTextAlign="Center" vTextAlign="Middle" fontName="ＭＳ ゴシック">
+		<box rightPadding="2">
+			<topPen lineWidth="0.75"/>
+			<leftPen lineWidth="0.75"/>
+			<bottomPen lineWidth="0.75"/>
+			<rightPen lineWidth="0.75"/>
+		</box>
+		<conditionalStyle mode="Opaque" backcolor="#A9D08E">
+			<conditionExpression><![CDATA[
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(10) + "01").compareTo($F{planStartDt}) <= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(10) + "10").compareTo($F{planStartDt}) >= 0
+				)
+				|| 
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(10) + "01").compareTo($F{planStartDt}) >= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(10) + "01").compareTo($F{planEndDt}) <= 0
+				)
+			]]></conditionExpression>
+		</conditionalStyle>
+	</style>
+	<style name="planDtEarly11" hTextAlign="Center" vTextAlign="Middle" fontName="ＭＳ ゴシック">
+		<box rightPadding="2">
+			<topPen lineWidth="0.75"/>
+			<leftPen lineWidth="0.75"/>
+			<bottomPen lineWidth="0.75"/>
+			<rightPen lineWidth="0.75"/>
+		</box>
+		<conditionalStyle mode="Opaque" backcolor="#A9D08E">
+			<conditionExpression><![CDATA[
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(11) + "01").compareTo($F{planStartDt}) <= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(11) + "10").compareTo($F{planStartDt}) >= 0
+				)
+				|| 
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(11) + "01").compareTo($F{planStartDt}) >= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(11) + "01").compareTo($F{planEndDt}) <= 0
+				)
+			]]></conditionExpression>
+		</conditionalStyle>
+	</style>
+	<style name="planDtMiddle0" hTextAlign="Center" vTextAlign="Middle" fontName="ＭＳ ゴシック">
+		<box rightPadding="2">
+			<topPen lineWidth="0.75"/>
+			<leftPen lineWidth="0.75"/>
+			<bottomPen lineWidth="0.75"/>
+			<rightPen lineWidth="0.75"/>
+		</box>
+		<conditionalStyle mode="Opaque" backcolor="#A9D08E">
+			<conditionExpression><![CDATA[
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(0) + "11").compareTo($F{planStartDt}) <= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(0) + "20").compareTo($F{planStartDt}) >= 0
+				)
+				|| 
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(0) + "11").compareTo($F{planStartDt}) >= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(0) + "11").compareTo($F{planEndDt}) <= 0
+				)
+			]]></conditionExpression>
+		</conditionalStyle>
+	</style>
+	<style name="planDtMiddle1" hTextAlign="Center" vTextAlign="Middle" fontName="ＭＳ ゴシック">
+		<box rightPadding="2">
+			<topPen lineWidth="0.75"/>
+			<leftPen lineWidth="0.75"/>
+			<bottomPen lineWidth="0.75"/>
+			<rightPen lineWidth="0.75"/>
+		</box>
+		<conditionalStyle mode="Opaque" backcolor="#A9D08E">
+			<conditionExpression><![CDATA[
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(1) + "11").compareTo($F{planStartDt}) <= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(1) + "20").compareTo($F{planStartDt}) >= 0
+				)
+				|| 
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(1) + "11").compareTo($F{planStartDt}) >= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(1) + "11").compareTo($F{planEndDt}) <= 0
+				)
+			]]></conditionExpression>
+		</conditionalStyle>
+	</style>
+	<style name="planDtMiddle2" hTextAlign="Center" vTextAlign="Middle" fontName="ＭＳ ゴシック">
+		<box rightPadding="2">
+			<topPen lineWidth="0.75"/>
+			<leftPen lineWidth="0.75"/>
+			<bottomPen lineWidth="0.75"/>
+			<rightPen lineWidth="0.75"/>
+		</box>
+		<conditionalStyle mode="Opaque" backcolor="#A9D08E">
+			<conditionExpression><![CDATA[
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(2) + "11").compareTo($F{planStartDt}) <= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(2) + "20").compareTo($F{planStartDt}) >= 0
+				)
+				|| 
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(2) + "11").compareTo($F{planStartDt}) >= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(2) + "11").compareTo($F{planEndDt}) <= 0
+				)
+			]]></conditionExpression>
+		</conditionalStyle>
+	</style>
+	<style name="planDtMiddle3" hTextAlign="Center" vTextAlign="Middle" fontName="ＭＳ ゴシック">
+		<box rightPadding="2">
+			<topPen lineWidth="0.75"/>
+			<leftPen lineWidth="0.75"/>
+			<bottomPen lineWidth="0.75"/>
+			<rightPen lineWidth="0.75"/>
+		</box>
+		<conditionalStyle mode="Opaque" backcolor="#A9D08E">
+			<conditionExpression><![CDATA[
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(3) + "11").compareTo($F{planStartDt}) <= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(3) + "20").compareTo($F{planStartDt}) >= 0
+				)
+				|| 
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(3) + "11").compareTo($F{planStartDt}) >= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(3) + "11").compareTo($F{planEndDt}) <= 0
+				)
+			]]></conditionExpression>
+		</conditionalStyle>
+	</style>
+	<style name="planDtMiddle4" hTextAlign="Center" vTextAlign="Middle" fontName="ＭＳ ゴシック">
+		<box rightPadding="2">
+			<topPen lineWidth="0.75"/>
+			<leftPen lineWidth="0.75"/>
+			<bottomPen lineWidth="0.75"/>
+			<rightPen lineWidth="0.75"/>
+		</box>
+		<conditionalStyle mode="Opaque" backcolor="#A9D08E">
+			<conditionExpression><![CDATA[
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(4) + "11").compareTo($F{planStartDt}) <= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(4) + "20").compareTo($F{planStartDt}) >= 0
+				)
+				|| 
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(4) + "11").compareTo($F{planStartDt}) >= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(4) + "11").compareTo($F{planEndDt}) <= 0
+				)
+			]]></conditionExpression>
+		</conditionalStyle>
+	</style>
+	<style name="planDtMiddle5" hTextAlign="Center" vTextAlign="Middle" fontName="ＭＳ ゴシック">
+		<box rightPadding="2">
+			<topPen lineWidth="0.75"/>
+			<leftPen lineWidth="0.75"/>
+			<bottomPen lineWidth="0.75"/>
+			<rightPen lineWidth="0.75"/>
+		</box>
+		<conditionalStyle mode="Opaque" backcolor="#A9D08E">
+			<conditionExpression><![CDATA[
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(5) + "11").compareTo($F{planStartDt}) <= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(5) + "20").compareTo($F{planStartDt}) >= 0
+				)
+				|| 
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(5) + "11").compareTo($F{planStartDt}) >= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(5) + "11").compareTo($F{planEndDt}) <= 0
+				)
+			]]></conditionExpression>
+		</conditionalStyle>
+	</style>
+	<style name="planDtMiddle6" hTextAlign="Center" vTextAlign="Middle" fontName="ＭＳ ゴシック">
+		<box rightPadding="2">
+			<topPen lineWidth="0.75"/>
+			<leftPen lineWidth="0.75"/>
+			<bottomPen lineWidth="0.75"/>
+			<rightPen lineWidth="0.75"/>
+		</box>
+		<conditionalStyle mode="Opaque" backcolor="#A9D08E">
+			<conditionExpression><![CDATA[
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(6) + "11").compareTo($F{planStartDt}) <= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(6) + "20").compareTo($F{planStartDt}) >= 0
+				)
+				|| 
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(6) + "11").compareTo($F{planStartDt}) >= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(6) + "11").compareTo($F{planEndDt}) <= 0
+				)
+			]]></conditionExpression>
+		</conditionalStyle>
+	</style>
+	<style name="planDtMiddle7" hTextAlign="Center" vTextAlign="Middle" fontName="ＭＳ ゴシック">
+		<box rightPadding="2">
+			<topPen lineWidth="0.75"/>
+			<leftPen lineWidth="0.75"/>
+			<bottomPen lineWidth="0.75"/>
+			<rightPen lineWidth="0.75"/>
+		</box>
+		<conditionalStyle mode="Opaque" backcolor="#A9D08E">
+			<conditionExpression><![CDATA[
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(7) + "11").compareTo($F{planStartDt}) <= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(7) + "20").compareTo($F{planStartDt}) >= 0
+				)
+				|| 
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(7) + "11").compareTo($F{planStartDt}) >= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(7) + "11").compareTo($F{planEndDt}) <= 0
+				)
+			]]></conditionExpression>
+		</conditionalStyle>
+	</style>
+	<style name="planDtMiddle8" hTextAlign="Center" vTextAlign="Middle" fontName="ＭＳ ゴシック">
+		<box rightPadding="2">
+			<topPen lineWidth="0.75"/>
+			<leftPen lineWidth="0.75"/>
+			<bottomPen lineWidth="0.75"/>
+			<rightPen lineWidth="0.75"/>
+		</box>
+		<conditionalStyle mode="Opaque" backcolor="#A9D08E">
+			<conditionExpression><![CDATA[
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(8) + "11").compareTo($F{planStartDt}) <= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(8) + "20").compareTo($F{planStartDt}) >= 0
+				)
+				|| 
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(8) + "11").compareTo($F{planStartDt}) >= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(8) + "11").compareTo($F{planEndDt}) <= 0
+				)
+			]]></conditionExpression>
+		</conditionalStyle>
+	</style>
+	<style name="planDtMiddle9" hTextAlign="Center" vTextAlign="Middle" fontName="ＭＳ ゴシック">
+		<box rightPadding="2">
+			<topPen lineWidth="0.75"/>
+			<leftPen lineWidth="0.75"/>
+			<bottomPen lineWidth="0.75"/>
+			<rightPen lineWidth="0.75"/>
+		</box>
+		<conditionalStyle mode="Opaque" backcolor="#A9D08E">
+			<conditionExpression><![CDATA[
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(9) + "11").compareTo($F{planStartDt}) <= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(9) + "20").compareTo($F{planStartDt}) >= 0
+				)
+				|| 
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(9) + "11").compareTo($F{planStartDt}) >= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(9) + "11").compareTo($F{planEndDt}) <= 0
+				)
+			]]></conditionExpression>
+		</conditionalStyle>
+	</style>
+	<style name="planDtMiddle10" hTextAlign="Center" vTextAlign="Middle" fontName="ＭＳ ゴシック">
+		<box rightPadding="2">
+			<topPen lineWidth="0.75"/>
+			<leftPen lineWidth="0.75"/>
+			<bottomPen lineWidth="0.75"/>
+			<rightPen lineWidth="0.75"/>
+		</box>
+		<conditionalStyle mode="Opaque" backcolor="#A9D08E">
+			<conditionExpression><![CDATA[
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(10) + "11").compareTo($F{planStartDt}) <= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(10) + "20").compareTo($F{planStartDt}) >= 0
+				)
+				|| 
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(10) + "11").compareTo($F{planStartDt}) >= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(10) + "11").compareTo($F{planEndDt}) <= 0
+				)
+			]]></conditionExpression>
+		</conditionalStyle>
+	</style>
+	<style name="planDtMiddle11" hTextAlign="Center" vTextAlign="Middle" fontName="ＭＳ ゴシック">
+		<box rightPadding="2">
+			<topPen lineWidth="0.75"/>
+			<leftPen lineWidth="0.75"/>
+			<bottomPen lineWidth="0.75"/>
+			<rightPen lineWidth="0.75"/>
+		</box>
+		<conditionalStyle mode="Opaque" backcolor="#A9D08E">
+			<conditionExpression><![CDATA[
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(11) + "11").compareTo($F{planStartDt}) <= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(11) + "20").compareTo($F{planStartDt}) >= 0
+				)
+				|| 
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(11) + "11").compareTo($F{planStartDt}) >= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(11) + "11").compareTo($F{planEndDt}) <= 0
+				)
+			]]></conditionExpression>
+		</conditionalStyle>
+	</style>
+	<style name="planDtLate0" hTextAlign="Center" vTextAlign="Middle" fontName="ＭＳ ゴシック">
+		<box rightPadding="2">
+			<topPen lineWidth="0.75"/>
+			<leftPen lineWidth="0.75"/>
+			<bottomPen lineWidth="0.75"/>
+			<rightPen lineWidth="0.75"/>
+		</box>
+		<conditionalStyle mode="Opaque" backcolor="#A9D08E">
+			<conditionExpression><![CDATA[
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(0) + "21").compareTo($F{planStartDt}) <= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(0) + "32").compareTo($F{planStartDt}) >= 0
+				)
+				|| 
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(0) + "21").compareTo($F{planStartDt}) >= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(0) + "21").compareTo($F{planEndDt}) <= 0
+				)
+			]]></conditionExpression>
+		</conditionalStyle>
+	</style>
+	<style name="planDtLate1" hTextAlign="Center" vTextAlign="Middle" fontName="ＭＳ ゴシック">
+		<box rightPadding="2">
+			<topPen lineWidth="0.75"/>
+			<leftPen lineWidth="0.75"/>
+			<bottomPen lineWidth="0.75"/>
+			<rightPen lineWidth="0.75"/>
+		</box>
+		<conditionalStyle mode="Opaque" backcolor="#A9D08E">
+			<conditionExpression><![CDATA[
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(1) + "21").compareTo($F{planStartDt}) <= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(1) + "32").compareTo($F{planStartDt}) >= 0
+				)
+				|| 
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(1) + "21").compareTo($F{planStartDt}) >= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(1) + "21").compareTo($F{planEndDt}) <= 0
+				)
+			]]></conditionExpression>
+		</conditionalStyle>
+	</style>
+	<style name="planDtLate2" hTextAlign="Center" vTextAlign="Middle" fontName="ＭＳ ゴシック">
+		<box rightPadding="2">
+			<topPen lineWidth="0.75"/>
+			<leftPen lineWidth="0.75"/>
+			<bottomPen lineWidth="0.75"/>
+			<rightPen lineWidth="0.75"/>
+		</box>
+		<conditionalStyle mode="Opaque" backcolor="#A9D08E">
+			<conditionExpression><![CDATA[
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(2) + "21").compareTo($F{planStartDt}) <= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(2) + "32").compareTo($F{planStartDt}) >= 0
+				)
+				|| 
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(2) + "21").compareTo($F{planStartDt}) >= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(2) + "21").compareTo($F{planEndDt}) <= 0
+				)
+			]]></conditionExpression>
+		</conditionalStyle>
+	</style>
+	<style name="planDtLate3" hTextAlign="Center" vTextAlign="Middle" fontName="ＭＳ ゴシック">
+		<box rightPadding="2">
+			<topPen lineWidth="0.75"/>
+			<leftPen lineWidth="0.75"/>
+			<bottomPen lineWidth="0.75"/>
+			<rightPen lineWidth="0.75"/>
+		</box>
+		<conditionalStyle mode="Opaque" backcolor="#A9D08E">
+			<conditionExpression><![CDATA[
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(3) + "21").compareTo($F{planStartDt}) <= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(3) + "32").compareTo($F{planStartDt}) >= 0
+				)
+				|| 
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(3) + "21").compareTo($F{planStartDt}) >= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(3) + "21").compareTo($F{planEndDt}) <= 0
+				)
+			]]></conditionExpression>
+		</conditionalStyle>
+	</style>
+	<style name="planDtLate4" hTextAlign="Center" vTextAlign="Middle" fontName="ＭＳ ゴシック">
+		<box rightPadding="2">
+			<topPen lineWidth="0.75"/>
+			<leftPen lineWidth="0.75"/>
+			<bottomPen lineWidth="0.75"/>
+			<rightPen lineWidth="0.75"/>
+		</box>
+		<conditionalStyle mode="Opaque" backcolor="#A9D08E">
+			<conditionExpression><![CDATA[
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(4) + "21").compareTo($F{planStartDt}) <= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(4) + "32").compareTo($F{planStartDt}) >= 0
+				)
+				|| 
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(4) + "21").compareTo($F{planStartDt}) >= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(4) + "21").compareTo($F{planEndDt}) <= 0
+				)
+			]]></conditionExpression>
+		</conditionalStyle>
+	</style>
+	<style name="planDtLate5" hTextAlign="Center" vTextAlign="Middle" fontName="ＭＳ ゴシック">
+		<box rightPadding="2">
+			<topPen lineWidth="0.75"/>
+			<leftPen lineWidth="0.75"/>
+			<bottomPen lineWidth="0.75"/>
+			<rightPen lineWidth="0.75"/>
+		</box>
+		<conditionalStyle mode="Opaque" backcolor="#A9D08E">
+			<conditionExpression><![CDATA[
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(5) + "21").compareTo($F{planStartDt}) <= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(5) + "32").compareTo($F{planStartDt}) >= 0
+				)
+				|| 
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(5) + "21").compareTo($F{planStartDt}) >= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(5) + "21").compareTo($F{planEndDt}) <= 0
+				)
+			]]></conditionExpression>
+		</conditionalStyle>
+	</style>
+	<style name="planDtLate6" hTextAlign="Center" vTextAlign="Middle" fontName="ＭＳ ゴシック">
+		<box rightPadding="2">
+			<topPen lineWidth="0.75"/>
+			<leftPen lineWidth="0.75"/>
+			<bottomPen lineWidth="0.75"/>
+			<rightPen lineWidth="0.75"/>
+		</box>
+		<conditionalStyle mode="Opaque" backcolor="#A9D08E">
+			<conditionExpression><![CDATA[
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(6) + "21").compareTo($F{planStartDt}) <= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(6) + "32").compareTo($F{planStartDt}) >= 0
+				)
+				|| 
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(6) + "21").compareTo($F{planStartDt}) >= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(6) + "21").compareTo($F{planEndDt}) <= 0
+				)
+			]]></conditionExpression>
+		</conditionalStyle>
+	</style>
+	<style name="planDtLate7" hTextAlign="Center" vTextAlign="Middle" fontName="ＭＳ ゴシック">
+		<box rightPadding="2">
+			<topPen lineWidth="0.75"/>
+			<leftPen lineWidth="0.75"/>
+			<bottomPen lineWidth="0.75"/>
+			<rightPen lineWidth="0.75"/>
+		</box>
+		<conditionalStyle mode="Opaque" backcolor="#A9D08E">
+			<conditionExpression><![CDATA[
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(7) + "21").compareTo($F{planStartDt}) <= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(7) + "32").compareTo($F{planStartDt}) >= 0
+				)
+				|| 
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(7) + "21").compareTo($F{planStartDt}) >= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(7) + "21").compareTo($F{planEndDt}) <= 0
+				)
+			]]></conditionExpression>
+		</conditionalStyle>
+	</style>
+	<style name="planDtLate8" hTextAlign="Center" vTextAlign="Middle" fontName="ＭＳ ゴシック">
+		<box rightPadding="2">
+			<topPen lineWidth="0.75"/>
+			<leftPen lineWidth="0.75"/>
+			<bottomPen lineWidth="0.75"/>
+			<rightPen lineWidth="0.75"/>
+		</box>
+		<conditionalStyle mode="Opaque" backcolor="#A9D08E">
+			<conditionExpression><![CDATA[
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(8) + "21").compareTo($F{planStartDt}) <= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(8) + "32").compareTo($F{planStartDt}) >= 0
+				)
+				|| 
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(8) + "21").compareTo($F{planStartDt}) >= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(8) + "21").compareTo($F{planEndDt}) <= 0
+				)
+			]]></conditionExpression>
+		</conditionalStyle>
+	</style>
+	<style name="planDtLate9" hTextAlign="Center" vTextAlign="Middle" fontName="ＭＳ ゴシック">
+		<box rightPadding="2">
+			<topPen lineWidth="0.75"/>
+			<leftPen lineWidth="0.75"/>
+			<bottomPen lineWidth="0.75"/>
+			<rightPen lineWidth="0.75"/>
+		</box>
+		<conditionalStyle mode="Opaque" backcolor="#A9D08E">
+			<conditionExpression><![CDATA[
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(9) + "21").compareTo($F{planStartDt}) <= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(9) + "32").compareTo($F{planStartDt}) >= 0
+				)
+				|| 
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(9) + "21").compareTo($F{planStartDt}) >= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(9) + "21").compareTo($F{planEndDt}) <= 0
+				)
+			]]></conditionExpression>
+		</conditionalStyle>
+	</style>
+	<style name="planDtLate10" hTextAlign="Center" vTextAlign="Middle" fontName="ＭＳ ゴシック">
+		<box rightPadding="2">
+			<topPen lineWidth="0.75"/>
+			<leftPen lineWidth="0.75"/>
+			<bottomPen lineWidth="0.75"/>
+			<rightPen lineWidth="0.75"/>
+		</box>
+		<conditionalStyle mode="Opaque" backcolor="#A9D08E">
+			<conditionExpression><![CDATA[
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(10) + "21").compareTo($F{planStartDt}) <= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(10) + "32").compareTo($F{planStartDt}) >= 0
+				)
+				|| 
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(10) + "21").compareTo($F{planStartDt}) >= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(10) + "21").compareTo($F{planEndDt}) <= 0
+				)
+			]]></conditionExpression>
+		</conditionalStyle>
+	</style>
+	<style name="planDtLate11" hTextAlign="Center" vTextAlign="Middle" fontName="ＭＳ ゴシック">
+		<box rightPadding="2">
+			<topPen lineWidth="0.75"/>
+			<leftPen lineWidth="0.75"/>
+			<bottomPen lineWidth="0.75"/>
+			<rightPen lineWidth="0.75"/>
+		</box>
+		<conditionalStyle mode="Opaque" backcolor="#A9D08E">
+			<conditionExpression><![CDATA[
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(11) + "21").compareTo($F{planStartDt}) <= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(11) + "32").compareTo($F{planStartDt}) >= 0
+				)
+				|| 
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(11) + "21").compareTo($F{planStartDt}) >= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(11) + "21").compareTo($F{planEndDt}) <= 0
+				)
+			]]></conditionExpression>
+		</conditionalStyle>
+	</style>
+	<style name="actDtEarly0" hTextAlign="Center" vTextAlign="Middle" fontName="ＭＳ ゴシック">
+		<box rightPadding="2">
+			<topPen lineWidth="0.75"/>
+			<leftPen lineWidth="0.75"/>
+			<bottomPen lineWidth="0.75"/>
+			<rightPen lineWidth="0.75"/>
+		</box>
+		<conditionalStyle mode="Opaque" backcolor="#F4B084">
+			<conditionExpression><![CDATA[
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(0) + "01").compareTo($F{actStartDt}) <= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(0) + "10").compareTo($F{actStartDt}) >= 0
+				)
+				|| 
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(0) + "01").compareTo($F{actStartDt}) >= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(0) + "01").compareTo($F{actEndDt}) <= 0
+				)
+			]]></conditionExpression>
+		</conditionalStyle>
+	</style>
+	<style name="actDtEarly1" hTextAlign="Center" vTextAlign="Middle" fontName="ＭＳ ゴシック">
+		<box rightPadding="2">
+			<topPen lineWidth="0.75"/>
+			<leftPen lineWidth="0.75"/>
+			<bottomPen lineWidth="0.75"/>
+			<rightPen lineWidth="0.75"/>
+		</box>
+		<conditionalStyle mode="Opaque" backcolor="#F4B084">
+			<conditionExpression><![CDATA[
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(1) + "01").compareTo($F{actStartDt}) <= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(1) + "10").compareTo($F{actStartDt}) >= 0
+				)
+				|| 
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(1) + "01").compareTo($F{actStartDt}) >= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(1) + "01").compareTo($F{actEndDt}) <= 0
+				)
+			]]></conditionExpression>
+		</conditionalStyle>
+	</style>
+	<style name="actDtEarly2" hTextAlign="Center" vTextAlign="Middle" fontName="ＭＳ ゴシック">
+		<box rightPadding="2">
+			<topPen lineWidth="0.75"/>
+			<leftPen lineWidth="0.75"/>
+			<bottomPen lineWidth="0.75"/>
+			<rightPen lineWidth="0.75"/>
+		</box>
+		<conditionalStyle mode="Opaque" backcolor="#F4B084">
+			<conditionExpression><![CDATA[
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(2) + "01").compareTo($F{actStartDt}) <= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(2) + "10").compareTo($F{actStartDt}) >= 0
+				)
+				|| 
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(2) + "01").compareTo($F{actStartDt}) >= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(2) + "01").compareTo($F{actEndDt}) <= 0
+				)
+			]]></conditionExpression>
+		</conditionalStyle>
+	</style>
+	<style name="actDtEarly3" hTextAlign="Center" vTextAlign="Middle" fontName="ＭＳ ゴシック">
+		<box rightPadding="2">
+			<topPen lineWidth="0.75"/>
+			<leftPen lineWidth="0.75"/>
+			<bottomPen lineWidth="0.75"/>
+			<rightPen lineWidth="0.75"/>
+		</box>
+		<conditionalStyle mode="Opaque" backcolor="#F4B084">
+			<conditionExpression><![CDATA[
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(3) + "01").compareTo($F{actStartDt}) <= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(3) + "10").compareTo($F{actStartDt}) >= 0
+				)
+				|| 
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(3) + "01").compareTo($F{actStartDt}) >= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(3) + "01").compareTo($F{actEndDt}) <= 0
+				)
+			]]></conditionExpression>
+		</conditionalStyle>
+	</style>
+	<style name="actDtEarly4" hTextAlign="Center" vTextAlign="Middle" fontName="ＭＳ ゴシック">
+		<box rightPadding="2">
+			<topPen lineWidth="0.75"/>
+			<leftPen lineWidth="0.75"/>
+			<bottomPen lineWidth="0.75"/>
+			<rightPen lineWidth="0.75"/>
+		</box>
+		<conditionalStyle mode="Opaque" backcolor="#F4B084">
+			<conditionExpression><![CDATA[
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(4) + "01").compareTo($F{actStartDt}) <= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(4) + "10").compareTo($F{actStartDt}) >= 0
+				)
+				|| 
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(4) + "01").compareTo($F{actStartDt}) >= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(4) + "01").compareTo($F{actEndDt}) <= 0
+				)
+			]]></conditionExpression>
+		</conditionalStyle>
+	</style>
+	<style name="actDtEarly5" hTextAlign="Center" vTextAlign="Middle" fontName="ＭＳ ゴシック">
+		<box rightPadding="2">
+			<topPen lineWidth="0.75"/>
+			<leftPen lineWidth="0.75"/>
+			<bottomPen lineWidth="0.75"/>
+			<rightPen lineWidth="0.75"/>
+		</box>
+		<conditionalStyle mode="Opaque" backcolor="#F4B084">
+			<conditionExpression><![CDATA[
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(5) + "01").compareTo($F{actStartDt}) <= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(5) + "10").compareTo($F{actStartDt}) >= 0
+				)
+				|| 
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(5) + "01").compareTo($F{actStartDt}) >= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(5) + "01").compareTo($F{actEndDt}) <= 0
+				)
+			]]></conditionExpression>
+		</conditionalStyle>
+	</style>
+	<style name="actDtEarly6" hTextAlign="Center" vTextAlign="Middle" fontName="ＭＳ ゴシック">
+		<box rightPadding="2">
+			<topPen lineWidth="0.75"/>
+			<leftPen lineWidth="0.75"/>
+			<bottomPen lineWidth="0.75"/>
+			<rightPen lineWidth="0.75"/>
+		</box>
+		<conditionalStyle mode="Opaque" backcolor="#F4B084">
+			<conditionExpression><![CDATA[
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(6) + "01").compareTo($F{actStartDt}) <= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(6) + "10").compareTo($F{actStartDt}) >= 0
+				)
+				|| 
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(6) + "01").compareTo($F{actStartDt}) >= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(6) + "01").compareTo($F{actEndDt}) <= 0
+				)
+			]]></conditionExpression>
+		</conditionalStyle>
+	</style>
+	<style name="actDtEarly7" hTextAlign="Center" vTextAlign="Middle" fontName="ＭＳ ゴシック">
+		<box rightPadding="2">
+			<topPen lineWidth="0.75"/>
+			<leftPen lineWidth="0.75"/>
+			<bottomPen lineWidth="0.75"/>
+			<rightPen lineWidth="0.75"/>
+		</box>
+		<conditionalStyle mode="Opaque" backcolor="#F4B084">
+			<conditionExpression><![CDATA[
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(7) + "01").compareTo($F{actStartDt}) <= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(7) + "10").compareTo($F{actStartDt}) >= 0
+				)
+				|| 
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(7) + "01").compareTo($F{actStartDt}) >= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(7) + "01").compareTo($F{actEndDt}) <= 0
+				)
+			]]></conditionExpression>
+		</conditionalStyle>
+	</style>
+	<style name="actDtEarly8" hTextAlign="Center" vTextAlign="Middle" fontName="ＭＳ ゴシック">
+		<box rightPadding="2">
+			<topPen lineWidth="0.75"/>
+			<leftPen lineWidth="0.75"/>
+			<bottomPen lineWidth="0.75"/>
+			<rightPen lineWidth="0.75"/>
+		</box>
+		<conditionalStyle mode="Opaque" backcolor="#F4B084">
+			<conditionExpression><![CDATA[
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(8) + "01").compareTo($F{actStartDt}) <= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(8) + "10").compareTo($F{actStartDt}) >= 0
+				)
+				|| 
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(8) + "01").compareTo($F{actStartDt}) >= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(8) + "01").compareTo($F{actEndDt}) <= 0
+				)
+			]]></conditionExpression>
+		</conditionalStyle>
+	</style>
+	<style name="actDtEarly9" hTextAlign="Center" vTextAlign="Middle" fontName="ＭＳ ゴシック">
+		<box rightPadding="2">
+			<topPen lineWidth="0.75"/>
+			<leftPen lineWidth="0.75"/>
+			<bottomPen lineWidth="0.75"/>
+			<rightPen lineWidth="0.75"/>
+		</box>
+		<conditionalStyle mode="Opaque" backcolor="#F4B084">
+			<conditionExpression><![CDATA[
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(9) + "01").compareTo($F{actStartDt}) <= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(9) + "10").compareTo($F{actStartDt}) >= 0
+				)
+				|| 
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(9) + "01").compareTo($F{actStartDt}) >= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(9) + "01").compareTo($F{actEndDt}) <= 0
+				)
+			]]></conditionExpression>
+		</conditionalStyle>
+	</style>
+	<style name="actDtEarly10" hTextAlign="Center" vTextAlign="Middle" fontName="ＭＳ ゴシック">
+		<box rightPadding="2">
+			<topPen lineWidth="0.75"/>
+			<leftPen lineWidth="0.75"/>
+			<bottomPen lineWidth="0.75"/>
+			<rightPen lineWidth="0.75"/>
+		</box>
+		<conditionalStyle mode="Opaque" backcolor="#F4B084">
+			<conditionExpression><![CDATA[
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(10) + "01").compareTo($F{actStartDt}) <= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(10) + "10").compareTo($F{actStartDt}) >= 0
+				)
+				|| 
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(10) + "01").compareTo($F{actStartDt}) >= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(10) + "01").compareTo($F{actEndDt}) <= 0
+				)
+			]]></conditionExpression>
+		</conditionalStyle>
+	</style>
+	<style name="actDtEarly11" hTextAlign="Center" vTextAlign="Middle" fontName="ＭＳ ゴシック">
+		<box rightPadding="2">
+			<topPen lineWidth="0.75"/>
+			<leftPen lineWidth="0.75"/>
+			<bottomPen lineWidth="0.75"/>
+			<rightPen lineWidth="0.75"/>
+		</box>
+		<conditionalStyle mode="Opaque" backcolor="#F4B084">
+			<conditionExpression><![CDATA[
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(11) + "01").compareTo($F{actStartDt}) <= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(11) + "10").compareTo($F{actStartDt}) >= 0
+				)
+				|| 
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(11) + "01").compareTo($F{actStartDt}) >= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(11) + "01").compareTo($F{actEndDt}) <= 0
+				)
+			]]></conditionExpression>
+		</conditionalStyle>
+	</style>
+	<style name="actDtMiddle0" hTextAlign="Center" vTextAlign="Middle" fontName="ＭＳ ゴシック">
+		<box rightPadding="2">
+			<topPen lineWidth="0.75"/>
+			<leftPen lineWidth="0.75"/>
+			<bottomPen lineWidth="0.75"/>
+			<rightPen lineWidth="0.75"/>
+		</box>
+		<conditionalStyle mode="Opaque" backcolor="#F4B084">
+			<conditionExpression><![CDATA[
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(0) + "11").compareTo($F{actStartDt}) <= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(0) + "20").compareTo($F{actStartDt}) >= 0
+				)
+				|| 
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(0) + "11").compareTo($F{actStartDt}) >= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(0) + "11").compareTo($F{actEndDt}) <= 0
+				)
+			]]></conditionExpression>
+		</conditionalStyle>
+	</style>
+	<style name="actDtMiddle1" hTextAlign="Center" vTextAlign="Middle" fontName="ＭＳ ゴシック">
+		<box rightPadding="2">
+			<topPen lineWidth="0.75"/>
+			<leftPen lineWidth="0.75"/>
+			<bottomPen lineWidth="0.75"/>
+			<rightPen lineWidth="0.75"/>
+		</box>
+		<conditionalStyle mode="Opaque" backcolor="#F4B084">
+			<conditionExpression><![CDATA[
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(1) + "11").compareTo($F{actStartDt}) <= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(1) + "20").compareTo($F{actStartDt}) >= 0
+				)
+				|| 
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(1) + "11").compareTo($F{actStartDt}) >= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(1) + "11").compareTo($F{actEndDt}) <= 0
+				)
+			]]></conditionExpression>
+		</conditionalStyle>
+	</style>
+	<style name="actDtMiddle2" hTextAlign="Center" vTextAlign="Middle" fontName="ＭＳ ゴシック">
+		<box rightPadding="2">
+			<topPen lineWidth="0.75"/>
+			<leftPen lineWidth="0.75"/>
+			<bottomPen lineWidth="0.75"/>
+			<rightPen lineWidth="0.75"/>
+		</box>
+		<conditionalStyle mode="Opaque" backcolor="#F4B084">
+			<conditionExpression><![CDATA[
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(2) + "11").compareTo($F{actStartDt}) <= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(2) + "20").compareTo($F{actStartDt}) >= 0
+				)
+				|| 
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(2) + "11").compareTo($F{actStartDt}) >= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(2) + "11").compareTo($F{actEndDt}) <= 0
+				)
+			]]></conditionExpression>
+		</conditionalStyle>
+	</style>
+	<style name="actDtMiddle3" hTextAlign="Center" vTextAlign="Middle" fontName="ＭＳ ゴシック">
+		<box rightPadding="2">
+			<topPen lineWidth="0.75"/>
+			<leftPen lineWidth="0.75"/>
+			<bottomPen lineWidth="0.75"/>
+			<rightPen lineWidth="0.75"/>
+		</box>
+		<conditionalStyle mode="Opaque" backcolor="#F4B084">
+			<conditionExpression><![CDATA[
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(3) + "11").compareTo($F{actStartDt}) <= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(3) + "20").compareTo($F{actStartDt}) >= 0
+				)
+				|| 
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(3) + "11").compareTo($F{actStartDt}) >= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(3) + "11").compareTo($F{actEndDt}) <= 0
+				)
+			]]></conditionExpression>
+		</conditionalStyle>
+	</style>
+	<style name="actDtMiddle4" hTextAlign="Center" vTextAlign="Middle" fontName="ＭＳ ゴシック">
+		<box rightPadding="2">
+			<topPen lineWidth="0.75"/>
+			<leftPen lineWidth="0.75"/>
+			<bottomPen lineWidth="0.75"/>
+			<rightPen lineWidth="0.75"/>
+		</box>
+		<conditionalStyle mode="Opaque" backcolor="#F4B084">
+			<conditionExpression><![CDATA[
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(4) + "11").compareTo($F{actStartDt}) <= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(4) + "20").compareTo($F{actStartDt}) >= 0
+				)
+				|| 
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(4) + "11").compareTo($F{actStartDt}) >= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(4) + "11").compareTo($F{actEndDt}) <= 0
+				)
+			]]></conditionExpression>
+		</conditionalStyle>
+	</style>
+	<style name="actDtMiddle5" hTextAlign="Center" vTextAlign="Middle" fontName="ＭＳ ゴシック">
+		<box rightPadding="2">
+			<topPen lineWidth="0.75"/>
+			<leftPen lineWidth="0.75"/>
+			<bottomPen lineWidth="0.75"/>
+			<rightPen lineWidth="0.75"/>
+		</box>
+		<conditionalStyle mode="Opaque" backcolor="#F4B084">
+			<conditionExpression><![CDATA[
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(5) + "11").compareTo($F{actStartDt}) <= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(5) + "20").compareTo($F{actStartDt}) >= 0
+				)
+				|| 
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(5) + "11").compareTo($F{actStartDt}) >= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(5) + "11").compareTo($F{actEndDt}) <= 0
+				)
+			]]></conditionExpression>
+		</conditionalStyle>
+	</style>
+	<style name="actDtMiddle6" hTextAlign="Center" vTextAlign="Middle" fontName="ＭＳ ゴシック">
+		<box rightPadding="2">
+			<topPen lineWidth="0.75"/>
+			<leftPen lineWidth="0.75"/>
+			<bottomPen lineWidth="0.75"/>
+			<rightPen lineWidth="0.75"/>
+		</box>
+		<conditionalStyle mode="Opaque" backcolor="#F4B084">
+			<conditionExpression><![CDATA[
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(6) + "11").compareTo($F{actStartDt}) <= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(6) + "20").compareTo($F{actStartDt}) >= 0
+				)
+				|| 
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(6) + "11").compareTo($F{actStartDt}) >= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(6) + "11").compareTo($F{actEndDt}) <= 0
+				)
+			]]></conditionExpression>
+		</conditionalStyle>
+	</style>
+	<style name="actDtMiddle7" hTextAlign="Center" vTextAlign="Middle" fontName="ＭＳ ゴシック">
+		<box rightPadding="2">
+			<topPen lineWidth="0.75"/>
+			<leftPen lineWidth="0.75"/>
+			<bottomPen lineWidth="0.75"/>
+			<rightPen lineWidth="0.75"/>
+		</box>
+		<conditionalStyle mode="Opaque" backcolor="#F4B084">
+			<conditionExpression><![CDATA[
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(7) + "11").compareTo($F{actStartDt}) <= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(7) + "20").compareTo($F{actStartDt}) >= 0
+				)
+				|| 
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(7) + "11").compareTo($F{actStartDt}) >= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(7) + "11").compareTo($F{actEndDt}) <= 0
+				)
+			]]></conditionExpression>
+		</conditionalStyle>
+	</style>
+	<style name="actDtMiddle8" hTextAlign="Center" vTextAlign="Middle" fontName="ＭＳ ゴシック">
+		<box rightPadding="2">
+			<topPen lineWidth="0.75"/>
+			<leftPen lineWidth="0.75"/>
+			<bottomPen lineWidth="0.75"/>
+			<rightPen lineWidth="0.75"/>
+		</box>
+		<conditionalStyle mode="Opaque" backcolor="#F4B084">
+			<conditionExpression><![CDATA[
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(8) + "11").compareTo($F{actStartDt}) <= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(8) + "20").compareTo($F{actStartDt}) >= 0
+				)
+				|| 
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(8) + "11").compareTo($F{actStartDt}) >= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(8) + "11").compareTo($F{actEndDt}) <= 0
+				)
+			]]></conditionExpression>
+		</conditionalStyle>
+	</style>
+	<style name="actDtMiddle9" hTextAlign="Center" vTextAlign="Middle" fontName="ＭＳ ゴシック">
+		<box rightPadding="2">
+			<topPen lineWidth="0.75"/>
+			<leftPen lineWidth="0.75"/>
+			<bottomPen lineWidth="0.75"/>
+			<rightPen lineWidth="0.75"/>
+		</box>
+		<conditionalStyle mode="Opaque" backcolor="#F4B084">
+			<conditionExpression><![CDATA[
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(9) + "11").compareTo($F{actStartDt}) <= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(9) + "20").compareTo($F{actStartDt}) >= 0
+				)
+				|| 
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(9) + "11").compareTo($F{actStartDt}) >= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(9) + "11").compareTo($F{actEndDt}) <= 0
+				)
+			]]></conditionExpression>
+		</conditionalStyle>
+	</style>
+	<style name="actDtMiddle10" hTextAlign="Center" vTextAlign="Middle" fontName="ＭＳ ゴシック">
+		<box rightPadding="2">
+			<topPen lineWidth="0.75"/>
+			<leftPen lineWidth="0.75"/>
+			<bottomPen lineWidth="0.75"/>
+			<rightPen lineWidth="0.75"/>
+		</box>
+		<conditionalStyle mode="Opaque" backcolor="#F4B084">
+			<conditionExpression><![CDATA[
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(10) + "11").compareTo($F{actStartDt}) <= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(10) + "20").compareTo($F{actStartDt}) >= 0
+				)
+				|| 
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(10) + "11").compareTo($F{actStartDt}) >= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(10) + "11").compareTo($F{actEndDt}) <= 0
+				)
+			]]></conditionExpression>
+		</conditionalStyle>
+	</style>
+	<style name="actDtMiddle11" hTextAlign="Center" vTextAlign="Middle" fontName="ＭＳ ゴシック">
+		<box rightPadding="2">
+			<topPen lineWidth="0.75"/>
+			<leftPen lineWidth="0.75"/>
+			<bottomPen lineWidth="0.75"/>
+			<rightPen lineWidth="0.75"/>
+		</box>
+		<conditionalStyle mode="Opaque" backcolor="#F4B084">
+			<conditionExpression><![CDATA[
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(11) + "11").compareTo($F{actStartDt}) <= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(11) + "20").compareTo($F{actStartDt}) >= 0
+				)
+				|| 
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(11) + "11").compareTo($F{actStartDt}) >= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(11) + "11").compareTo($F{actEndDt}) <= 0
+				)
+			]]></conditionExpression>
+		</conditionalStyle>
+	</style>
+	<style name="actDtLate0" hTextAlign="Center" vTextAlign="Middle" fontName="ＭＳ ゴシック">
+		<box rightPadding="2">
+			<topPen lineWidth="0.75"/>
+			<leftPen lineWidth="0.75"/>
+			<bottomPen lineWidth="0.75"/>
+			<rightPen lineWidth="0.75"/>
+		</box>
+		<conditionalStyle mode="Opaque" backcolor="#F4B084">
+			<conditionExpression><![CDATA[
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(0) + "21").compareTo($F{actStartDt}) <= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(0) + "32").compareTo($F{actStartDt}) >= 0
+				)
+				|| 
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(0) + "21").compareTo($F{actStartDt}) >= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(0) + "21").compareTo($F{actEndDt}) <= 0
+				)
+			]]></conditionExpression>
+		</conditionalStyle>
+	</style>
+	<style name="actDtLate1" hTextAlign="Center" vTextAlign="Middle" fontName="ＭＳ ゴシック">
+		<box rightPadding="2">
+			<topPen lineWidth="0.75"/>
+			<leftPen lineWidth="0.75"/>
+			<bottomPen lineWidth="0.75"/>
+			<rightPen lineWidth="0.75"/>
+		</box>
+		<conditionalStyle mode="Opaque" backcolor="#F4B084">
+			<conditionExpression><![CDATA[
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(1) + "21").compareTo($F{actStartDt}) <= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(1) + "32").compareTo($F{actStartDt}) >= 0
+				)
+				|| 
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(1) + "21").compareTo($F{actStartDt}) >= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(1) + "21").compareTo($F{actEndDt}) <= 0
+				)
+			]]></conditionExpression>
+		</conditionalStyle>
+	</style>
+	<style name="actDtLate2" hTextAlign="Center" vTextAlign="Middle" fontName="ＭＳ ゴシック">
+		<box rightPadding="2">
+			<topPen lineWidth="0.75"/>
+			<leftPen lineWidth="0.75"/>
+			<bottomPen lineWidth="0.75"/>
+			<rightPen lineWidth="0.75"/>
+		</box>
+		<conditionalStyle mode="Opaque" backcolor="#F4B084">
+			<conditionExpression><![CDATA[
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(2) + "21").compareTo($F{actStartDt}) <= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(2) + "32").compareTo($F{actStartDt}) >= 0
+				)
+				|| 
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(2) + "21").compareTo($F{actStartDt}) >= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(2) + "21").compareTo($F{actEndDt}) <= 0
+				)
+			]]></conditionExpression>
+		</conditionalStyle>
+	</style>
+	<style name="actDtLate3" hTextAlign="Center" vTextAlign="Middle" fontName="ＭＳ ゴシック">
+		<box rightPadding="2">
+			<topPen lineWidth="0.75"/>
+			<leftPen lineWidth="0.75"/>
+			<bottomPen lineWidth="0.75"/>
+			<rightPen lineWidth="0.75"/>
+		</box>
+		<conditionalStyle mode="Opaque" backcolor="#F4B084">
+			<conditionExpression><![CDATA[
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(3) + "21").compareTo($F{actStartDt}) <= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(3) + "32").compareTo($F{actStartDt}) >= 0
+				)
+				|| 
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(3) + "21").compareTo($F{actStartDt}) >= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(3) + "21").compareTo($F{actEndDt}) <= 0
+				)
+			]]></conditionExpression>
+		</conditionalStyle>
+	</style>
+	<style name="actDtLate4" hTextAlign="Center" vTextAlign="Middle" fontName="ＭＳ ゴシック">
+		<box rightPadding="2">
+			<topPen lineWidth="0.75"/>
+			<leftPen lineWidth="0.75"/>
+			<bottomPen lineWidth="0.75"/>
+			<rightPen lineWidth="0.75"/>
+		</box>
+		<conditionalStyle mode="Opaque" backcolor="#F4B084">
+			<conditionExpression><![CDATA[
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(4) + "21").compareTo($F{actStartDt}) <= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(4) + "32").compareTo($F{actStartDt}) >= 0
+				)
+				|| 
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(4) + "21").compareTo($F{actStartDt}) >= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(4) + "21").compareTo($F{actEndDt}) <= 0
+				)
+			]]></conditionExpression>
+		</conditionalStyle>
+	</style>
+	<style name="actDtLate5" hTextAlign="Center" vTextAlign="Middle" fontName="ＭＳ ゴシック">
+		<box rightPadding="2">
+			<topPen lineWidth="0.75"/>
+			<leftPen lineWidth="0.75"/>
+			<bottomPen lineWidth="0.75"/>
+			<rightPen lineWidth="0.75"/>
+		</box>
+		<conditionalStyle mode="Opaque" backcolor="#F4B084">
+			<conditionExpression><![CDATA[
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(5) + "21").compareTo($F{actStartDt}) <= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(5) + "32").compareTo($F{actStartDt}) >= 0
+				)
+				|| 
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(5) + "21").compareTo($F{actStartDt}) >= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(5) + "21").compareTo($F{actEndDt}) <= 0
+				)
+			]]></conditionExpression>
+		</conditionalStyle>
+	</style>
+	<style name="actDtLate6" hTextAlign="Center" vTextAlign="Middle" fontName="ＭＳ ゴシック">
+		<box rightPadding="2">
+			<topPen lineWidth="0.75"/>
+			<leftPen lineWidth="0.75"/>
+			<bottomPen lineWidth="0.75"/>
+			<rightPen lineWidth="0.75"/>
+		</box>
+		<conditionalStyle mode="Opaque" backcolor="#F4B084">
+			<conditionExpression><![CDATA[
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(6) + "21").compareTo($F{actStartDt}) <= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(6) + "32").compareTo($F{actStartDt}) >= 0
+				)
+				|| 
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(6) + "21").compareTo($F{actStartDt}) >= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(6) + "21").compareTo($F{actEndDt}) <= 0
+				)
+			]]></conditionExpression>
+		</conditionalStyle>
+	</style>
+	<style name="actDtLate7" hTextAlign="Center" vTextAlign="Middle" fontName="ＭＳ ゴシック">
+		<box rightPadding="2">
+			<topPen lineWidth="0.75"/>
+			<leftPen lineWidth="0.75"/>
+			<bottomPen lineWidth="0.75"/>
+			<rightPen lineWidth="0.75"/>
+		</box>
+		<conditionalStyle mode="Opaque" backcolor="#F4B084">
+			<conditionExpression><![CDATA[
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(7) + "21").compareTo($F{actStartDt}) <= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(7) + "32").compareTo($F{actStartDt}) >= 0
+				)
+				|| 
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(7) + "21").compareTo($F{actStartDt}) >= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(7) + "21").compareTo($F{actEndDt}) <= 0
+				)
+			]]></conditionExpression>
+		</conditionalStyle>
+	</style>
+	<style name="actDtLate8" hTextAlign="Center" vTextAlign="Middle" fontName="ＭＳ ゴシック">
+		<box rightPadding="2">
+			<topPen lineWidth="0.75"/>
+			<leftPen lineWidth="0.75"/>
+			<bottomPen lineWidth="0.75"/>
+			<rightPen lineWidth="0.75"/>
+		</box>
+		<conditionalStyle mode="Opaque" backcolor="#F4B084">
+			<conditionExpression><![CDATA[
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(8) + "21").compareTo($F{actStartDt}) <= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(8) + "32").compareTo($F{actStartDt}) >= 0
+				)
+				|| 
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(8) + "21").compareTo($F{actStartDt}) >= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(8) + "21").compareTo($F{actEndDt}) <= 0
+				)
+			]]></conditionExpression>
+		</conditionalStyle>
+	</style>
+	<style name="actDtLate9" hTextAlign="Center" vTextAlign="Middle" fontName="ＭＳ ゴシック">
+		<box rightPadding="2">
+			<topPen lineWidth="0.75"/>
+			<leftPen lineWidth="0.75"/>
+			<bottomPen lineWidth="0.75"/>
+			<rightPen lineWidth="0.75"/>
+		</box>
+		<conditionalStyle mode="Opaque" backcolor="#F4B084">
+			<conditionExpression><![CDATA[
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(9) + "21").compareTo($F{actStartDt}) <= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(9) + "32").compareTo($F{actStartDt}) >= 0
+				)
+				|| 
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(9) + "21").compareTo($F{actStartDt}) >= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(9) + "21").compareTo($F{actEndDt}) <= 0
+				)
+			]]></conditionExpression>
+		</conditionalStyle>
+	</style>
+	<style name="actDtLate10" hTextAlign="Center" vTextAlign="Middle" fontName="ＭＳ ゴシック">
+		<box rightPadding="2">
+			<topPen lineWidth="0.75"/>
+			<leftPen lineWidth="0.75"/>
+			<bottomPen lineWidth="0.75"/>
+			<rightPen lineWidth="0.75"/>
+		</box>
+		<conditionalStyle mode="Opaque" backcolor="#F4B084">
+			<conditionExpression><![CDATA[
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(10) + "21").compareTo($F{actStartDt}) <= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(10) + "32").compareTo($F{actStartDt}) >= 0
+				)
+				|| 
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(10) + "21").compareTo($F{actStartDt}) >= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(10) + "21").compareTo($F{actEndDt}) <= 0
+				)
+			]]></conditionExpression>
+		</conditionalStyle>
+	</style>
+	<style name="actDtLate11" hTextAlign="Center" vTextAlign="Middle" fontName="ＭＳ ゴシック">
+		<box rightPadding="2">
+			<topPen lineWidth="0.75"/>
+			<leftPen lineWidth="0.75"/>
+			<bottomPen lineWidth="0.75"/>
+			<rightPen lineWidth="0.75"/>
+		</box>
+		<conditionalStyle mode="Opaque" backcolor="#F4B084">
+			<conditionExpression><![CDATA[
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(11) + "21").compareTo($F{actStartDt}) <= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(11) + "32").compareTo($F{actStartDt}) >= 0
+				)
+				|| 
+				(
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(11) + "21").compareTo($F{actStartDt}) >= 0
+				  &&
+				  (((java.util.List<String>)$P{dateColumnsCompare}.get($V{PAGE_NUMBER} - 1)).get(11) + "21").compareTo($F{actEndDt}) <= 0
+				)
+			]]></conditionExpression>
 		</conditionalStyle>
 	</style>
 	<parameter name="sysDate" class="java.lang.String"/>
@@ -79,19 +1704,21 @@
 	<parameter name="constrSiteStartYmd" class="java.lang.String"/>
 	<parameter name="constrSiteDeliveryYmd" class="java.lang.String"/>
 	<parameter name="empNm" class="java.lang.String"/>
-	<parameter name="wbsCreateDt" class="java.lang.String"/>
-	<parameter name="dateColumns" class="java.util.List"/>
+	<parameter name="wbsCreateTs" class="java.time.Instant"/>
+	<parameter name="dateColumns" forPrompting="false" class="java.util.List" nestedType="java.util.List"/>
+	<parameter name="dateColumnsCompare" forPrompting="false" class="java.util.List" nestedType="java.util.List"/>
+	<parameter name="reportMaxRowCount" class="java.lang.Integer"/>
 	<field name="constrProcessShowNm" class="java.lang.String"/>
 	<field name="planStartDt" class="java.lang.String"/>
 	<field name="planEndDt" class="java.lang.String"/>
 	<field name="actStartDt" class="java.lang.String"/>
 	<field name="actEndDt" class="java.lang.String"/>
 	<group name="PageGroup" startNewPage="true">
-		<expression><![CDATA[(($V{REPORT_COUNT} - 1) / 9)  ]]></expression>
+		<expression><![CDATA[(($V{REPORT_COUNT} - 1) / $P{reportMaxRowCount})  ]]></expression>
 	</group>
 	<background splitType="Stretch"/>
-	<pageHeader height="51" splitType="Stretch">
-		<element kind="staticText" uuid="38242560-e231-442e-9c50-9d84173b26b8" x="271" y="0" width="238" height="44" fontName="ＭＳ ゴシック" fontSize="24.0" hTextAlign="Center" vTextAlign="Middle">
+	<pageHeader height="61" splitType="Stretch">
+		<element kind="staticText" uuid="38242560-e231-442e-9c50-9d84173b26b8" x="500" y="0" width="238" height="44" fontName="ＭＳ ゴシック" fontSize="24.0" hTextAlign="Center" vTextAlign="Middle">
 			<text><![CDATA[工事予実入力]]></text>
 			<box>
 				<topPen lineWidth="1.0"/>
@@ -100,7 +1727,7 @@
 				<rightPen lineWidth="1.0"/>
 			</box>
 		</element>
-		<element kind="textField" uuid="9d6cb38c-5a9e-495c-8887-87d1a51e9f34" x="538" y="29" width="165" height="15" fontName="ＭＳ ゴシック" hTextAlign="Right" vTextAlign="Bottom">
+		<element kind="textField" uuid="9d6cb38c-5a9e-495c-8887-87d1a51e9f34" x="1020" y="30" width="128" height="15" fontName="ＭＳ ゴシック" hTextAlign="Right" vTextAlign="Bottom">
 			<expression><![CDATA["日付：" + $P{sysDate}]]></expression>
 			<box rightPadding="2">
 				<bottomPen lineWidth="1.0"/>
@@ -139,7 +1766,7 @@
 			<text><![CDATA[予実作成日]]></text>
 		</element>
 		<element kind="textField" uuid="24e8a102-0db1-437f-8d84-cde170a0c620" x="80" y="75" width="310" height="25" style="tableFieldRight">
-			<expression><![CDATA[new java.text.SimpleDateFormat("yyyy年MM月dd日").format(new java.text.SimpleDateFormat("yyyyMMdd").parse($P{wbsCreateDt}))]]></expression>
+			<expression><![CDATA[$P{wbsCreateTs}.atZone(java.time.ZoneId.systemDefault()).format(java.time.format.DateTimeFormatter.ofPattern("yyyy年MM月dd日 HH:mm").withZone(java.time.ZoneId.systemDefault()))]]></expression>
 		</element>
 		<element kind="staticText" uuid="a6ddf83b-ac43-42ed-88e1-bd356d13cf65" mode="Opaque" x="310" y="50" width="80" height="25" style="reportHeader">
 			<text><![CDATA[現場引渡日]]></text>
@@ -159,99 +1786,161 @@
 		<element kind="staticText" uuid="b0627853-6256-461e-85a7-f393e7b5b164" mode="Opaque" x="0" y="110" width="100" height="40" style="tableHeader">
 			<text><![CDATA[工事工程]]></text>
 		</element>
-		<element kind="staticText" uuid="b4b40ad5-6f8b-4279-b7bf-4a226d95e6d8" mode="Opaque" x="100" y="110" width="80" height="40" style="tableHeader">
+		<element kind="staticText" uuid="b4b40ad5-6f8b-4279-b7bf-4a226d95e6d8" mode="Opaque" x="100" y="110" width="75" height="40" style="tableHeader">
 			<text><![CDATA[着手日]]></text>
+			<property name="com.jaspersoft.studio.unit.width" value="px"/>
 		</element>
-		<element kind="staticText" uuid="97349c7f-d972-46b3-89e4-54f45d795fbb" mode="Opaque" x="180" y="110" width="80" height="40" style="tableHeader">
+		<element kind="staticText" uuid="97349c7f-d972-46b3-89e4-54f45d795fbb" mode="Opaque" x="175" y="110" width="75" height="40" style="tableHeader">
 			<text><![CDATA[完了日]]></text>
+			<property name="com.jaspersoft.studio.unit.width" value="px"/>
 		</element>
-		<element kind="staticText" uuid="b8747735-b1d7-4503-a4ed-dff5ef325c8a" mode="Opaque" x="310" y="133" width="25" height="17" style="tableHeader">
+		<element kind="textField" uuid="30126b3e-ae11-4631-b743-21095fe6645e" mode="Opaque" x="250" y="110" width="75" height="23" style="tableHeader">
+			<expression><![CDATA[((java.util.List<String>)$P{dateColumns}.get($V{PAGE_NUMBER} - 1)).get(0)]]></expression>
+		</element>
+		<element kind="staticText" uuid="b8747735-b1d7-4503-a4ed-dff5ef325c8a" mode="Opaque" x="300" y="133" width="25" height="17" style="tableHeader">
 			<text><![CDATA[下旬]]></text>
 		</element>
-		<element kind="staticText" uuid="4151f26c-ece8-4db8-af18-3ce08c45169f" mode="Opaque" x="285" y="133" width="25" height="17" style="tableHeader">
+		<element kind="staticText" uuid="4151f26c-ece8-4db8-af18-3ce08c45169f" mode="Opaque" x="275" y="133" width="25" height="17" style="tableHeader">
 			<text><![CDATA[中旬]]></text>
 		</element>
-		<element kind="staticText" uuid="20fd56ac-180e-46f4-9d99-400eb83b71ca" mode="Opaque" x="260" y="133" width="25" height="17" style="tableHeader">
+		<element kind="staticText" uuid="20fd56ac-180e-46f4-9d99-400eb83b71ca" mode="Opaque" x="250" y="133" width="25" height="17" style="tableHeader">
 			<text><![CDATA[上旬]]></text>
 		</element>
-		<element kind="textField" uuid="30126b3e-ae11-4631-b743-21095fe6645e" mode="Opaque" x="260" y="110" width="75" height="23" style="tableHeader">
-			<expression><![CDATA[$P{dateColumns}.get(0)]]></expression>
+		<element kind="textField" uuid="e32ca1c0-8dfe-4a6c-b0c9-4e874d3fca51" mode="Opaque" x="325" y="110" width="75" height="23" style="tableHeader">
+			<expression><![CDATA[((java.util.List<String>)$P{dateColumns}.get($V{PAGE_NUMBER} - 1)).get(1)]]></expression>
 		</element>
-		<element kind="staticText" uuid="208ab8fa-a00f-4600-b30b-fcf0e8690ecd" mode="Opaque" x="385" y="133" width="25" height="17" style="tableHeader">
+		<element kind="staticText" uuid="208ab8fa-a00f-4600-b30b-fcf0e8690ecd" mode="Opaque" x="375" y="133" width="25" height="17" style="tableHeader">
 			<text><![CDATA[下旬]]></text>
 		</element>
-		<element kind="staticText" uuid="d6bfd340-622e-44cc-94a0-648894b4f50f" mode="Opaque" x="360" y="133" width="25" height="17" style="tableHeader">
+		<element kind="staticText" uuid="d6bfd340-622e-44cc-94a0-648894b4f50f" mode="Opaque" x="350" y="133" width="25" height="17" style="tableHeader">
 			<text><![CDATA[中旬]]></text>
 		</element>
-		<element kind="staticText" uuid="b2087970-a5ba-4d43-a9bc-0d0d7f3da44a" mode="Opaque" x="335" y="133" width="25" height="17" style="tableHeader">
+		<element kind="staticText" uuid="b2087970-a5ba-4d43-a9bc-0d0d7f3da44a" mode="Opaque" x="325" y="133" width="25" height="17" style="tableHeader">
 			<text><![CDATA[上旬]]></text>
 		</element>
-		<element kind="textField" uuid="e32ca1c0-8dfe-4a6c-b0c9-4e874d3fca51" mode="Opaque" x="335" y="110" width="75" height="23" style="tableHeader">
-			<expression><![CDATA[$P{dateColumns}.get(1)]]></expression>
+		<element kind="textField" uuid="1b4c937d-b164-4002-82e2-9452b6fce8f4" mode="Opaque" x="400" y="110" width="75" height="23" style="tableHeader">
+			<expression><![CDATA[((java.util.List<String>)$P{dateColumns}.get($V{PAGE_NUMBER} - 1)).get(2)]]></expression>
 		</element>
-		<element kind="staticText" uuid="4a16ec0e-f929-4d18-a055-f3d20556b6d4" mode="Opaque" x="460" y="133" width="25" height="17" style="tableHeader">
+		<element kind="staticText" uuid="4a16ec0e-f929-4d18-a055-f3d20556b6d4" mode="Opaque" x="450" y="133" width="25" height="17" style="tableHeader">
 			<text><![CDATA[下旬]]></text>
 		</element>
-		<element kind="staticText" uuid="0c3e20a2-093d-427a-af9f-c310a77656e7" mode="Opaque" x="435" y="133" width="25" height="17" style="tableHeader">
+		<element kind="staticText" uuid="0c3e20a2-093d-427a-af9f-c310a77656e7" mode="Opaque" x="425" y="133" width="25" height="17" style="tableHeader">
 			<text><![CDATA[中旬]]></text>
 		</element>
-		<element kind="staticText" uuid="73085ca6-2ff5-41c3-bf3d-eccdff28afd3" mode="Opaque" x="410" y="133" width="25" height="17" style="tableHeader">
+		<element kind="staticText" uuid="73085ca6-2ff5-41c3-bf3d-eccdff28afd3" mode="Opaque" x="400" y="133" width="25" height="17" style="tableHeader">
 			<text><![CDATA[上旬]]></text>
 		</element>
-		<element kind="textField" uuid="1b4c937d-b164-4002-82e2-9452b6fce8f4" mode="Opaque" x="410" y="110" width="75" height="23" style="tableHeader">
-			<expression><![CDATA[$P{dateColumns}.get(2)]]></expression>
+		<element kind="textField" uuid="d0215b86-56ae-4972-b92f-53c29cebe65f" mode="Opaque" x="475" y="110" width="75" height="23" style="tableHeader">
+			<expression><![CDATA[((java.util.List<String>)$P{dateColumns}.get($V{PAGE_NUMBER} - 1)).get(3)]]></expression>
 		</element>
-		<element kind="staticText" uuid="de5bfe0a-37b4-43ff-85d0-525a4eb8bda4" mode="Opaque" x="535" y="133" width="25" height="17" style="tableHeader">
+		<element kind="staticText" uuid="de5bfe0a-37b4-43ff-85d0-525a4eb8bda4" mode="Opaque" x="525" y="133" width="25" height="17" style="tableHeader">
 			<text><![CDATA[下旬]]></text>
 		</element>
-		<element kind="staticText" uuid="d776abb3-974f-44b1-8c9b-34db5f8a16c8" mode="Opaque" x="510" y="133" width="25" height="17" style="tableHeader">
+		<element kind="staticText" uuid="d776abb3-974f-44b1-8c9b-34db5f8a16c8" mode="Opaque" x="500" y="133" width="25" height="17" style="tableHeader">
 			<text><![CDATA[中旬]]></text>
 		</element>
-		<element kind="staticText" uuid="4769017c-154b-42c7-a19f-fed802484eae" mode="Opaque" x="485" y="133" width="25" height="17" style="tableHeader">
+		<element kind="staticText" uuid="4769017c-154b-42c7-a19f-fed802484eae" mode="Opaque" x="475" y="133" width="25" height="17" style="tableHeader">
 			<text><![CDATA[上旬]]></text>
 		</element>
-		<element kind="textField" uuid="d0215b86-56ae-4972-b92f-53c29cebe65f" mode="Opaque" x="485" y="110" width="75" height="23" style="tableHeader">
-			<expression><![CDATA[$P{dateColumns}.get(3)]]></expression>
+		<element kind="textField" uuid="242d55bc-b3b5-421e-b5ba-9914d03042cc" mode="Opaque" x="550" y="110" width="75" height="23" style="tableHeader">
+			<expression><![CDATA[((java.util.List<String>)$P{dateColumns}.get($V{PAGE_NUMBER} - 1)).get(4)]]></expression>
 		</element>
-		<element kind="staticText" uuid="cef9a82e-6a0b-4f5b-b31a-f3e6cf834eb4" mode="Opaque" x="610" y="133" width="25" height="17" style="tableHeader">
+		<element kind="staticText" uuid="cef9a82e-6a0b-4f5b-b31a-f3e6cf834eb4" mode="Opaque" x="600" y="133" width="25" height="17" style="tableHeader">
 			<text><![CDATA[下旬]]></text>
 		</element>
-		<element kind="staticText" uuid="e448f796-1c86-410f-ae23-30d8b489e4a2" mode="Opaque" x="585" y="133" width="25" height="17" style="tableHeader">
+		<element kind="staticText" uuid="e448f796-1c86-410f-ae23-30d8b489e4a2" mode="Opaque" x="575" y="133" width="25" height="17" style="tableHeader">
 			<text><![CDATA[中旬]]></text>
 		</element>
-		<element kind="staticText" uuid="d8f2ba7e-cbcd-484c-87c2-9e1b5d7ff939" mode="Opaque" x="560" y="133" width="25" height="17" style="tableHeader">
+		<element kind="staticText" uuid="d8f2ba7e-cbcd-484c-87c2-9e1b5d7ff939" mode="Opaque" x="550" y="133" width="25" height="17" style="tableHeader">
 			<text><![CDATA[上旬]]></text>
 		</element>
-		<element kind="textField" uuid="242d55bc-b3b5-421e-b5ba-9914d03042cc" mode="Opaque" x="560" y="110" width="75" height="23" style="tableHeader">
-			<expression><![CDATA[$P{dateColumns}.get(4)]]></expression>
+		<element kind="textField" uuid="c5cd9330-eced-457d-85f7-e6efe151fea9" mode="Opaque" x="625" y="110" width="75" height="23" style="tableHeader">
+			<expression><![CDATA[((java.util.List<String>)$P{dateColumns}.get($V{PAGE_NUMBER} - 1)).get(5)]]></expression>
 		</element>
-		<element kind="staticText" uuid="c25c52c8-c346-494a-9bab-7cfafeb98e57" mode="Opaque" x="685" y="133" width="25" height="17" style="tableHeader">
+		<element kind="staticText" uuid="c25c52c8-c346-494a-9bab-7cfafeb98e57" mode="Opaque" x="675" y="133" width="25" height="17" style="tableHeader">
 			<text><![CDATA[下旬]]></text>
 		</element>
-		<element kind="staticText" uuid="595aabc3-c737-4c84-b99f-4c799f993ebb" mode="Opaque" x="660" y="133" width="25" height="17" style="tableHeader">
+		<element kind="staticText" uuid="595aabc3-c737-4c84-b99f-4c799f993ebb" mode="Opaque" x="650" y="133" width="25" height="17" style="tableHeader">
 			<text><![CDATA[中旬]]></text>
 		</element>
-		<element kind="staticText" uuid="8dee0103-beb1-472b-97a8-fcac20920b72" mode="Opaque" x="635" y="133" width="25" height="17" style="tableHeader">
+		<element kind="staticText" uuid="8dee0103-beb1-472b-97a8-fcac20920b72" mode="Opaque" x="625" y="133" width="25" height="17" style="tableHeader">
 			<text><![CDATA[上旬]]></text>
 		</element>
-		<element kind="textField" uuid="c5cd9330-eced-457d-85f7-e6efe151fea9" mode="Opaque" x="635" y="110" width="75" height="23" style="tableHeader">
-			<expression><![CDATA[$P{dateColumns}.get(5)]]></expression>
+		<element kind="textField" uuid="de40edff-6840-4e51-94ad-736790ae1101" mode="Opaque" x="700" y="110" width="75" height="23" style="tableHeader">
+			<expression><![CDATA[((java.util.List<String>)$P{dateColumns}.get($V{PAGE_NUMBER} - 1)).get(6)]]></expression>
 		</element>
-		<element kind="staticText" uuid="4d8c8a32-3372-4b53-bb39-720178224d3f" mode="Opaque" x="760" y="133" width="25" height="17" style="tableHeader">
+		<element kind="staticText" uuid="4d8c8a32-3372-4b53-bb39-720178224d3f" mode="Opaque" x="750" y="133" width="25" height="17" style="tableHeader">
 			<text><![CDATA[下旬]]></text>
 		</element>
-		<element kind="staticText" uuid="0d73ab4a-0035-43a7-a8e7-3f3aaaeea7f7" mode="Opaque" x="735" y="133" width="25" height="17" style="tableHeader">
+		<element kind="staticText" uuid="0d73ab4a-0035-43a7-a8e7-3f3aaaeea7f7" mode="Opaque" x="725" y="133" width="25" height="17" style="tableHeader">
 			<text><![CDATA[中旬]]></text>
 		</element>
-		<element kind="staticText" uuid="c2fbcba3-14f4-4599-80f3-9572cb59c20b" mode="Opaque" x="710" y="133" width="25" height="17" style="tableHeader">
+		<element kind="staticText" uuid="c2fbcba3-14f4-4599-80f3-9572cb59c20b" mode="Opaque" x="700" y="133" width="25" height="17" style="tableHeader">
 			<text><![CDATA[上旬]]></text>
 		</element>
-		<element kind="textField" uuid="de40edff-6840-4e51-94ad-736790ae1101" mode="Opaque" x="710" y="110" width="75" height="23" style="tableHeader">
-			<expression><![CDATA[$P{dateColumns}.get(6)]]></expression>
+		<element kind="textField" uuid="16d9235b-8c1b-4d74-90c7-ade0bcb2ac5c" mode="Opaque" x="775" y="110" width="75" height="23" style="tableHeader">
+			<expression><![CDATA[((java.util.List<String>)$P{dateColumns}.get($V{PAGE_NUMBER} - 1)).get(7)]]></expression>
+		</element>
+		<element kind="staticText" uuid="2564b3c7-f2cb-4d84-baee-97c980ced590" mode="Opaque" x="825" y="133" width="25" height="17" style="tableHeader">
+			<text><![CDATA[下旬]]></text>
+		</element>
+		<element kind="staticText" uuid="f1caa4bd-1cef-4e5a-a077-381f936a3cda" mode="Opaque" x="800" y="133" width="25" height="17" style="tableHeader">
+			<text><![CDATA[中旬]]></text>
+		</element>
+		<element kind="staticText" uuid="8db9320d-0c36-4fad-9529-b4af90a317f8" mode="Opaque" x="775" y="133" width="25" height="17" style="tableHeader">
+			<text><![CDATA[上旬]]></text>
+		</element>
+		<element kind="textField" uuid="83ef7f98-293b-4b96-b2b7-5a13225a92d3" mode="Opaque" x="850" y="110" width="75" height="23" style="tableHeader">
+			<expression><![CDATA[((java.util.List<String>)$P{dateColumns}.get($V{PAGE_NUMBER} - 1)).get(8)]]></expression>
+		</element>
+		<element kind="staticText" uuid="88d1edea-1c26-4928-be4c-65f35f0dee6f" mode="Opaque" x="900" y="133" width="25" height="17" style="tableHeader">
+			<text><![CDATA[下旬]]></text>
+		</element>
+		<element kind="staticText" uuid="5d72eda4-db53-49f1-8939-6cdc5d8f6c6a" mode="Opaque" x="875" y="133" width="25" height="17" style="tableHeader">
+			<text><![CDATA[中旬]]></text>
+		</element>
+		<element kind="staticText" uuid="990c2c04-bde7-4365-acad-009b6ff3fe28" mode="Opaque" x="850" y="133" width="25" height="17" style="tableHeader">
+			<text><![CDATA[上旬]]></text>
+		</element>
+		<element kind="textField" uuid="7efb188e-4d83-49ed-874f-6b59974a14d6" mode="Opaque" x="925" y="110" width="75" height="23" style="tableHeader">
+			<expression><![CDATA[((java.util.List<String>)$P{dateColumns}.get($V{PAGE_NUMBER} - 1)).get(9)]]></expression>
+		</element>
+		<element kind="staticText" uuid="8c743728-ec8f-42b2-a9f5-8cfc2cbb3c42" mode="Opaque" x="975" y="133" width="25" height="17" style="tableHeader">
+			<text><![CDATA[下旬]]></text>
+		</element>
+		<element kind="staticText" uuid="fb0444e4-3247-46fe-9cbc-606ba0c4951d" mode="Opaque" x="950" y="133" width="25" height="17" style="tableHeader">
+			<text><![CDATA[中旬]]></text>
+		</element>
+		<element kind="staticText" uuid="c74ef9bc-26b9-4574-91f4-85ca8edf180c" mode="Opaque" x="925" y="133" width="25" height="17" style="tableHeader">
+			<text><![CDATA[上旬]]></text>
+		</element>
+		<element kind="textField" uuid="2b20c33f-77ca-49eb-9ad5-7151a392e226" mode="Opaque" x="1000" y="110" width="75" height="23" style="tableHeader">
+			<expression><![CDATA[((java.util.List<String>)$P{dateColumns}.get($V{PAGE_NUMBER} - 1)).get(10)]]></expression>
+		</element>
+		<element kind="staticText" uuid="c5faece5-ecb3-4ec6-a0a9-6c92fba0569d" mode="Opaque" x="1050" y="133" width="25" height="17" style="tableHeader">
+			<text><![CDATA[下旬]]></text>
+		</element>
+		<element kind="staticText" uuid="661c2ba5-a2d3-41b0-939f-6dd900bccd8c" mode="Opaque" x="1025" y="133" width="25" height="17" style="tableHeader">
+			<text><![CDATA[中旬]]></text>
+		</element>
+		<element kind="staticText" uuid="4936f9aa-2fac-4961-b9e6-06d837bc9d85" mode="Opaque" x="1000" y="133" width="25" height="17" style="tableHeader">
+			<text><![CDATA[上旬]]></text>
+		</element>
+		<element kind="textField" uuid="d6fddb2e-209a-4e21-af70-28d3ba191362" mode="Opaque" x="1075" y="110" width="75" height="23" style="tableHeader">
+			<expression><![CDATA[((java.util.List<String>)$P{dateColumns}.get($V{PAGE_NUMBER} - 1)).get(11)]]></expression>
+		</element>
+		<element kind="staticText" uuid="1e5dcee6-d346-43cb-98dd-4039b2390540" mode="Opaque" x="1125" y="133" width="25" height="17" style="tableHeader">
+			<text><![CDATA[下旬]]></text>
+		</element>
+		<element kind="staticText" uuid="ba6d9245-4bac-4d7f-8d3a-b62c89720283" mode="Opaque" x="1100" y="133" width="25" height="17" style="tableHeader">
+			<text><![CDATA[中旬]]></text>
+		</element>
+		<element kind="staticText" uuid="339349a7-627c-431b-b948-05a4208acc6a" mode="Opaque" x="1075" y="133" width="25" height="17" style="tableHeader">
+			<text><![CDATA[上旬]]></text>
 		</element>
 	</columnHeader>
 	<detail>
-		<band height="37" splitType="Stretch">
+		<band height="36" splitType="Stretch">
 			<element kind="textField" uuid="6e2f216f-b058-4a3a-97d6-265daeaa4231" x="0" y="0" width="75" height="36" style="tableFieldCenter">
 				<expression><![CDATA[$F{constrProcessShowNm}]]></expression>
 			</element>
@@ -261,149 +1950,252 @@
 			<element kind="staticText" uuid="1f7a372d-519b-42aa-8ef8-2e4bc0590e75" mode="Opaque" x="75" y="18" width="25" height="18" style="tableHeader">
 				<text><![CDATA[実績]]></text>
 			</element>
-			<element kind="textField" uuid="4ed8de4a-de45-457c-8ae9-63a19deff42f" x="100" y="0" width="80" height="18" style="tableFieldRight">
-				<expression><![CDATA[new java.text.SimpleDateFormat("yyyy年MM月dd日").format(new java.text.SimpleDateFormat("yyyyMMdd").parse($F{planStartDt}))]]></expression>
+			<element kind="textField" uuid="4ed8de4a-de45-457c-8ae9-63a19deff42f" x="100" y="0" width="75" height="18" style="tableFieldRight">
+				<expression><![CDATA[$F{planStartDt} == "" ? "" : new java.text.SimpleDateFormat("yyyy年MM月dd日").format(new java.text.SimpleDateFormat("yyyyMMdd").parse($F{planStartDt}))]]></expression>
+				<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
+				<property name="com.jaspersoft.studio.unit.width" value="px"/>
+			</element>
+			<element kind="textField" uuid="b71a5cbd-deaf-488e-a494-0a5888ecc7a0" x="100" y="18" width="75" height="18" style="tableFieldRight">
+				<expression><![CDATA[$F{actStartDt} == "" ? "" : new java.text.SimpleDateFormat("yyyy年MM月dd日").format(new java.text.SimpleDateFormat("yyyyMMdd").parse($F{actStartDt}))]]></expression>
+				<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
+				<property name="com.jaspersoft.studio.unit.width" value="px"/>
+			</element>
+			<element kind="textField" uuid="755935ee-5eef-4c97-9f2b-84a1aaa698e4" x="175" y="0" width="75" height="18" style="tableFieldRight">
+				<expression><![CDATA[$F{planEndDt} == "" ? "" : new java.text.SimpleDateFormat("yyyy年MM月dd日").format(new java.text.SimpleDateFormat("yyyyMMdd").parse($F{planEndDt}))]]></expression>
+				<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
+				<property name="com.jaspersoft.studio.unit.width" value="px"/>
+			</element>
+			<element kind="textField" uuid="520b8344-0793-46f3-b458-9b362dee1a44" x="175" y="18" width="75" height="18" style="tableFieldRight">
+				<expression><![CDATA[$F{actEndDt} == "" ? "" : new java.text.SimpleDateFormat("yyyy年MM月dd日").format(new java.text.SimpleDateFormat("yyyyMMdd").parse($F{actEndDt}))]]></expression>
+				<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
+				<property name="com.jaspersoft.studio.unit.width" value="px"/>
+			</element>
+			<element kind="textField" uuid="1459fae0-a9ed-48f6-87af-d3dc4083bd1e" x="250" y="0" width="25" height="18" style="planDtEarly0">
 				<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
 			</element>
-			<element kind="textField" uuid="b71a5cbd-deaf-488e-a494-0a5888ecc7a0" x="100" y="18" width="80" height="18" style="tableFieldRight">
-				<expression><![CDATA[new java.text.SimpleDateFormat("yyyy年MM月dd日").format(new java.text.SimpleDateFormat("yyyyMMdd").parse($F{actStartDt}))]]></expression>
+			<element kind="textField" uuid="00002dfc-1633-43f1-aaa5-ff7d87d4ba13" x="250" y="18" width="25" height="18" style="actDtEarly0">
 				<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
 			</element>
-			<element kind="textField" uuid="755935ee-5eef-4c97-9f2b-84a1aaa698e4" x="180" y="0" width="80" height="18" style="tableFieldRight">
-				<expression><![CDATA[new java.text.SimpleDateFormat("yyyy年MM月dd日").format(new java.text.SimpleDateFormat("yyyyMMdd").parse($F{planEndDt}))]]></expression>
+			<element kind="textField" uuid="443503cb-5220-402c-8798-e6c4d85422a0" x="275" y="0" width="25" height="18" style="planDtMiddle0">
 				<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
 			</element>
-			<element kind="textField" uuid="520b8344-0793-46f3-b458-9b362dee1a44" x="180" y="18" width="80" height="18" style="planStartDtColor">
-				<expression><![CDATA[new java.text.SimpleDateFormat("yyyy年MM月dd日").format(new java.text.SimpleDateFormat("yyyyMMdd").parse($F{actEndDt}))]]></expression>
+			<element kind="textField" uuid="dcee6ce2-88f0-414d-b055-6c9039856a84" x="275" y="18" width="25" height="18" style="actDtMiddle0">
 				<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
 			</element>
-			<element kind="textField" uuid="1459fae0-a9ed-48f6-87af-d3dc4083bd1e" x="260" y="0" width="25" height="18" style="planStartDtColor">
+			<element kind="textField" uuid="b580be68-2216-43cc-bf60-c423eff4817d" x="300" y="0" width="25" height="18" style="planDtLate0">
 				<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
 			</element>
-			<element kind="textField" uuid="00002dfc-1633-43f1-aaa5-ff7d87d4ba13" x="260" y="18" width="25" height="18" style="actStartDtColor">
+			<element kind="textField" uuid="5210e1f5-d670-4493-8e25-f00714accd7a" x="300" y="18" width="25" height="18" style="actDtLate0">
 				<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
 			</element>
-			<element kind="textField" uuid="443503cb-5220-402c-8798-e6c4d85422a0" x="285" y="0" width="25" height="18" style="planStartDtColor">
+			<element kind="textField" uuid="be268ae9-a808-44ed-ab78-c5722a8a073f" x="325" y="0" width="25" height="18" style="planDtEarly1">
 				<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
 			</element>
-			<element kind="textField" uuid="dcee6ce2-88f0-414d-b055-6c9039856a84" x="285" y="18" width="25" height="18" style="actStartDtColor">
+			<element kind="textField" uuid="447c86c2-68c7-4cb9-8364-ce1efce296f2" x="325" y="18" width="25" height="18" style="actDtEarly1">
 				<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
 			</element>
-			<element kind="textField" uuid="b580be68-2216-43cc-bf60-c423eff4817d" x="310" y="0" width="25" height="18" style="planStartDtColor">
+			<element kind="textField" uuid="210715e5-1ef3-44ee-9700-abb795a32da8" x="350" y="0" width="25" height="18" style="planDtMiddle1">
 				<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
 			</element>
-			<element kind="textField" uuid="5210e1f5-d670-4493-8e25-f00714accd7a" x="310" y="18" width="25" height="18" style="actStartDtColor">
+			<element kind="textField" uuid="5e1edf63-6e78-415a-85df-97606a49bb25" x="350" y="18" width="25" height="18" style="actDtMiddle1">
 				<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
 			</element>
-			<element kind="textField" uuid="be268ae9-a808-44ed-ab78-c5722a8a073f" x="335" y="0" width="25" height="18" style="planStartDtColor">
+			<element kind="textField" uuid="a79556c3-b211-4c01-a27b-a5d188012e28" x="375" y="0" width="25" height="18" style="planDtEarly1">
 				<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
 			</element>
-			<element kind="textField" uuid="447c86c2-68c7-4cb9-8364-ce1efce296f2" x="335" y="18" width="25" height="18" style="actStartDtColor">
+			<element kind="textField" uuid="7f4dee83-f886-4c4f-b898-8590ebd45218" x="375" y="18" width="25" height="18" style="actDtLate1">
 				<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
 			</element>
-			<element kind="textField" uuid="210715e5-1ef3-44ee-9700-abb795a32da8" x="360" y="0" width="25" height="18" style="planStartDtColor">
+			<element kind="textField" uuid="eb881151-09cb-4c7c-8132-d57eea7f1644" x="400" y="0" width="25" height="18" style="planDtEarly2">
 				<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
 			</element>
-			<element kind="textField" uuid="5e1edf63-6e78-415a-85df-97606a49bb25" x="360" y="18" width="25" height="18" style="actStartDtColor">
+			<element kind="textField" uuid="879b91d8-2b54-4e13-b660-bcb76e7ec202" x="400" y="18" width="25" height="18" style="actDtEarly2">
 				<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
 			</element>
-			<element kind="textField" uuid="a79556c3-b211-4c01-a27b-a5d188012e28" x="385" y="0" width="25" height="18" style="planStartDtColor">
+			<element kind="textField" uuid="d06ccd5e-d4e4-464c-81c4-8bde38d72daa" x="425" y="0" width="25" height="18" style="planDtMiddle2">
 				<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
 			</element>
-			<element kind="textField" uuid="7f4dee83-f886-4c4f-b898-8590ebd45218" x="385" y="18" width="25" height="18" style="actStartDtColor">
+			<element kind="textField" uuid="1f2924fb-d28d-4348-a966-30c796c01672" x="425" y="18" width="25" height="18" style="actDtMiddle2">
 				<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
 			</element>
-			<element kind="textField" uuid="eb881151-09cb-4c7c-8132-d57eea7f1644" x="410" y="0" width="25" height="18" style="planStartDtColor">
+			<element kind="textField" uuid="a0e6d0fa-e750-405c-95e8-0113ff22d087" x="450" y="0" width="25" height="18" style="planDtLate2">
 				<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
 			</element>
-			<element kind="textField" uuid="879b91d8-2b54-4e13-b660-bcb76e7ec202" x="410" y="18" width="25" height="18" style="actStartDtColor">
+			<element kind="textField" uuid="2dee0099-0d58-452e-938d-7ac855aec732" x="450" y="18" width="25" height="18" style="actDtLate2">
 				<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
 			</element>
-			<element kind="textField" uuid="d06ccd5e-d4e4-464c-81c4-8bde38d72daa" x="435" y="0" width="25" height="18" style="planStartDtColor">
+			<element kind="textField" uuid="5fa3cfb8-ec5d-4fce-a132-11838df7bd3f" x="475" y="0" width="25" height="18" style="planDtEarly3">
 				<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
 			</element>
-			<element kind="textField" uuid="1f2924fb-d28d-4348-a966-30c796c01672" x="435" y="18" width="25" height="18" style="actStartDtColor">
+			<element kind="textField" uuid="fbb1f968-49dd-46fd-812a-d50a672a3f7b" x="475" y="18" width="25" height="18" style="actDtEarly3">
 				<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
 			</element>
-			<element kind="textField" uuid="a0e6d0fa-e750-405c-95e8-0113ff22d087" x="460" y="0" width="25" height="18" style="planStartDtColor">
+			<element kind="textField" uuid="16a8e4a5-5cd0-4af2-8da1-e6aa6fef7cae" x="500" y="0" width="25" height="18" style="planDtMiddle3">
 				<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
 			</element>
-			<element kind="textField" uuid="2dee0099-0d58-452e-938d-7ac855aec732" x="460" y="18" width="25" height="18" style="actStartDtColor">
+			<element kind="textField" uuid="154bd3fc-7a29-4560-9964-b6dcb8f62735" x="500" y="18" width="25" height="18" style="actDtMiddle3">
 				<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
 			</element>
-			<element kind="textField" uuid="5fa3cfb8-ec5d-4fce-a132-11838df7bd3f" x="485" y="0" width="25" height="18" style="planStartDtColor">
+			<element kind="textField" uuid="3ed20542-5c47-4e0d-bee2-34ba50bfd935" x="525" y="0" width="25" height="18" style="planDtLate3">
 				<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
 			</element>
-			<element kind="textField" uuid="fbb1f968-49dd-46fd-812a-d50a672a3f7b" x="485" y="18" width="25" height="18" style="actStartDtColor">
+			<element kind="textField" uuid="cf026b51-cc4c-48ef-8110-4e084cc7e8be" x="525" y="18" width="25" height="18" style="actDtLate3">
 				<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
 			</element>
-			<element kind="textField" uuid="16a8e4a5-5cd0-4af2-8da1-e6aa6fef7cae" x="510" y="0" width="25" height="18" style="planStartDtColor">
+			<element kind="textField" uuid="170d1d00-4289-4be1-a337-8112d03f9748" x="550" y="0" width="25" height="18" style="planDtEarly4">
 				<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
 			</element>
-			<element kind="textField" uuid="154bd3fc-7a29-4560-9964-b6dcb8f62735" x="510" y="18" width="25" height="18" style="actStartDtColor">
+			<element kind="textField" uuid="805cc6a1-3326-4b6b-9dd4-7e95c92c39fb" x="550" y="18" width="25" height="18" style="actDtEarly4">
 				<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
 			</element>
-			<element kind="textField" uuid="3ed20542-5c47-4e0d-bee2-34ba50bfd935" x="535" y="0" width="25" height="18" style="planStartDtColor">
+			<element kind="textField" uuid="1c6fb6c0-2256-4e17-b31e-b2e061094cb5" x="575" y="0" width="25" height="18" style="planDtMiddle4">
 				<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
 			</element>
-			<element kind="textField" uuid="cf026b51-cc4c-48ef-8110-4e084cc7e8be" x="535" y="18" width="25" height="18" style="actStartDtColor">
+			<element kind="textField" uuid="4589aa44-9849-46ad-b91c-b1b67108d8f8" x="575" y="18" width="25" height="18" style="actDtMiddle4">
 				<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
 			</element>
-			<element kind="textField" uuid="170d1d00-4289-4be1-a337-8112d03f9748" x="560" y="0" width="25" height="18" style="planStartDtColor">
+			<element kind="textField" uuid="f544c9db-e458-42f4-9670-b66273a1cf04" x="600" y="0" width="25" height="18" style="planDtLate4">
 				<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
 			</element>
-			<element kind="textField" uuid="805cc6a1-3326-4b6b-9dd4-7e95c92c39fb" x="560" y="18" width="25" height="18" style="actStartDtColor">
+			<element kind="textField" uuid="e0b8adab-a03e-48f1-969a-7f283acf716e" x="600" y="18" width="25" height="18" style="actDtLate4">
 				<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
 			</element>
-			<element kind="textField" uuid="1c6fb6c0-2256-4e17-b31e-b2e061094cb5" x="585" y="0" width="25" height="18" style="planStartDtColor">
+			<element kind="textField" uuid="5edff5de-a7a3-4ad6-80b3-245ebb2a3f9b" x="625" y="0" width="25" height="18" style="planDtEarly5">
 				<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
 			</element>
-			<element kind="textField" uuid="4589aa44-9849-46ad-b91c-b1b67108d8f8" x="585" y="18" width="25" height="18" style="actStartDtColor">
+			<element kind="textField" uuid="2e2cbe2a-5676-484a-aca3-c32bd288b333" x="625" y="18" width="25" height="18" style="actDtEarly5">
 				<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
 			</element>
-			<element kind="textField" uuid="f544c9db-e458-42f4-9670-b66273a1cf04" x="610" y="0" width="25" height="18" style="planStartDtColor">
+			<element kind="textField" uuid="cf842ad7-a17c-456f-ad17-64517c135199" x="650" y="0" width="25" height="18" style="planDtMiddle5">
 				<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
 			</element>
-			<element kind="textField" uuid="e0b8adab-a03e-48f1-969a-7f283acf716e" x="610" y="18" width="25" height="18" style="actStartDtColor">
+			<element kind="textField" uuid="df397522-4242-498c-b238-13abcc36626d" x="650" y="18" width="25" height="18" style="actDtMiddle5">
 				<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
 			</element>
-			<element kind="textField" uuid="5edff5de-a7a3-4ad6-80b3-245ebb2a3f9b" x="635" y="0" width="25" height="18" style="planStartDtColor">
+			<element kind="textField" uuid="41017131-a195-42de-9c75-a00901b2d610" x="675" y="0" width="25" height="18" style="planDtLate5">
 				<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
 			</element>
-			<element kind="textField" uuid="2e2cbe2a-5676-484a-aca3-c32bd288b333" x="635" y="18" width="25" height="18" style="actStartDtColor">
+			<element kind="textField" uuid="d4b853be-0fed-43d6-9b47-042640c2e240" x="675" y="18" width="25" height="18" style="actDtLate5">
 				<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
 			</element>
-			<element kind="textField" uuid="cf842ad7-a17c-456f-ad17-64517c135199" x="660" y="0" width="25" height="18" style="planStartDtColor">
+			<element kind="textField" uuid="92d427e0-1ecc-4b50-9451-6a540e3eb0af" x="700" y="0" width="25" height="18" style="planDtEarly6">
 				<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
 			</element>
-			<element kind="textField" uuid="df397522-4242-498c-b238-13abcc36626d" x="660" y="18" width="25" height="18" style="actStartDtColor">
+			<element kind="textField" uuid="4afb5a0e-d136-4d37-bb57-7f211a8f5b37" x="700" y="18" width="25" height="18" style="actDtEarly6">
 				<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
 			</element>
-			<element kind="textField" uuid="41017131-a195-42de-9c75-a00901b2d610" x="685" y="0" width="25" height="18" style="planStartDtColor">
+			<element kind="textField" uuid="c88466a4-5543-48ad-b895-a4fba9049a69" x="725" y="0" width="25" height="18" style="planDtMiddle6">
 				<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
 			</element>
-			<element kind="textField" uuid="d4b853be-0fed-43d6-9b47-042640c2e240" x="685" y="18" width="25" height="18" style="actStartDtColor">
+			<element kind="textField" uuid="fa985ae7-447a-4974-9050-13e87284649e" x="725" y="18" width="25" height="18" style="actDtMiddle6">
 				<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
 			</element>
-			<element kind="textField" uuid="92d427e0-1ecc-4b50-9451-6a540e3eb0af" x="710" y="0" width="25" height="18" style="planStartDtColor">
+			<element kind="textField" uuid="b9ebbf66-890e-468b-bbc0-624f6ea56ebd" x="750" y="0" width="25" height="18" style="planDtLate6">
 				<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
 			</element>
-			<element kind="textField" uuid="4afb5a0e-d136-4d37-bb57-7f211a8f5b37" x="710" y="18" width="25" height="18" style="actStartDtColor">
+			<element kind="textField" uuid="a0222caa-acef-4993-a52e-4d36ad7fa488" x="750" y="18" width="25" height="18" style="actDtLate6">
 				<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
 			</element>
-			<element kind="textField" uuid="c88466a4-5543-48ad-b895-a4fba9049a69" x="735" y="0" width="25" height="18" style="planStartDtColor">
+			<element kind="textField" uuid="c23ffa7a-151e-4af9-a2a0-6eedf29fae69" x="775" y="0" width="25" height="18" style="planDtEarly7">
 				<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
 			</element>
-			<element kind="textField" uuid="fa985ae7-447a-4974-9050-13e87284649e" x="735" y="18" width="25" height="18" style="actStartDtColor">
+			<element kind="textField" uuid="92b5bf93-ca4c-4576-9356-87869e40a678" x="775" y="18" width="25" height="18" style="actDtEarly7">
 				<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
 			</element>
-			<element kind="textField" uuid="b9ebbf66-890e-468b-bbc0-624f6ea56ebd" x="760" y="0" width="25" height="18" style="planStartDtColor">
+			<element kind="textField" uuid="80adceb7-ac09-43da-bcc7-4a7219ff8831" x="800" y="0" width="25" height="18" style="planDtMiddle7">
 				<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
 			</element>
-			<element kind="textField" uuid="a0222caa-acef-4993-a52e-4d36ad7fa488" x="760" y="18" width="25" height="18" style="actStartDtColor">
+			<element kind="textField" uuid="60a57b00-fe9a-4f62-b636-14eb4040cdca" x="800" y="18" width="25" height="18" style="actDtMiddle7">
+				<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
+			</element>
+			<element kind="textField" uuid="5e0d75fc-1e01-48b9-861d-4e0b3922d379" x="825" y="0" width="25" height="18" style="planDtLate7">
+				<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
+			</element>
+			<element kind="textField" uuid="b45918b8-2835-423a-8b14-31bbcd9ac0f4" x="825" y="18" width="25" height="18" style="actDtLate7">
+				<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
+			</element>
+			<element kind="textField" uuid="de7e0690-11be-463e-953d-281c5177bcfd" x="850" y="0" width="25" height="18" style="planDtEarly8">
+				<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
+			</element>
+			<element kind="textField" uuid="52744d83-0ebc-4050-90f7-9359ad33489f" x="850" y="18" width="25" height="18" style="actDtEarly8">
+				<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
+			</element>
+			<element kind="textField" uuid="09e49a70-2732-401d-b624-7cf03e04bc97" x="875" y="0" width="25" height="18" style="planDtMiddle8">
+				<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
+			</element>
+			<element kind="textField" uuid="9c2f0241-53a4-4179-b841-5e55809d6e77" x="875" y="18" width="25" height="18" style="actDtMiddle8">
+				<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
+			</element>
+			<element kind="textField" uuid="77ace613-fda2-41cd-b86d-dedfd88dcb2d" x="900" y="0" width="25" height="18" style="planDtLate8">
+				<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
+			</element>
+			<element kind="textField" uuid="3abcf5ce-458d-43a6-a8c4-92179b0f8abd" x="900" y="18" width="25" height="18" style="actDtLate8">
+				<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
+			</element>
+			<element kind="textField" uuid="2b661789-a0c4-401a-82f1-e890761c1065" x="925" y="0" width="25" height="18" style="planDtEarly9">
+				<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
+			</element>
+			<element kind="textField" uuid="12e66092-bd48-4fcd-8b5c-6b83bdd84be7" x="925" y="18" width="25" height="18" style="actDtEarly9">
+				<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
+			</element>
+			<element kind="textField" uuid="a816b7dd-b908-40fe-9f17-c783fdac96e3" x="950" y="0" width="25" height="18" style="planDtMiddle9">
+				<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
+			</element>
+			<element kind="textField" uuid="cdcb1c7d-1e97-4fda-9f49-663cf91fd907" x="950" y="18" width="25" height="18" style="actDtMiddle9">
+				<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
+			</element>
+			<element kind="textField" uuid="a34f6433-0ffb-4658-852f-e3d556b9886a" x="975" y="0" width="25" height="18" style="planDtLate9">
+				<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
+			</element>
+			<element kind="textField" uuid="ef9b1796-13b2-4de2-9dd8-5459e92c556a" x="975" y="18" width="25" height="18" style="actDtLate9">
+				<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
+			</element>
+			<element kind="textField" uuid="88d423e7-f779-45cc-ae3d-0f6c38517eb6" x="1000" y="0" width="25" height="18" style="planDtEarly10">
+				<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
+			</element>
+			<element kind="textField" uuid="b98792ff-4dc9-4fcc-9584-fea53b62c31f" x="1000" y="18" width="25" height="18" style="actDtEarly10">
+				<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
+			</element>
+			<element kind="textField" uuid="8f91e3b8-527c-4b41-82ae-8c2d44c48d9a" x="1025" y="0" width="25" height="18" style="planDtMiddle10">
+				<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
+			</element>
+			<element kind="textField" uuid="160e7009-c3a3-40ca-bca5-82a5cfa6993d" x="1025" y="18" width="25" height="18" style="actDtMiddle10">
+				<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
+			</element>
+			<element kind="textField" uuid="1cdac59e-b3ac-41f7-ad52-ba11d62cfee7" x="1050" y="0" width="25" height="18" style="planDtLate10">
+				<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
+			</element>
+			<element kind="textField" uuid="2f57e951-c96b-4914-bf2e-bded5f80fd40" x="1050" y="18" width="25" height="18" style="actDtLate10">
+				<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
+			</element>
+			<element kind="textField" uuid="5f13de98-2d34-47c2-8db2-42cba8df837b" x="1075" y="0" width="25" height="18" style="planDtEarly11">
+				<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
+			</element>
+			<element kind="textField" uuid="7ac90db0-7f3f-4971-a6cc-c23bca77908f" x="1075" y="18" width="25" height="18" style="actDtEarly11">
+				<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
+			</element>
+			<element kind="textField" uuid="0a8193e1-cf6e-4cab-8242-a5b93b06b098" x="1100" y="0" width="25" height="18" style="planDtMiddle11">
+				<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
+			</element>
+			<element kind="textField" uuid="d1ab5053-19c3-440d-809e-5e3ff61eb0dc" x="1100" y="18" width="25" height="18" style="actDtMiddle11">
+				<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
+			</element>
+			<element kind="textField" uuid="f6146e7a-0852-4924-a960-29cd1fd15634" x="1125" y="0" width="25" height="18" style="planDtLate11">
+				<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
+			</element>
+			<element kind="textField" uuid="07c75f1b-186a-48a3-92cd-4be6d14497f1" x="1125" y="18" width="25" height="18" style="actDtLate11">
 				<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
 			</element>
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 		</band>
 	</detail>
+	<pageFooter height="24">
+		<element kind="textField" uuid="6b90f17e-b199-4c8c-aeb8-f39733aa1987" x="1008" y="3" width="86" height="20" fontName="ＭＳ ゴシック" hTextAlign="Right">
+			<expression><![CDATA[$V{PAGE_NUMBER}]]></expression>
+		</element>
+		<element kind="textField" uuid="be230bf2-70ba-4801-8f71-3ef2c4763ec5" x="1094" y="3" width="56" height="20" fontName="ＭＳ ゴシック" evaluationTime="Report" hTextAlign="Left">
+			<expression><![CDATA[" / " + $V{PAGE_NUMBER}]]></expression>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</element>
+	</pageFooter>
 </jasperReport>

@@ -12,6 +12,9 @@ springdoc-openapi-starter-webmvc-ui = { module = "org.springdoc:springdoc-openap
 
 commons-csv = { module = "org.apache.commons:commons-csv", version = "1.14.0" }
 
+icu4j = { module = "com.ibm.icu:icu4j", version = "74.2" }
+
+
 jasperreports = { module = "net.sf.jasperreports:jasperreports", version = "7.0.2" }
 jasperreports-pdf = { module = "net.sf.jasperreports:jasperreports-pdf", version = "7.0.2" }
 jasperreports-fonts = { module = "net.sf.jasperreports:jasperreports-fonts", version = "7.0.2" }

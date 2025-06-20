@@ -29,6 +29,10 @@ public class ExecBgInfoDto {
   @Schema(name = "execBgtCd", description = "実行予算コード")
   private String execBgtCd;
 
+  /** 実行予算コード. */
+  @Schema(name = "realExecBgtCd", description = "実行予算コード")
+  private String realExecBgtCd;
+
   /** 予算申請日. */
   @Schema(name = "bgtYmRegDt", description = "予算申請日")
   private String bgtYmRegDt;

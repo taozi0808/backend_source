@@ -17,4 +17,12 @@ public class R0010ReturnData {
   /** 部署選択肢リスト */
   @Schema(description = "部署選択肢リスト")
   List<MorGInfoDto> morGInfoDtoInfo;
+
+  /** 部署権限リスト */
+  @Schema(description = "部署権限リスト")
+  List<R0010S01Dto> r0010S01DtoInfo;
+
+  /** 役職権限リスト */
+  @Schema(description = "役職権限リスト")
+  List<R0010S02Dto> r0010S02DtoInfo;
 }

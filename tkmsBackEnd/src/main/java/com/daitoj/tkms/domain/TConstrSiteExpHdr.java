@@ -48,4 +48,13 @@ public class TConstrSiteExpHdr extends BaseEntity {
 
   @Column(name = "total_amt", precision = 11)
   private BigDecimal totalAmt;
+
+  @NotNull
+  @ColumnDefault("'2'")
+  @Column(name = "newest_flg", nullable = false, length = Integer.MAX_VALUE)
+  private String newestFlg;
+
+  @NotNull
+  @Column(name = "his_no", nullable = false)
+  private Integer hisNo;
 }

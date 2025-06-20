@@ -50,7 +50,7 @@ public class C0010Service {
   private static final String PDF_DATE_FORMAT = "yyyy年MM年dd日HH:mm:ss";
 
   /* 金額フォマード */
-  private static final String MONEY_FORMAT = "￥#,##0";
+  private static final String MONEY_FORMAT = "#,##0";
 
   /** CSVヘッダ */
   private static final String[] CSV_HEADER = {
@@ -62,10 +62,10 @@ public class C0010Service {
     "顧客名",
     "見積提出期限",
     "概算金額",
-    "着工希望時期",
-    "完工希望時期",
+    "着工希望日",
+    "完工希望日",
     "概算担当部門コード",
-    "概算部門",
+    "概算担当部門",
     "概算担当者コード",
     "概算担当者"
   };
@@ -255,12 +255,20 @@ public class C0010Service {
                 ankenInfo.getRoughEstCd(),
                 ankenInfo.getCustomerCd(),
                 ankenInfo.getCustomerName(),
-                ankenInfo.getEstSubmitDueDt(),
+                ankenInfo.getEstSubmitDueDt() == null
+                    ? ""
+                    : DateUtils.formatDateFromYYYYMMDD(
+                        ankenInfo.getEstSubmitDueDt(), CSV_DATE_FORMAT),
                 ankenInfo.getRoughEstTotalAmt() != null
                     ? new DecimalFormat(MONEY_FORMAT).format(ankenInfo.getRoughEstTotalAmt())
                     : "",
-                ankenInfo.getStartHopeYmd(),
-                ankenInfo.getCompHopeYmd(),
+                ankenInfo.getStartHopeYmd() == null
+                    ? ""
+                    : DateUtils.formatDateFromYYYYMMDD(
+                        ankenInfo.getStartHopeYmd(), CSV_DATE_FORMAT),
+                ankenInfo.getCompHopeYmd() == null
+                    ? ""
+                    : DateUtils.formatDateFromYYYYMMDD(ankenInfo.getCompHopeYmd(), CSV_DATE_FORMAT),
                 ankenInfo.getOrgCd(),
                 ankenInfo.getOrgNm(),
                 ankenInfo.getRoughEstPicCd(),

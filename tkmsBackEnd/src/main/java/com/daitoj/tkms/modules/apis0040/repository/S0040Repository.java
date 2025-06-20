@@ -3,7 +3,7 @@ package com.daitoj.tkms.modules.apis0040.repository;
 import com.daitoj.tkms.domain.TProject;
 import com.daitoj.tkms.modules.apis0040.service.dto.ExecBgtApprInfoDto;
 import jakarta.validation.constraints.NotNull;
-import java.time.Instant;
+import java.time.OffsetDateTime;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -52,7 +52,8 @@ public interface S0040Repository extends JpaRepository<TProject, Long> {
                                          AND il.id.itemClassCd = :itemClassCd
              WHERE wr.businessTypeCd.businessTypeCd = :businessTypeCd
                AND wa.apprSt                        = :apprSt
-               AND wa.apprEmpCd                     = :empCd
+               AND wr.requestAppCd                  = :empCd
+               AND wr.appAccountK                   = '1'
           ORDER BY cs.constrSiteCd
       """)
   List<ExecBgtApprInfoDto> findInitInfo(
@@ -103,7 +104,8 @@ public interface S0040Repository extends JpaRepository<TProject, Long> {
                                          AND il.id.itemClassCd = :itemClassCd
              WHERE wr.businessTypeCd.businessTypeCd = :businessTypeCd
                AND wa.apprSt                        = :apprSt
-               AND wa.apprEmpCd                     = :empCd
+               AND wr.requestAppCd                     = :empCd
+               AND wr.appAccountK                      = '1'
                AND (:constrSiteCd IS NULL    OR :constrSiteCd = ''
                                              OR eb.constrSiteCd LIKE %:constrSiteCd%)
                AND COALESCE(:requestDateFrom, wr.requestTs) <= wr.requestTs
@@ -117,8 +119,8 @@ public interface S0040Repository extends JpaRepository<TProject, Long> {
   List<ExecBgtApprInfoDto> findExecBgtInfo(
       @NotNull @Param("empCd") String empCd,
       @Param("constrSiteCd") String constrSiteCd,
-      @Param("requestDateFrom") Instant requestDateFrom,
-      @Param("requestDateTo") Instant requestDateTo,
+      @Param("requestDateFrom") OffsetDateTime requestDateFrom,
+      @Param("requestDateTo") OffsetDateTime requestDateTo,
       @Param("requestOfficeNm") String requestOfficeNm,
       @Param("requestEmpNm") String requestEmpNm,
       @Param("itemClassCd") String itemClassCd,
@@ -165,7 +167,8 @@ public interface S0040Repository extends JpaRepository<TProject, Long> {
         INNER JOIN MItemListSetting il    ON wa.apprSt = il.id.itemCd
                                           AND il.id.itemClassCd = :itemClassCd
              WHERE wr.businessTypeCd.businessTypeCd = :businessTypeCd
-               AND wa.apprEmpCd                     = :empCd
+               AND wr.requestAppCd                     = :empCd
+               AND wr.appAccountK                      = '1'
                AND wa.apprSt IN :listApprStatus
                AND (:constrSiteCd IS NULL    OR :constrSiteCd = ''
                                              OR eb.constrSiteCd LIKE %:constrSiteCd%)
@@ -181,8 +184,8 @@ public interface S0040Repository extends JpaRepository<TProject, Long> {
       @Param("listApprStatus") List<String> listApprStatus,
       @NotNull @Param("empCd") String empCd,
       @Param("constrSiteCd") String constrSiteCd,
-      @Param("requestDateFrom") Instant requestDateFrom,
-      @Param("requestDateTo") Instant requestDateTo,
+      @Param("requestDateFrom") OffsetDateTime requestDateFrom,
+      @Param("requestDateTo") OffsetDateTime requestDateTo,
       @Param("requestOfficeNm") String requestOfficeNm,
       @Param("requestEmpNm") String requestEmpNm,
       @Param("itemClassCd") String itemClassCd,

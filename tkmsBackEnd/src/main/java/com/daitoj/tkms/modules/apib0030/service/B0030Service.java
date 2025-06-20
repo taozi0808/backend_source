@@ -33,6 +33,7 @@ import com.daitoj.tkms.modules.apib0030.repository.B0030S10Repository;
 import com.daitoj.tkms.modules.apib0030.repository.mapper.B0030Mapper;
 import com.daitoj.tkms.modules.apib0030.service.dto.B0030Dto;
 import com.daitoj.tkms.modules.apib0030.service.dto.B0030PreWorkPrintDto;
+import com.daitoj.tkms.modules.apib0030.service.dto.B0030PrintDto;
 import com.daitoj.tkms.modules.apib0030.service.dto.B0030S01ReturnData;
 import com.daitoj.tkms.modules.apib0030.service.dto.B0030S02ReturnData;
 import com.daitoj.tkms.modules.apib0030.service.dto.B0030S03ReturnData;
@@ -43,6 +44,7 @@ import com.daitoj.tkms.modules.apib0030.service.dto.ProjectDto;
 import com.daitoj.tkms.modules.apib0030.service.dto.ProjectPaymentTermsDto;
 import com.daitoj.tkms.modules.apib0030.service.dto.ProjectPreWorkDtlDto;
 import com.daitoj.tkms.modules.apib0030.service.dto.ProjectRequestDtlDto;
+import com.daitoj.tkms.modules.apib0030.service.dto.ProjectRequestPrintDto;
 import com.daitoj.tkms.modules.apib0030.service.dto.ProjectResultDto;
 import com.daitoj.tkms.modules.apib0030.service.dto.ProjectSiteDto;
 import com.daitoj.tkms.modules.common.constants.CommonConstants;
@@ -70,17 +72,24 @@ import com.daitoj.tkms.modules.common.service.SystemException;
 import com.daitoj.tkms.modules.common.service.dto.ApiResult;
 import com.daitoj.tkms.modules.common.service.dto.MItemListSettingDto;
 import com.daitoj.tkms.modules.common.utils.DateUtils;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.stream.IntStream;
+
 import net.sf.jasperreports.engine.JREmptyDataSource;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -210,38 +219,41 @@ public class B0030Service {
   /** レポートファイル名 */
   public static final String REPORT_FILE_NAME = "WebB0030.jasper";
 
+  /** 帳票日付フォーマット */
+  private static final String PDF_DATE_FORMAT = "yyyy年MM年dd日HH:mm:ss";
+
   /** コンストラクタ */
   public B0030Service(
-      B0030S01Repository b0030S01Repository,
-      B0030S02Repository b0030S02Repository,
-      B0030S03Repository b0030S03Repository,
-      B0030S04Repository b0030S04Repository,
-      B0030S05Repository b0030S05Repository,
-      B0030S06Repository b0030S06Repository,
-      B0030S07Repository b0030S07Repository,
-      B0030S08Repository b0030S08Repository,
-      B0030S09Repository b0030S09Repository,
-      B0030S10Repository b0030S10Repository,
-      MCustomerRepository mcustomerRepository,
-      TExecBgtHdrRepository texecBgtHdrRepository,
-      TExecBgtDtlRepository texecBgtDtlRepository,
-      TEvSimBgtRepository tevSimBgtRepository,
-      TEvSimRepository tevSimRepository,
-      MEmpRepository mempRepository,
-      MOrgRepository morgRepository,
-      MTaxRateRepository mtaxRateRepository,
-      MPaymentTermRepository mpaymentTermRepository,
-      MItemListSettingRepository mitemListSettingRepository,
-      B0030Mapper b0030Mapper,
-      MCustomerMapper mcustomerMapper,
-      MEmpMapper mempMapper,
-      MOrgMapper morgMapper,
-      ItemListSettingService itemListSettingService,
-      NumberService numberRuleService,
-      CloudStorageService cloudStorageService,
-      MessageSource messageSource,
-      ObjectMapper objectMapper,
-      ReportService reportService) {
+    B0030S01Repository b0030S01Repository,
+    B0030S02Repository b0030S02Repository,
+    B0030S03Repository b0030S03Repository,
+    B0030S04Repository b0030S04Repository,
+    B0030S05Repository b0030S05Repository,
+    B0030S06Repository b0030S06Repository,
+    B0030S07Repository b0030S07Repository,
+    B0030S08Repository b0030S08Repository,
+    B0030S09Repository b0030S09Repository,
+    B0030S10Repository b0030S10Repository,
+    MCustomerRepository mcustomerRepository,
+    TExecBgtHdrRepository texecBgtHdrRepository,
+    TExecBgtDtlRepository texecBgtDtlRepository,
+    TEvSimBgtRepository tevSimBgtRepository,
+    TEvSimRepository tevSimRepository,
+    MEmpRepository mempRepository,
+    MOrgRepository morgRepository,
+    MTaxRateRepository mtaxRateRepository,
+    MPaymentTermRepository mpaymentTermRepository,
+    MItemListSettingRepository mitemListSettingRepository,
+    B0030Mapper b0030Mapper,
+    MCustomerMapper mcustomerMapper,
+    MEmpMapper mempMapper,
+    MOrgMapper morgMapper,
+    ItemListSettingService itemListSettingService,
+    NumberService numberRuleService,
+    CloudStorageService cloudStorageService,
+    MessageSource messageSource,
+    ObjectMapper objectMapper,
+    ReportService reportService) {
     this.b0030S01Repository = b0030S01Repository;
     this.b0030S02Repository = b0030S02Repository;
     this.b0030S03Repository = b0030S03Repository;
@@ -293,6 +305,7 @@ public class B0030Service {
                 MasterData.ITEM_CLASS_CD_D0006,
                 MasterData.ITEM_CLASS_CD_D0003,
                 MasterData.ITEM_CLASS_CD_D0007,
+                MasterData.ITEM_CLASS_CD_D0030,
               });
 
       // 結果情報
@@ -1082,13 +1095,255 @@ public class B0030Service {
    */
   public ApiResult<?> exportReportToPdf(String projectCd, LocalDateTime sysDate) {
     try {
-
+      // 案件登録印刷DTO
+      B0030PrintDto printDto = new B0030PrintDto();
       // 案件情報を取得
       ProjectResultDto projectInfo =
         b0030S01Repository.findAnkenInfo(projectCd).orElseThrow(ConflictException::new);
+
+      if (projectInfo.getProjectK() != null) {
+        // 案件区分を取得
+        mitemListSettingRepository
+          .findById_ItemClassCdAndId_ItemCdAndId_EffectiveStartDtLessThanEqual(
+            MasterData.ITEM_CLASS_CD_D0002, projectInfo.getProjectK(), sysDate.format(DateTimeFormatter.ofPattern(PDF_DATE_FORMAT)))
+          .ifPresent(item -> projectInfo.setProjectKNm(item.getItemValue()));
+      }
+
+      if (projectInfo.getProgressCd() != null) {
+        // 進捗度を取得
+        mitemListSettingRepository
+          .findById_ItemClassCdAndId_ItemCdAndId_EffectiveStartDtLessThanEqual(
+            MasterData.ITEM_CLASS_CD_D0003, projectInfo.getProgressCd(), sysDate.format(DateTimeFormatter.ofPattern(PDF_DATE_FORMAT)))
+          .ifPresent(item -> projectInfo.setProgressNm(item.getItemValue()));
+      }
+
+      if (projectInfo.getGovPeoK() != null) {
+        // 官民区分を取得
+        mitemListSettingRepository
+          .findById_ItemClassCdAndId_ItemCdAndId_EffectiveStartDtLessThanEqual(
+            MasterData.ITEM_CLASS_CD_D0006, projectInfo.getGovPeoK(), sysDate.format(DateTimeFormatter.ofPattern(PDF_DATE_FORMAT)))
+          .ifPresent(item -> projectInfo.setGovPeoKNm(item.getItemValue()));
+      }
+
+      if (projectInfo.getPaymentK() != null) {
+        // 支払日区分を取得
+        mitemListSettingRepository
+          .findById_ItemClassCdAndId_ItemCdAndId_EffectiveStartDtLessThanEqual(
+            MasterData.ITEM_CLASS_CD_D0007, projectInfo.getPaymentK(), sysDate.format(DateTimeFormatter.ofPattern(PDF_DATE_FORMAT)))
+          .ifPresent(item -> projectInfo.setPaymentKNm(item.getItemValue()));
+      }
+
+      if (projectInfo.getClosingDay() != null) {
+        // 締日区分項目内容を取得
+        mitemListSettingRepository
+          .findById_ItemClassCdAndId_ItemCdAndId_EffectiveStartDtLessThanEqual(
+            MasterData.ITEM_CLASS_CD_D0030, projectInfo.getClosingDay(), sysDate.format(DateTimeFormatter.ofPattern(PDF_DATE_FORMAT)))
+          .ifPresent(item -> printDto.setClosingDayNm(item.getItemValue()));
+      }
+
+      if (projectInfo.getPaymentD() != null) {
+        // 支払日区分項目内容を取得
+        mitemListSettingRepository
+          .findById_ItemClassCdAndId_ItemCdAndId_EffectiveStartDtLessThanEqual(
+            MasterData.ITEM_CLASS_CD_D0030, projectInfo.getPaymentD(), sysDate.format(DateTimeFormatter.ofPattern(PDF_DATE_FORMAT)))
+          .ifPresent(item -> printDto.setPaymentDNm(item.getItemValue()));
+      }
+
+      // 現場棟明細情報
+      List<ProjectBuildingDtlDto> projectBuildingDtls =
+        b0030S04Repository.findByProjectId(projectInfo.getId(), projectCd);
+
+      // 案件請求条件情報を取得
+      List<ProjectPaymentTermsDto> projectPaymentTerms =
+        b0030S03Repository.findByProjectId(projectInfo.getId(), DateUtils.formatNow(DateUtils.DATE_FORMAT));
+      // 案件要望明細情報を取得
+      List<ProjectRequestDtlDto> projectRequestDtls =
+        b0030S05Repository.findByProjectId(projectInfo.getId());
+
+      List<ProjectSiteDto> projectSites = new ArrayList<>();
+      if (!CollectionUtils.isEmpty(projectBuildingDtls)) {
+        // 棟番号が１番小さい番号
+        String buildingCd =
+          projectBuildingDtls.stream()
+            .min(Comparator.comparing(ProjectBuildingDtlDto::getBuildingCd))
+            .get()
+            .getBuildingCd();
+
+        // 物件、概算情報を取得
+       projectSites =
+          b0030S02Repository.findByProjectCd(projectCd, buildingCd);
+      }
+
+      // 利用PCのシステム日付
+      printDto.setSysDate(sysDate.format(DateTimeFormatter.ofPattern(PDF_DATE_FORMAT)));
+      // 案件コード
+      printDto.setProjectCd(projectInfo.getProjectCd());
+      // 案件区分
+      printDto.setProjectKNm(projectInfo.getProjectKNm());
+      // 案件名
+      printDto.setProjectNm(projectInfo.getProjectNm());
+      // 案件カナ名
+      printDto.setProjectKnNm(projectInfo.getProjectKnNm());
+
+      if (projectSites.size() != 0) {
+        // 現場コード
+        printDto.setConstrSiteCd(projectSites.get(0).getConstrSiteCd());
+        // 現場名
+        printDto.setConstrSiteNm(projectSites.get(0).getConstrSiteNm());
+        // 物件コード
+        printDto.setProjectSiteCd(projectSites.get(0).getProjectSiteCd());
+        // 物件名
+        printDto.setProjectSiteNm(projectSites.get(0).getProjectSiteNm());
+        // 物件カナ名
+        printDto.setProjectSiteKnNm(projectSites.get(0).getProjectSiteKnNm());
+        // 概算コード
+        printDto.setRoughEstCd(projectSites.get(0).getRoughEstCd());
+      }
+      // 郵便番号
+      printDto.setPostNo(projectInfo.getPostNo());
+      // 現場住所１
+      printDto.setConstrSiteAddr1(projectInfo.getConstrSiteAddr1());
+      // 現場住所2
+      printDto.setConstrSiteAddr2(projectInfo.getConstrSiteAddr2());
+      // 顧客名
+      printDto.setCustomerNm(projectInfo.getCustomerNm());
+      // 郵便番号（顧客）
+      printDto.setCustPostNo(projectInfo.getCustPostNo());
+      // 顧客住所１
+      printDto.setCustAddr1(projectInfo.getCustAddr1());
+      // 顧客住所2
+      printDto.setCustAddr2(projectInfo.getCustAddr2());
+
+      // 想定金額
+      printDto.setExpectAmt(projectInfo.getExpectAmt());
+      // 官民区分項目内容
+      printDto.setGovPeoKNm(projectInfo.getGovPeoKNm());
+      // 見積提出期限
+      printDto.setEstSubmitDueTs(projectInfo.getEstSubmitDueTs());
+      BigDecimal param = new BigDecimal("3.305");
+      // 敷地面積
+      printDto.setSiteArea(projectInfo.getSiteArea());
+      printDto.setSiteAreaTsu(projectInfo.getSiteArea().divide(param, 2, RoundingMode.HALF_UP));
+      // 建築面積
+      printDto.setBuildingArea(projectInfo.getBuildingArea());
+      printDto.setBuildingAreaTsu(projectInfo.getBuildingArea().divide(param, 2, RoundingMode.HALF_UP));
+      // 延床面積
+      printDto.setGrossFloorArea(projectInfo.getGrossFloorArea());
+      printDto.setGrossFloorAreaTsu(projectInfo.getGrossFloorArea().divide(param, 2, RoundingMode.HALF_UP));
+      // 施工床面積
+      printDto.setBuildupArea(projectInfo.getBuildupArea());
+      printDto.setBuildupAreaTsu(projectInfo.getBuildupArea().divide(param, 2, RoundingMode.HALF_UP));
+      // 専有面積
+      printDto.setOccupiedArea(projectInfo.getOccupiedArea());
+      printDto.setOccupiedAreaTsu(projectInfo.getOccupiedArea().divide(param, 2, RoundingMode.HALF_UP));
+      // 施工面積
+      printDto.setConstrArea(projectInfo.getConstrArea());
+      printDto.setConstrAreaTsu(projectInfo.getConstrArea().divide(param, 2, RoundingMode.HALF_UP));
+
+      // 戸数
+      printDto.setHouseholds(projectInfo.getHouseholds());
+      // 階数（地上）
+      printDto.setFloorCnt(projectInfo.getFloorCnt());
+      // 階数（地下）
+      printDto.setBasementCnt(projectInfo.getBasementCnt());
+
+      // 受注見込日
+      printDto.setOrderExpectedYmd(projectInfo.getOrderExpectedYmd());
+      // 着工希望日
+      printDto.setStartHopeYmd(projectInfo.getStartHopeYmd());
+      // 完了希望日
+      printDto.setCompHopeYmd(projectInfo.getCompHopeYmd());
+      // 営業部門名
+      printDto.setSalesOrgNm(projectInfo.getSalesOrgNm());
+      // 営業管理職名
+      printDto.setSalesMgrNm(projectInfo.getSalesMgrNm());
+      // 営業担当者名
+      printDto.setSalesPicNm(projectInfo.getSalesPicNm());
+      // 進捗度項目内容
+      printDto.setProgressNm(projectInfo.getProgressNm());
+      // 不成約理由
+      printDto.setRejectionReason(projectInfo.getRejectionReason());
+      // 支払区分
+      printDto.setPaymentKNm(projectInfo.getPaymentKNm());
+      // 工事経費率
+      printDto.setConstrExpRate(projectInfo.getConstrExpRate());
+      // 工事経費金額
+      printDto.setConstrExpAmt(projectInfo.getConstrExpAmt());
+      // 販売管理費率
+      printDto.setSaleMgrRate(projectInfo.getSaleMgrRate());
+      // 販売管理費金額
+      printDto.setSaleMgrAmt(projectInfo.getSaleMgrAmt());
+      // 調整金額
+      printDto.setTyouseiAmt(projectInfo.getTyouseiAmt());
+      // 雇用保険率
+      printDto.setEisRate(projectInfo.getEisRate());
+      // 健康保険率
+      printDto.setEhiRate(projectInfo.getEhiRate());
+      // 介護保険率
+      printDto.setLtcRate(projectInfo.getLtcRate());
+      // 厚生年金率
+      printDto.setWpiRate(projectInfo.getWpiRate());
+      // 完工希望日
+      printDto.setCompHopeYmd(projectInfo.getCompHopeYmd());
+
+      // 現場棟明細情報
+      printDto.setProjectBuildingDtls(projectBuildingDtls);
+      // 案件請求条件情報
+      printDto.setProjectPaymentTerms(projectPaymentTerms);
+      // 案件要望明細情報
+      List<ProjectRequestPrintDto> projectRequests = IntStream.range(0, projectRequestDtls.size())
+        .mapToObj(index -> {
+          ProjectRequestDtlDto obj = projectRequestDtls.get(index);
+          ProjectRequestPrintDto objContent = new ProjectRequestPrintDto(
+            obj.getRequestYmd(),
+            obj.getRequestContent(),
+            index
+          );
+
+          if (obj.getRequestAnswer() != null && !obj.getRequestAnswer().isEmpty()) {
+            ProjectRequestPrintDto objAnswer = new ProjectRequestPrintDto(
+              obj.getRequestYmd(),
+              obj.getRequestAnswer(),
+              index
+            );
+            return Arrays.asList(objContent, objAnswer);
+          } else {
+            return Collections.singletonList(objContent);
+          }
+        })
+        .flatMap(List::stream)
+        .collect(Collectors.toList());
+      printDto.setProjectRequestDtls(projectRequests);
+
+      // 割合合計
+      BigDecimal paymentRatioSum = projectPaymentTerms.stream()
+        .map(item-> new BigDecimal(item.getPaymentRatio()))
+        .reduce(BigDecimal.ZERO, BigDecimal::add);
+      // 請求金額合計
+      BigDecimal exclTaxPaymentAmtSum =
+          projectPaymentTerms.stream()
+              .map(ProjectPaymentTermsDto::getExclTaxPaymentAmt)
+              .reduce(BigDecimal.ZERO, BigDecimal::add);
+      // 消費税金額合計
+      BigDecimal inclTaxPaymentAmtSum =
+        projectPaymentTerms.stream()
+          .map(ProjectPaymentTermsDto::getInclTaxPaymentAmt)
+          .reduce(BigDecimal.ZERO, BigDecimal::add);
+      // 合計金額合計
+      BigDecimal salesTaxAmtSum =
+        projectPaymentTerms.stream()
+          .map(ProjectPaymentTermsDto::getSalesTaxAmt)
+          .reduce(BigDecimal.ZERO, BigDecimal::add);
+      // 案件請求条件情報合計パラメータ
+      Map<String, BigDecimal> params = new HashMap<>();
+      params.put("paymentRatioSum", paymentRatioSum);
+      params.put("exclTaxPaymentAmtSum", exclTaxPaymentAmtSum);
+      params.put("inclTaxPaymentAmtSum", inclTaxPaymentAmtSum);
+      params.put("salesTaxAmtSum", salesTaxAmtSum);
+      printDto.setParam(params);
       // レポートに渡すパラメータ
       Map<String, Object> paramsMap =
-        objectMapper.convertValue(projectInfo, new TypeReference<Map<String, Object>>() {});
+        objectMapper.convertValue(printDto, new TypeReference<Map<String, Object>>() {});
 
       // レポートを生成する
       byte[] datas = reportService.exportReportToPdf(REPORT_FILE_NAME, paramsMap, new JREmptyDataSource());

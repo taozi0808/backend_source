@@ -1,20 +1,26 @@
 package com.daitoj.tkms.domain;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.math.BigDecimal;
-import java.time.OffsetDateTime;
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Where;
 
-/** 実行予算明細発注情報 */
+/** 実行予算明細発注情報. */
 @lombok.Getter
 @lombok.Setter
 @Entity
-@Table(name = "T_EXEC_BGT_DTL_PO")
+@Table(name = "t_exec_bgt_dtl_po")
 @Where(clause = "del_flg = '0'")
-public class TExecBgtDtlPo {
+public class TExecBgtDtlPo extends BaseEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -41,33 +47,4 @@ public class TExecBgtDtlPo {
   @Size(max = 6)
   @Column(name = "partner_vendor_cd", length = 6)
   private String partnerVendorCd;
-
-  @NotNull
-  @ColumnDefault("'0'")
-  @Column(name = "del_flg", nullable = false, length = Integer.MAX_VALUE)
-  private String delFlg;
-
-  @NotNull
-  @Column(name = "reg_ts", nullable = false)
-  private OffsetDateTime regTs;
-
-  @Size(max = 255)
-  @NotNull
-  @Column(name = "reg_user_id", nullable = false)
-  private String regUserId;
-
-  @Size(max = 50)
-  @Column(name = "reg_pg_id", length = 50)
-  private String regPgId;
-
-  @Column(name = "upd_ts")
-  private OffsetDateTime updTs;
-
-  @Size(max = 255)
-  @Column(name = "upd_user_id")
-  private String updUserId;
-
-  @Size(max = 50)
-  @Column(name = "upd_pg_id", length = 50)
-  private String updPgId;
 }

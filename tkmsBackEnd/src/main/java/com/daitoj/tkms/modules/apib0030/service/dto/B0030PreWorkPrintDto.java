@@ -13,7 +13,7 @@ public class B0030PreWorkPrintDto {
 
   @Schema(
       name = "sysDate",
-      description = "利用PCのシステム日付(yyyy年MM月dd日HH:mm:ss)",
+      description = "利用PCのシステム日付(yyyy年MM月dd日)",
       requiredMode = Schema.RequiredMode.REQUIRED)
   @NotNull
   private String sysDate;
@@ -62,5 +62,8 @@ public class B0030PreWorkPrintDto {
   @Schema(description = "その他")
   private String sonota;
 
+  /** 顧客代表者名　*/
+  @Schema(description = "顧客代表者名")
+  private String ceoNm;
 
 }

@@ -3,7 +3,7 @@ package com.daitoj.tkms.modules.apis0120.repository;
 import com.daitoj.tkms.domain.TProject;
 import com.daitoj.tkms.modules.apis0120.service.dto.CustomerApprInfoDto;
 import jakarta.validation.constraints.NotNull;
-import java.time.Instant;
+import java.time.OffsetDateTime;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -122,8 +122,8 @@ public interface S0120Repository extends JpaRepository<TProject, Long> {
   List<CustomerApprInfoDto> findCustomerInfo(
       @NotNull @Param("empCd") String empCd,
       @Param("customerCd") String customerCd,
-      @Param("requestDateFrom") Instant requestDateFrom,
-      @Param("requestDateTo") Instant requestDateTo,
+      @Param("requestDateFrom") OffsetDateTime requestDateFrom,
+      @Param("requestDateTo") OffsetDateTime requestDateTo,
       @Param("requestOfficeNm") String requestOfficeNm,
       @Param("requestEmpNm") String requestEmpNm,
       @Param("itemClassCd") String itemClassCd,
@@ -190,8 +190,8 @@ public interface S0120Repository extends JpaRepository<TProject, Long> {
       @Param("listApprStatus") List<String> listApprStatus,
       @NotNull @Param("empCd") String empCd,
       @Param("customerCd") String customerCd,
-      @Param("requestDateFrom") Instant requestDateFrom,
-      @Param("requestDateTo") Instant requestDateTo,
+      @Param("requestDateFrom") OffsetDateTime requestDateFrom,
+      @Param("requestDateTo") OffsetDateTime requestDateTo,
       @Param("requestOfficeNm") String requestOfficeNm,
       @Param("requestEmpNm") String requestEmpNm,
       @Param("itemClassCd") String itemClassCd,

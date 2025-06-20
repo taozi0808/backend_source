@@ -1,5 +1,6 @@
 package com.daitoj.tkms.modules.apir0045.service.dto;
 
+import com.daitoj.tkms.domain.MOffice;
 import com.daitoj.tkms.modules.common.service.dto.CertSearchDto;
 import com.daitoj.tkms.modules.common.service.dto.MItemListSettingDto;
 import com.daitoj.tkms.modules.common.service.dto.OrgRevSearchDto;
@@ -45,4 +46,8 @@ public class R0045S01ReturnData {
   /** 適用開始日 */
   @Schema(description = "適用開始日")
   List<OrgRevSearchDto> startDtList;
+
+  /** 事業所情報 */
+  @Schema(description = "事業所情報")
+  List<MOffice> officeList;
 }

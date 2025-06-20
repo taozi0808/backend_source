@@ -44,11 +44,17 @@ public class MasterData {
   /** 項目分類(業種区分) */
   public static final String ITEM_CLASS_CD_D0019 = "D0019";
 
+  /** 項目分類(締日区分) */
+  public static final String ITEM_CLASS_CD_D0030 = "D0030";
+
   /** 単位分類コード(単位区分) */
   public static final String ITEM_CLASS_CD_D0020 = "D0020";
 
   /** 項目分類コード(構造区分) */
   public static final String ITEM_CLASS_CD_D0021 = "D0021";
+
+  /** 項目分類コード(口座種別) */
+  public static final String ITEM_CLASS_CD_D0031 = "D0031";
 
   /** 項目分類コード(承認状態) */
   public static final String ITEM_CLASS_CD_C0001 = "C0001";
@@ -74,7 +80,7 @@ public class MasterData {
   /** 業務種類コード(工事予実管理) */
   public static final String BUSINESS_TYPE_CD_B00007 = "B00007";
 
-  /** 業務種類コード(協力業者管理) */
+  /** 業務種類コード(協力業者管理),業務種類コード(自社情報) */
   public static final String BUSINESS_TYPE_CD_C00004 = "C00004";
 
   /** 業務種類コード(作業員情報管理) */
@@ -89,11 +95,14 @@ public class MasterData {
   /** 業務種類コード(顧客管理) */
   public static final String BUSINESS_TYPE_CD_C00001 = "C00001";
 
-  /** 業務種類コード(会社管理) */
-  public static final String BUSINESS_TYPE_CD_B00013 = "B00013";
+  /** 業務種類コード(会社管理-社員管理) */
+  public static final String BUSINESS_TYPE_CD_C00002 = "C00002";
 
   /** 業務種類コード(自社情報) */
   public static final String BUSINESS_TYPE_CD_B00014 = "B00014";
+
+  /** 業務種類コード(会社管理-組織管理) */
+  public static final String BUSINESS_TYPE_CD_C00003 = "C00003";
 
   /** 業務種類コード(作業員登録) */
   public static final String BUSINESS_TYPE_CD_B00015 = "B00015";
@@ -137,7 +146,12 @@ public class MasterData {
   /** 業務テーブルID(下請契約台帳) */
   public static final String BUSINESS_TBL_ID_SUB_CON_LEDGER = "T_SUB_CON_LEDGER";
 
-    /** 業務テーブルID(顧客情報) */
+  /** 業務テーブルID(顧客情報) */
   public static final String BUSINESS_TBL_ID_CUSTOMER = "M_CUSTOMER";
 
+  /** 業務テーブルID(会社管理-社員管理) */
+  public static final String BUSINESS_TBL_ID_EMP = "M_EMP";
+
+  /** 業務テーブルID(会社管理-組織管理) */
+  public static final String BUSINESS_TBL_ID_ORG_REV = "M_ORG_REV";
 }

@@ -3,6 +3,8 @@ package com.daitoj.tkms.domain;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
+
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Where;
@@ -14,45 +16,30 @@ import org.hibernate.annotations.Where;
 @Table(name = "m_price")
 @Where(clause = "del_flg = '0'")
 public class MPrice extends BaseEntity {
+
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE)
-  @Column(name = "m_price_id", nullable = false)
+  @Column(name = "price_id", nullable = false)
   private Long id;
-
-  @NotNull
-  @ManyToOne(fetch = FetchType.LAZY, optional = false)
-  @JoinColumn(name = "m_price_region_id", nullable = false)
-  private MPriceRegion mPriceRegion;
 
   @NotNull
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
   @JoinColumn(name = "major_work_cd", nullable = false)
   private MMajorWork majorWorkCd;
 
+  @Size(max = 4)
   @NotNull
-  @ManyToOne(fetch = FetchType.LAZY, optional = false)
-  @JoinColumns({
-    @JoinColumn(
-        name = "major_work_cd",
-        referencedColumnName = "major_work_cd",
-        insertable = false,
-        updatable = false),
-    @JoinColumn(
-        name = "minor_work_cd",
-        referencedColumnName = "minor_work_cd",
-        insertable = false,
-        updatable = false)
-  })
-  private MMinorWork minorWorkCd;
+  @Column(name = "minor_work_cd", nullable = false, length = 4)
+  private String minorWorkCd;
 
-  @NotNull
-  @Column(name = "spec", nullable = false, length = Integer.MAX_VALUE)
+  @Column(name = "spec", length = Integer.MAX_VALUE)
   private String spec;
 
   @NotNull
   @Column(name = "price", nullable = false, precision = 10)
   private BigDecimal price;
 
-  @Column(name = "unit", length = Integer.MAX_VALUE)
-  private String unit;
+  @Size(max = 2)
+  @Column(name = "unit_k", length = 2)
+  private String unitK;
 }
